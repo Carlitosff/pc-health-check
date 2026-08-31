@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pc-health-check"
+version = "0.1.0"
+description = "Command-line tool that grades your computer by component and finds the heaviest files on disk."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "Carlos Fernandez Fabregat" }]
+keywords = ["cli", "system", "diagnostics", "psutil", "health-check"]
+classifiers = [
+    "Environment :: Console",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Topic :: System :: Monitoring",
+]
+dependencies = [
+    "psutil>=5.9",
+    "rich>=13.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7.0"]
+
+[project.urls]
+Homepage = "https://github.com/carlosfernandezfabregat/pc-health-check"
+Repository = "https://github.com/carlosfernandezfabregat/pc-health-check"
+
+[project.scripts]
+pchealth = "pchealth.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
