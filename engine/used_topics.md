@@ -12,14 +12,16 @@ velocidad de la Tierra · agua de la Tierra · planetas caben entre Tierra y Lun
 ## Serie "Tu cuerpo" partes 1–10 (publicada 25/10/2026)
 dedos nunca se tocan · punto ciego · dedo anular · bostezo contagioso · ves tu nariz · células nuevas por segundo · cosquillas a uno mismo · ilusión de color (postimagen) · cronostasis · mito de los 100.000 km de vasos
 
-## Tests interactivos (producidos, NO publicados aún — se pueden publicar tal cual desde out50 si existen, o rehacer)
+## Tests interactivos (publicados 25/10/2026 noche; stock agotado)
 51 espiral (postefecto movimiento) · 52 Troxler · 53 punto verde · 54 pie y el 6 · 55 ceguera al cambio
 
 ## Historias en 3 partes (publicadas 25/10/2026)
 Violet Jessop (Olympic, Titanic, Britannic) · Apolo 13
 
-## Series abiertas
-(ninguna)
+## Series abiertas (PRIORIDAD)
+- Voyager 1 → prometido "mañana": el Disco de Oro (qué contiene, saludo en 55 idiomas, Carl Sagan). Publicar el 26/10.
+- La Luna se aleja → "Parte 2": qué le pasa a la Tierra (días más largos, mareas, eclipses totales dejarán de existir).
 
 ## Log diario
 - 2026-10-25: publicado lote manual (41–50, 61–66).
+- 2026-10-25 noche: 51–55 (tests) + 71 Voyager 1 a un día luz, 72 si el Sol desapareciera (8 min 20 s), 73 Saturno flota, 74 la Luna se aleja 3,8 cm/año, 75 atardecer azul en Marte (script dia_20261025n.py).
