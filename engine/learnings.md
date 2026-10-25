@@ -13,4 +13,5 @@
 ## Mejores horas
 
 ## Cambios del motor
+- 2026-10-26: VOZ v3 → Piper (davefx narrador, sharvard F preguntas) en vez de Kokoro em_alex 1.28 (sonaba acelerada y con acento raro). Síntesis por cláusulas con pausas por puntuación. Modelos desde GitHub releases de k2-fsa/sherpa-onnx (HF está bloqueado).
 - 2026-10-25: motor v2 (core.py): voz Kokoro multi-voz, subtítulos con keywords, planetas con texturas reales (spheres.py), iconos hc.py.

@@ -73,7 +73,7 @@ Mezcla orientativa (ajústala según `learnings.md`):
 
 ## 5. Reglas fijas del dueño
 
-- Español. Voz Kokoro local (`voice.py`; em_alex 1.28 para narrar, ef_dora 1.22 para preguntas). **Nunca Higgsfield para la voz.**
+- Español. **Voz v3 (desde 26/10): Piper local con voces de locutores reales** (`tts2/piper_tts.py`, definidas en `core.VOICES`: narrador `piper:es_ES-davefx-medium:0` a 1.12, preguntas `piper:es_ES-sharvard-medium:1` a 1.08). Síntesis por cláusulas con pausas naturales. Kokoro queda solo como respaldo. **Nunca Higgsfield ni servicios externos para la voz.** Si mejoras la voz (otro modelo alcanzable desde GitHub/npm/PyPI), compáralo con un A/B antes de cambiar.
 - **Nada de monigotes ni stick figures.** Visuales reales y movimiento constante.
 - 30–45 s, 1080×1920, 30 fps. Hook en el primer segundo. Subtítulos palabra a palabra con las keywords resaltadas.
 - Marca de agua `@videosparadormir2018`. CTA final: seguir + comentar, con un teaser del siguiente.

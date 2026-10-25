@@ -11,7 +11,8 @@ from engine import (W, H, SR, INK, WHITE, TF_BLACK, TF_XBOLD, TF_BOLD, Captions,
                     Mixer, render)
 
 HANDLE = "@videosparadormir2018"
-VOICES = {"nar": ("em_alex", 1.28), "q": ("ef_dora", 1.22)}
+# v3 (26/10/2026): voces Piper de locutores reales (más humanas que Kokoro en español)
+VOICES = {"nar": ("piper:es_ES-davefx-medium:0", 1.12), "q": ("piper:es_ES-sharvard-medium:1", 1.08)}
 COUNT_DUR = 2.5
 GAP = 0.08
 GREEN = 0xFF2FD46B

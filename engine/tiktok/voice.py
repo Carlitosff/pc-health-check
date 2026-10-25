@@ -4,6 +4,8 @@ import numpy as np
 
 sys.path.insert(0, "/home/claude/tts")
 import kokoro_tts  # noqa: E402
+sys.path.insert(0, "/home/claude/tts2")
+import piper_tts  # noqa: E402
 from engine import Captions, SR  # noqa: E402
 
 CACHE = "/home/claude/tiktok/vo_cache"
@@ -17,8 +19,16 @@ def _synth_cached(text, voice, speed):
     path = f"{CACHE}/{key}.npy"
     if os.path.exists(path):
         return np.load(path)
-    a, _ = kokoro_tts.synth(text, voice=voice, speed=speed)
-    a = a.astype(np.float32)
+    if voice.startswith("piper:"):
+        # voz Piper (locutor real): "piper:<modelo>:<speaker>" -> remuestreo a 24 kHz
+        _, name, sid = voice.split(":")
+        y, sr = piper_tts.synth(text, name, int(sid), speed)
+        n = int(len(y) * 24000 / sr)
+        a = np.interp(np.linspace(0, len(y) - 1, n), np.arange(len(y)), y).astype(np.float32)
+        a = a / (np.abs(a).max() + 1e-9) * 0.9
+    else:
+        a, _ = kokoro_tts.synth(text, voice=voice, speed=speed)
+        a = a.astype(np.float32)
     # recortar silencios de los extremos
     thr = 0.01
     idx = np.where(np.abs(a) > thr)[0]
