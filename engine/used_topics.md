@@ -25,3 +25,4 @@ Violet Jessop (Olympic, Titanic, Britannic) · Apolo 13
 ## Log diario
 - 2026-10-25: publicado lote manual (41–50, 61–66).
 - 2026-10-25 noche: 51–55 (tests) + 71 Voyager 1 a un día luz, 72 si el Sol desapareciera (8 min 20 s), 73 Saturno flota, 74 la Luna se aleja 3,8 cm/año, 75 atardecer azul en Marte (script dia_20261025n.py).
+- 2026-10-26 00:25–00:55: 81 baraja (52! > átomos Tierra), 82 contar hasta mil millones (31,7 años), 83 ajedrez (10^120 vs 10^80), 84 luz 7,5 vueltas/s (dia_20261025z.py).
