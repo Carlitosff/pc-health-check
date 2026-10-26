@@ -34,3 +34,4 @@ efecto Stroop (1935) · agujero que se expande (Laeng 2022, 86%) · ilusión de 
 - 2026-10-26 00:25–00:55: 81 baraja (52! > átomos Tierra), 82 contar hasta mil millones (31,7 años), 83 ajedrez (10^120 vs 10^80), 84 luz 7,5 vueltas/s (dia_20261025z.py).
 - 2026-10-26 01:10–01:30 (voz v3 Piper): 92 mito pez dorado 3 s de memoria, 91 corazón 100.000 latidos/día, 93 bacterias 1:1 (mito ×10) (dia_20261026a.py).
 - 2026-10-26 (producción automática 05:47): 101–110 (dia_20261026.py), motor v4. TikTok solo en 5 franjas de noche por el límite de la API.
+  Programado (IG; TikTok solo 21:30–23:30): 12:00 Luna P2 · 12:30 toros y rojo · 15:00 Voyager P2 Disco de Oro · 15:30 Phineas Gage P1 · 21:00 uñas mito · 21:30 Vesna Vulović · 22:00 Ebbinghaus · 22:30 espejo · 23:00 Stroop · 23:30 agujero.

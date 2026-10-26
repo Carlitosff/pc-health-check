@@ -8,6 +8,8 @@
 - 26/10 TIKTOK: BLOQUEADO POR LÍMITE DE API. Todo lo programado del 25/10 21:45 al 26/10 01:30 dio error 403 'too many posts via OpenAPI in the last 24 hours'. Los 15 vídeos del 25/10 13:20–17:50 sí se publicaron, con 0–4 vistas. => TikTok: máximo 5 publicaciones/día vía Metricool, solo en la franja de noche y nunca dentro de las 24 h de un lote grande anterior. Instagram sigue con 10/día.
 - Duración: el estudio de OpusClip 2026 (13,5 M clips) da mediana de 41 s en los virales y 80% con subtítulos quemados animados → mantener 30–45 s.
 
+- 26/10 decisión: 5 de 10 son tests/percepción o mitos del cuerpo (lo que más rinde) y van a la noche; espacio y series a mediodía. Medir mañana: ¿los tests de noche superan 1.000? ¿TikTok vuelve a publicar sin 403?
+
 ## Hooks que funcionan / no funcionan
 - IG 25/10 TOP (vistas): '3 cosas que hace tu cuerpo' 1633 · '3 mentiras que te creíste' 1474 (retención 70%) · cucharadita estrella de neutrones 1405 · miel no caduca 1390 (ret 69%) · humanidad en un terrón 1361 · medusa inmortal 1280 · 23 personas cumpleaños 1194 · más árboles que estrellas 1179.
 - Patrón ganador: UN dato de escala/número imposible, dicho en la primera frase, o listas de cuerpo/mitos. Ganan los de 'te rompe la cabeza' con número concreto.
