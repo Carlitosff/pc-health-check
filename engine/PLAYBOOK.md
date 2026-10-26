@@ -1,6 +1,6 @@
 # Videosparadormir: producción diaria automática (v2)
 
-**Cuenta:** @videosparadormir2018 (Instagram + TikTok). Vídeos faceless de curiosidades, en español.
+**Cuenta:** @videosparadormir2018. **Desde el 27/10/2026 se publica SOLO en Instagram** (TikTok no daba alcance). Vídeos faceless de curiosidades, en español.
 
 **Objetivo único:** crecer en alcance y seguidores, día tras día. Cada ejecución (05:47) hace lo siguiente:
 1. Revisa lo publicado y cómo ha funcionado.
@@ -106,7 +106,6 @@ URL de cada vídeo: `https://raw.githubusercontent.com/Carlitosff/pc-health-chec
 - **Límite de TikTok (descubierto el 26/10):** la API de TikTok bloquea con 403 ("too many posts via OpenAPI in the last 24 hours") si se pasa de ~15 posts en 24 h. **TikTok solo en 5 vídeos al día, los de 21:30–23:30**; los otros 5 solo Instagram. Antes de programar, mira con `getScheduledPosts`/métricas que no haya un lote grande de TikTok en las 24 h previas.
 - **`createScheduledPost`**, con providers instagram (+ tiktok en las 5 franjas de noche):
   - `instagramData`: {type: "REEL", showReelOnFeed: true, isAiGenerated: true}
-  - `tiktokData`: {title: "<línea gancho>" (OBLIGATORIO), privacyOption: "PUBLIC_TO_EVERYONE", isAigc: true}
   - `text`: una línea gancho con emoji (+ "· Parte N" si es una serie explícita), salto de línea y 5 hashtags (#sabiasque #curiosidades + 3 del tema).
 - **Comprobación:** en la respuesta, `media` tiene que apuntar a `static.metricool.com`. Eso confirma que Metricool ya copió el vídeo. Verifica también con `getScheduledPosts`.
 
