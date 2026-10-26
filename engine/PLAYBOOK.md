@@ -103,7 +103,8 @@ URL de cada vídeo: `https://raw.githubusercontent.com/Carlitosff/pc-health-chec
 - **Horario de los 10 vídeos:** **12:00, 12:30, 15:00, 15:30, 21:00, 21:30, 22:00, 22:30, 23:00, 23:30**.
   - Los mejores (según `learnings.md`) van en la franja 21–23:30.
   - Una serie no se publica antes que su parte anterior.
-- **`createScheduledPost`**, con providers instagram + tiktok:
+- **Límite de TikTok (descubierto el 26/10):** la API de TikTok bloquea con 403 ("too many posts via OpenAPI in the last 24 hours") si se pasa de ~15 posts en 24 h. **TikTok solo en 5 vídeos al día, los de 21:30–23:30**; los otros 5 solo Instagram. Antes de programar, mira con `getScheduledPosts`/métricas que no haya un lote grande de TikTok en las 24 h previas.
+- **`createScheduledPost`**, con providers instagram (+ tiktok en las 5 franjas de noche):
   - `instagramData`: {type: "REEL", showReelOnFeed: true, isAiGenerated: true}
   - `tiktokData`: {title: "<línea gancho>" (OBLIGATORIO), privacyOption: "PUBLIC_TO_EVERYONE", isAigc: true}
   - `text`: una línea gancho con emoji (+ "· Parte N" si es una serie explícita), salto de línea y 5 hashtags (#sabiasque #curiosidades + 3 del tema).

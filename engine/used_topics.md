@@ -18,12 +18,19 @@ dedos nunca se tocan · punto ciego · dedo anular · bostezo contagioso · ves 
 ## Historias en 3 partes (publicadas 25/10/2026)
 Violet Jessop (Olympic, Titanic, Britannic) · Apolo 13
 
+## Lote 26/10/2026 (dia_20261026.py, 101–110)
+efecto Stroop (1935) · agujero que se expande (Laeng 2022, 86%) · ilusión de Ebbinghaus/Titchener · mito uñas y pelo tras la muerte (+3,5 mm/mes, pelo 1 cm/mes) · mito toros y rojo (MythBusters 2007) · Voyager P2 Disco de Oro (55 idiomas, 'Hola y saludos a todos', Chuck Berry, latido, uranio-238) · Luna P2 (días +<2 ms/siglo, 18 h hace 1.400 M años [Meyers & Malinverno 2018], mareas, fin eclipses totales ~600 M años) · Phineas Gage P1 (13/9/1848, barra 1,1 m 6 kg) · Vesna Vulović (10.160 m, 26/1/1972) · test del espejo / enmascaramiento sacádico (truco del móvil)
+
 ## Series abiertas (PRIORIDAD)
-- Voyager 1 → prometido "mañana": el Disco de Oro (qué contiene, saludo en 55 idiomas, Carl Sagan). Publicar el 26/10.
-- La Luna se aleja → "Parte 2": qué le pasa a la Tierra (días más largos, mareas, eclipses totales dejarán de existir).
+- Phineas Gage → prometido "mañana" (27/10): Parte 2 = el cambio de personalidad ("ya no era Gage", Harlow 1868), su vida después (diligencias en Chile, murió en 1860), el cráneo y la barra en el museo de Harvard, y por qué cambió la neurociencia (lóbulo frontal).
+- Voyager → Parte 3 posible: el 'Pale Blue Dot' (1990) o hasta cuándo seguirá funcionando.
+- Tests de percepción: prometido "mañana viene otro más difícil" (Stroop) y "otro fallo de tu cerebro" (espejo).
+- Mitos: prometido "otro mito de animales" (toro) y "otro mito" (uñas).
+- CERRADAS: Voyager P2 (Disco de Oro) y Luna P2 publicadas el 26/10.
 
 ## Log diario
 - 2026-10-25: publicado lote manual (41–50, 61–66).
 - 2026-10-25 noche: 51–55 (tests) + 71 Voyager 1 a un día luz, 72 si el Sol desapareciera (8 min 20 s), 73 Saturno flota, 74 la Luna se aleja 3,8 cm/año, 75 atardecer azul en Marte (script dia_20261025n.py).
 - 2026-10-26 00:25–00:55: 81 baraja (52! > átomos Tierra), 82 contar hasta mil millones (31,7 años), 83 ajedrez (10^120 vs 10^80), 84 luz 7,5 vueltas/s (dia_20261025z.py).
 - 2026-10-26 01:10–01:30 (voz v3 Piper): 92 mito pez dorado 3 s de memoria, 91 corazón 100.000 latidos/día, 93 bacterias 1:1 (mito ×10) (dia_20261026a.py).
+- 2026-10-26 (producción automática 05:47): 101–110 (dia_20261026.py), motor v4. TikTok solo en 5 franjas de noche por el límite de la API.

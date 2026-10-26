@@ -17,7 +17,8 @@ COUNT_DUR = 2.5
 GAP = 0.08
 GREEN = 0xFF2FD46B
 QCOL = 0xFFFF7AD9
-SCRATCH = "/tmp/claude-0/-home-claude/17e1b1a5-e9d8-514f-95d3-0b335f31f5e2/scratchpad/"
+SCRATCH = "/home/claude/tiktok/prev/"
+os.makedirs(SCRATCH, exist_ok=True)
 
 
 def smooth(x):
@@ -339,6 +340,23 @@ def kick(P, t):
     return k
 
 
+def hook_extras(c, t, V, total):
+    """v4: insignia de serie (V['badge']) y aviso de bucle abierto (V['tease']) solo en los 3,5 s del gancho
+    (después se quitan para no pisar subtítulos de 2-3 líneas). La insignia vuelve en el CTA final."""
+    y = 288
+    if V.get("badge"):
+        on = t < 3.5 or t > total - 3.0
+        if on:
+            a = clamp(min(t - 0.15, 3.5 - t if t < 3.5 else t - (total - 3.0)) / 0.25)
+            s = ease_back(prog(t, 0.15, 0.5), 2.0) if t < 3.5 else 1.0
+            pill(c, W / 2, y, V["badge"], 28, bg=V["accent"], fg=INK, alpha=a, scale=s * (1 + 0.02 * math.sin(t * 3)))
+    tease = V.get("tease")
+    if tease and 0.5 < t < 3.5 and not V.get("badge"):
+        a = clamp((t - 0.5) / 0.25) * clamp((3.5 - t) / 0.3)
+        s = ease_back(prog(t, 0.5, 0.85), 2.4)
+        pill(c, W / 2, y, tease, 28, bg=0xFFFE2C55, fg=WHITE, alpha=a, scale=s * (1 + 0.04 * math.sin(t * 10)))
+
+
 # ------------------------------------------------------------------ frame + audio + run
 def make_frame(V, P, scene):
     total = P["total"]
@@ -346,7 +364,8 @@ def make_frame(V, P, scene):
     def draw_frame(c, t):
         k = kick(P, t)
         c.save()
-        z = 1 + 0.035 * k
+        # v4 (26/10): punch-in de gancho (zoom 1.22 -> 1 en 0,55 s) para cortar el scroll en el 1er segundo
+        z = 1 + 0.035 * k + 0.22 * (1 - ease_out(clamp(t / 0.55)))
         c.translate(W / 2 + math.sin(t * 61) * 4 * k, H / 2)
         c.scale(z, z)
         c.translate(-W / 2, -H / 2)
@@ -364,7 +383,10 @@ def make_frame(V, P, scene):
             cta(c, t, t - sg["a"], V["accent"])
         c.drawRect(skia.Rect.MakeXYWH(0, 0, W * t / total, 10), fill(V["accent"]))
         watermark(c)
+        hook_extras(c, t, V, total)
         P["caps"].draw(c, t)
+        if t < 0.18:  # destello inicial (pattern interrupt)
+            c.drawPaint(fill(with_alpha(WHITE, 0.55 * (1 - t / 0.18))))
         # flash de transición en cada segmento narrado nuevo
         for s2 in P["segs"]:
             if s2.get("cut") and 0 <= t - s2["a"] < 0.12:
@@ -406,7 +428,12 @@ def build_audio(V, P, path, extra=None):
     tt = np.arange(len(m.buf)) / SR
     drone = (np.sin(2 * np.pi * 55 * tt) * 0.5 + np.sin(2 * np.pi * 82.4 * tt + np.sin(tt * 0.3)) * 0.3) * \
         (0.6 + 0.4 * np.sin(tt * 0.5))
-    m.buf += drone * V.get("drone", 0.02)
+    # v4: ducking del dron bajo la voz (la voz se entiende mejor y el fondo 'respira' en las pausas)
+    vo = np.abs(m.buf[:])
+    win = int(0.12 * SR)
+    env = np.convolve(vo, np.ones(win) / win, mode="same")
+    env = env / (env.max() + 1e-9)
+    m.buf += drone * V.get("drone", 0.02) * (1.0 - 0.65 * np.clip(env * 4, 0, 1))
     m.boom(0.0, 0.3)
     if extra:
         extra(m, P)
