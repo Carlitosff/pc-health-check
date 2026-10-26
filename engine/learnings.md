@@ -16,6 +16,10 @@
 - FLOJOS (<200): quizzes de espacio/historia/verdad-mentira, wombat, plátano, flamencos, Venus, rayo, tiburones, hormigas. Los realistas de planetas del 25/10 (113–159) también flojos en sus primeras horas: espacio puro rinde menos que cuerpo/números/mitos.
 - 25/10 23:59: lote de 4 'números que rompen la cabeza' (baraja 52!, contar hasta mil millones, ajedrez 10^120, luz 7,5 vueltas) → medir mañana.
 
+## Formatos nuevos a medir (26/10)
+- IA/noticias de IA (6 vídeos 13:30–14:40). Si rinden, meter 1–2 al día (noticias VERIFICADAS de la semana).
+- DEBATE / 'esto divide a internet' (barra VS + quiz A/B, CTA 'escribe CON o SIN'): busca comentarios. Si sube comentarios/alcance, meter 1–2 al día. Nunca presentar como cierto algo falso: el 'polémico' es el debate, no el dato.
+
 ## Mejores horas
 - 25/10: los reels de 12:00–14:30 (lote 'Tu cuerpo' + realistas) acumulan 1.200–2.000; los de 21:45–00:55 se quedan en 130–560 en sus primeras horas (falta ver el acumulado a 24 h antes de concluir).
 
