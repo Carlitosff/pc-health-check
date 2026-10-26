@@ -25,7 +25,7 @@ Si el repo no está en la sesión: `add_repo` con owner=Carlitosff, repo=pc-heal
 - Lee `engine/used_topics.md` y los scripts de días anteriores en `engine/tiktok/real/dia_*.py`. **Prohibido repetir** un tema o un dato, incluso reformulado.
 - Saca métricas de Metricool de los últimos 7–14 días:
   - Herramientas: `getAnalyticsAvailableMetrics` y luego `getAnalyticsDataByMetrics`.
-  - Datos: Instagram reels y TikTok posts, con vistas, retención/tiempo medio, likes, comentarios, compartidos, guardados y seguidores ganados.
+  - Datos: Instagram reels (TikTok ya no se usa), con vistas, retención/tiempo medio, likes, comentarios, compartidos, guardados y seguidores ganados.
 - Anota en `engine/learnings.md` qué formatos, hooks, duraciones y horas rinden más y cuáles menos (con números). Lo que funcione se repite con temas nuevos; lo que falle se cambia o se abandona.
 - Si Metricool trae datos de competencia (connector competitors), úsalos.
 
@@ -103,8 +103,8 @@ URL de cada vídeo: `https://raw.githubusercontent.com/Carlitosff/pc-health-chec
 - **Horario de los 10 vídeos:** **12:00, 12:30, 15:00, 15:30, 21:00, 21:30, 22:00, 22:30, 23:00, 23:30**.
   - Los mejores (según `learnings.md`) van en la franja 21–23:30.
   - Una serie no se publica antes que su parte anterior.
-- **Límite de TikTok (descubierto el 26/10):** la API de TikTok bloquea con 403 ("too many posts via OpenAPI in the last 24 hours") si se pasa de ~15 posts en 24 h. **TikTok solo en 5 vídeos al día, los de 21:30–23:30**; los otros 5 solo Instagram. Antes de programar, mira con `getScheduledPosts`/métricas que no haya un lote grande de TikTok en las 24 h previas.
-- **`createScheduledPost`**, con providers instagram (+ tiktok en las 5 franjas de noche):
+- **SOLO INSTAGRAM (decisión del dueño, desde el 27/10/2026):** no publiques nada en TikTok. providers = [{"network":"instagram"}] y sin `tiktokData`.
+- **`createScheduledPost`**, con providers solo instagram:
   - `instagramData`: {type: "REEL", showReelOnFeed: true, isAiGenerated: true}
   - `text`: una línea gancho con emoji (+ "· Parte N" si es una serie explícita), salto de línea y 5 hashtags (#sabiasque #curiosidades + 3 del tema).
 - **Comprobación:** en la respuesta, `media` tiene que apuntar a `static.metricool.com`. Eso confirma que Metricool ya copió el vídeo. Verifica también con `getScheduledPosts`.
