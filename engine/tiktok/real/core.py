@@ -83,6 +83,7 @@ def plan(V):
     first["a"] = -0.5
     first["times"] = [-0.3] * len(first["times"])
     caps.draw = types.MethodType(_cap_draw, caps)
+    caps.hook_end = segs[0]["b"] - 0.05
     tl = {sg["id"]: (sg["a"], sg["b"]) for sg in segs}
     hl_times = [tt for it in caps.items for (w, hl), tt in zip(it["words"], it["times"]) if hl and tt > 0.3]
     return dict(segs=segs, tl=tl, vo=vo, caps=caps, total=total, hl_times=hl_times)
@@ -94,7 +95,21 @@ def _cap_draw(self, c, t):
         return
     old = self.hl
     self.hl = it.get("hl", old)
-    curio2.captions_draw(self, c, t)
+    if it["a"] < getattr(self, "hook_end", 0):
+        # v5 (27/10): GANCHO XL. La frase del gancho sale un 20% más grande, sobre una banda oscura degradada
+        # (legible sobre cualquier fondo) y ya completa en el frame 0 -> la miniatura/primer frame se entiende solo.
+        # Motivo: en IG el 'reel view rate' (>3 s) separa los vídeos de 1.000-2.000 vistas (60-72%) de los de 100-250 (23-50%).
+        os_, ow_ = self.size, self.max_w
+        self.size, self.max_w = os_ * 1.2, 980
+        out = prog(t, it["b"] - 0.08, it["b"])
+        band = skia.GradientShader.MakeLinear([(0, self.y - 330), (0, self.y + 360)],
+                                              [0x00000000, with_alpha(0xFF000000, 0.42 * (1 - out)),
+                                               with_alpha(0xFF000000, 0.42 * (1 - out)), 0x00000000], [0, 0.3, 0.7, 1])
+        c.drawRect(skia.Rect.MakeXYWH(0, self.y - 330, W, 690), skia.Paint(Shader=band))
+        curio2.captions_draw(self, c, t)
+        self.size, self.max_w = os_, ow_
+    else:
+        curio2.captions_draw(self, c, t)
     self.hl = old
 
 
@@ -385,8 +400,8 @@ def make_frame(V, P, scene):
         watermark(c)
         hook_extras(c, t, V, total)
         P["caps"].draw(c, t)
-        if t < 0.18:  # destello inicial (pattern interrupt)
-            c.drawPaint(fill(with_alpha(WHITE, 0.55 * (1 - t / 0.18))))
+        if 0.03 < t < 0.2:  # destello inicial (pattern interrupt); v5: el frame 0 queda limpio (portada/autoplay)
+            c.drawPaint(fill(with_alpha(WHITE, 0.5 * (1 - (t - 0.03) / 0.17))))
         # flash de transición en cada segmento narrado nuevo
         for s2 in P["segs"]:
             if s2.get("cut") and 0 <= t - s2["a"] < 0.12:

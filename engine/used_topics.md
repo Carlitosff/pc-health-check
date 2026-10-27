@@ -21,8 +21,14 @@ Violet Jessop (Olympic, Titanic, Britannic) · Apolo 13
 ## Lote 26/10/2026 (dia_20261026.py, 101–110)
 efecto Stroop (1935) · agujero que se expande (Laeng 2022, 86%) · ilusión de Ebbinghaus/Titchener · mito uñas y pelo tras la muerte (+3,5 mm/mes, pelo 1 cm/mes) · mito toros y rojo (MythBusters 2007) · Voyager P2 Disco de Oro (55 idiomas, 'Hola y saludos a todos', Chuck Berry, latido, uranio-238) · Luna P2 (días +<2 ms/siglo, 18 h hace 1.400 M años [Meyers & Malinverno 2018], mareas, fin eclipses totales ~600 M años) · Phineas Gage P1 (13/9/1848, barra 1,1 m 6 kg) · Vesna Vulović (10.160 m, 26/1/1972) · test del espejo / enmascaramiento sacádico (truco del móvil)
 
+## Lote 27/10/2026 (dia_20261027.py, 201–210)
+tablero de Adelson (1995, MIT) · Müller-Lyer (1889, Kalahari años 60) · asimetría de búsqueda Q/O (Anne Treisman 1985) · más alto por la mañana (~1 cm, NASA astronautas +3%, Scott Kelly +5 cm 2016) · mito avestruz cabeza bajo tierra (gira huevos, huevo ≈24 de gallina, 70 km/h, Plinio el Viejo) · mito Gran Muralla desde el espacio (Yang Liwei 15/10/2003, pelo a 3 km, luces de ciudades) · Júpiter 1.300 Tierras (Gran Mancha Roja ~200 años y más ancha que la Tierra, día <10 h) · ISS (28.000 km/h, Madrid-Barcelona ~1 min, 90 min, 16 amaneceres, horario UTC) · Rubik (43 trillones, 1,37 billones de años ≈100× universo, número de Dios 20 en 2010) · Phineas Gage P2 (Harlow 1868, Chile diligencias, murió 1860 SF con 36, Warren Museum Harvard, lóbulo frontal)
+
 ## Series abiertas (PRIORIDAD)
-- Phineas Gage → prometido "mañana" (27/10): Parte 2 = el cambio de personalidad ("ya no era Gage", Harlow 1868), su vida después (diligencias en Chile, murió en 1860), el cráneo y la barra en el museo de Harvard, y por qué cambió la neurociencia (lóbulo frontal).
+- Júpiter → prometido 'mañana' (28/10): EUROPA, la luna con océano bajo el hielo (posiblemente ~2× el agua de los océanos de la Tierra, NASA; Europa Clipper lanzada 14/10/2024, llega 2030).
+- Ilusiones: prometido 'mañana una todavía más fuerte' (Müller-Lyer).
+- Mitos: prometido 'otro mito de animales' (avestruz) y 'otro mito que te enseñaron en el colegio' (muralla).
+- CERRADA 27/10: Phineas Gage (P2 publicada). AlphaGo jugada 78: se abandona (IA rinde 108–190).
 - Voyager → Parte 3 posible: el 'Pale Blue Dot' (1990) o hasta cuándo seguirá funcionando.
 - Tests de percepción: prometido "mañana viene otro más difícil" (Stroop) y "otro fallo de tu cerebro" (espejo).
 - Mitos: prometido "otro mito de animales" (toro) y "otro mito" (uñas).

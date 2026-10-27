@@ -10,6 +10,10 @@
 
 - 26/10 decisión: 5 de 10 son tests/percepción o mitos del cuerpo (lo que más rinde) y van a la noche; espacio y series a mediodía. Medir mañana: ¿los tests de noche superan 1.000? ¿TikTok vuelve a publicar sin 403?
 
+- 27/10 (métricas 06:00, IG, lote 26/10): DISTRIBUCIÓN BIMODAL. O IG lo empuja (1.000–1.700) o se queda en 110–250. Ganadores del 26/10: Luna P2 1.703 (12:00), toros/rojo 1.501 (12:30), espejo/ojos 1.281, Ebbinghaus 1.007, uñas 635. Perdedores: TODO lo de IA (108–190, view rate 23–48%), TODOS los debates (125–251), Gage P1 175, Voyager P2 126, Vesna 179, Stroop 179 y agujero 226 (estos 2 aún <8 h).
+- CLAVE: el 'reel view rate' (>3 s) separa ganadores (60–72%) de perdedores (23–50%). Los primeros 3 s deciden. Tiempo medio: ganadores 12–20 s, perdedores 3–9 s.
+- Decisión 27/10: fuera IA y debates. Se mantienen tests de percepción, mitos de animales/cuerpo, espacio con texturas reales a mediodía (12:00–12:30 rinde muy bien 2 días seguidos) y números. Historias en partes rinden poco en P2/P3 (126–323): solo cerrar las prometidas.
+
 ## Hooks que funcionan / no funcionan
 - IG 25/10 TOP (vistas): '3 cosas que hace tu cuerpo' 1633 · '3 mentiras que te creíste' 1474 (retención 70%) · cucharadita estrella de neutrones 1405 · miel no caduca 1390 (ret 69%) · humanidad en un terrón 1361 · medusa inmortal 1280 · 23 personas cumpleaños 1194 · más árboles que estrellas 1179.
 - Patrón ganador: UN dato de escala/número imposible, dicho en la primera frase, o listas de cuerpo/mitos. Ganan los de 'te rompe la cabeza' con número concreto.
@@ -24,6 +28,7 @@
 - 25/10: los reels de 12:00–14:30 (lote 'Tu cuerpo' + realistas) acumulan 1.200–2.000; los de 21:45–00:55 se quedan en 130–560 en sus primeras horas (falta ver el acumulado a 24 h antes de concluir).
 
 ## Cambios del motor
+- 2026-10-27 (v5): GANCHO XL. Toda la frase del gancho (segmento 'h') se dibuja +20% sobre una banda oscura degradada (legible sobre cualquier fondo); el frame 0 ya no lleva destello blanco (portada/autoplay limpios); en Metricool se fija la portada con videoCoverMilliseconds=900 (gancho + visual ya dentro). Objetivo: subir el view rate >3 s. Medir mañana contra el 26/10.
 - 2026-10-26 (v4): (1) punch-in de gancho: zoom 1,22→1 en 0,55 s + destello blanco inicial (pattern interrupt); (2) `V['tease']` = pill roja 'MIRA HASTA EL FINAL' 0,5–3,5 s; (3) `V['badge']` = insignia de serie ('VOYAGER · PARTE 2') en el gancho y en el CTA; (4) ducking del dron bajo la voz (envolvente 120 ms, −65%); (5) setup.sh: `apt-get update` antes de espeak-ng (fallaba en sesión nueva) y stubs scripts.py/scripts2.py (core no importaba sin ellos); (6) previews a /home/claude/tiktok/prev/.
 - 2026-10-26: VOZ v3 → Piper (davefx narrador, sharvard F preguntas) en vez de Kokoro em_alex 1.28 (sonaba acelerada y con acento raro). Síntesis por cláusulas con pausas por puntuación. Modelos desde GitHub releases de k2-fsa/sherpa-onnx (HF está bloqueado).
 - 2026-10-25: motor v2 (core.py): voz Kokoro multi-voz, subtítulos con keywords, planetas con texturas reales (spheres.py), iconos hc.py.

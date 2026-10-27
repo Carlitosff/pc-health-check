@@ -65,6 +65,8 @@ Mezcla orientativa (ajústala según `learnings.md`):
 | 2 | Historia real en partes (serie) | `real/historias.py` |
 | 1 | Formato experimental nuevo, salido de la investigación | — |
 
+Desde el 27/10: **nada de IA/noticias ni debates** (108–251 vistas, view rate 23–48%). Lo que decide es el view rate >3 s.
+
 - **Series:**
   - A veces explícitas ("Parte 1/3").
   - A veces **implícitas**, sin decir "parte": un cliffhanger tipo "lo que pasó después lo cuento mañana…" o "…y eso no fue lo más raro. Sígueme".
@@ -106,6 +108,7 @@ URL de cada vídeo: `https://raw.githubusercontent.com/Carlitosff/pc-health-chec
 - **SOLO INSTAGRAM (decisión del dueño, desde el 27/10/2026):** no publiques nada en TikTok. providers = [{"network":"instagram"}] y sin `tiktokData`.
 - **`createScheduledPost`**, con providers solo instagram:
   - `instagramData`: {type: "REEL", showReelOnFeed: true, isAiGenerated: true}
+  - `videoCoverMilliseconds`: 900 (portada = gancho XL ya dibujado; motor v5).
   - `text`: una línea gancho con emoji (+ "· Parte N" si es una serie explícita), salto de línea y 5 hashtags (#sabiasque #curiosidades + 3 del tema).
 - **Comprobación:** en la respuesta, `media` tiene que apuntar a `static.metricool.com`. Eso confirma que Metricool ya copió el vídeo. Verifica también con `getScheduledPosts`.
 

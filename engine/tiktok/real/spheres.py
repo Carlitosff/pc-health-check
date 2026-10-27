@@ -35,9 +35,12 @@ def _grid(D):
         z = np.sqrt(np.clip(1 - r2, 0, 1))
         r = np.sqrt(r2)
         edge = np.clip((1 - r) * D / 2, 0, 1)
-        _cache[key] = (x, -y, z, mask, edge)
-        if len([k for k in _cache if isinstance(k, tuple) and k[0] == "grid"]) > 40:
-            for k in [k for k in _cache if isinstance(k, tuple) and k[0] == "grid"][:20]:
+        # v5 (27/10): float32 y caché acotada (antes 40 rejillas float64 + 25 geometrías ≈ 3,4 GB por proceso:
+        # con planetas en zoom y 2 renders en paralelo el proceso moría por falta de memoria sin dar error)
+        _cache[key] = (x.astype(np.float32), (-y).astype(np.float32), z.astype(np.float32), mask, edge.astype(np.float32))
+        gk = [k for k in _cache if isinstance(k, tuple) and k[0] == "grid"]
+        if len(gk) > 6:
+            for k in gk[:-6]:
                 del _cache[k]
     return _cache[key]
 
@@ -76,8 +79,8 @@ def _geom(D, tilt, lat0, light):
     a = (edge * mask).astype(np.float32)
     g = dict(u0=u0, v=v, dif=dif, ndh=ndh, dark=dark, a=a, z=z.astype(np.float32))
     keys = [k for k in _cache if isinstance(k, tuple) and k[0] == "geom"]
-    if len(keys) > 24:
-        for k in keys[:12]:
+    if len(keys) > 8:
+        for k in keys[:-8]:
             del _cache[k]
     _cache[key] = g
     return g
