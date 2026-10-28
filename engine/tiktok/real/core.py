@@ -18,6 +18,7 @@ GAP = 0.08
 GREEN = 0xFF2FD46B
 QCOL = 0xFFFF7AD9
 SCRATCH = "/home/claude/tiktok/prev/"
+LOOP_DUR = 0.45  # v6: fundido final al frame 0 (bucle invisible)
 os.makedirs(SCRATCH, exist_ok=True)
 
 
@@ -406,7 +407,21 @@ def make_frame(V, P, scene):
         for s2 in P["segs"]:
             if s2.get("cut") and 0 <= t - s2["a"] < 0.12:
                 c.drawPaint(fill(with_alpha(WHITE, 0.25 * (1 - (t - s2["a"]) / 0.12))))
-    return draw_frame
+
+    # v6 (28/10): BUCLE INVISIBLE. En los últimos LOOP_DUR s el vídeo se funde con su propio frame 0 (gancho XL
+    # + visual inicial), así al reiniciarse en IG no hay corte: el espectador 'cae' otra vez en el gancho y
+    # se suman revisionados (sube el tiempo medio y las vistas). V['loop']=False lo desactiva.
+    if not V.get("loop", True):
+        return draw_frame
+
+    def looped(c, t):
+        draw_frame(c, t)
+        k = (t - (total - LOOP_DUR)) / LOOP_DUR
+        if k > 0:
+            c.saveLayerAlpha(None, int(255 * smooth(k)))
+            draw_frame(c, 0.0)
+            c.restore()
+    return looped
 
 
 def build_audio(V, P, path, extra=None):
@@ -452,6 +467,10 @@ def build_audio(V, P, path, extra=None):
     m.boom(0.0, 0.3)
     if extra:
         extra(m, P)
+    # v6: cola de audio en fundido (los últimos LOOP_DUR s) para que el bucle no dé un 'clic' al reiniciar
+    i0, i1 = int((total - LOOP_DUR) * SR), min(len(m.buf), int(total * SR))
+    m.buf[i0:i1] *= np.linspace(1, 0, i1 - i0) ** 1.5
+    m.buf[i1:] = 0
     raw = path.replace(".wav", "_raw.wav")
     m.write(raw)
     af = ("highpass=f=40,equalizer=f=3200:t=q:w=1.2:g=3,equalizer=f=250:t=q:w=1:g=-2,"

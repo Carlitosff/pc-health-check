@@ -24,7 +24,19 @@ efecto Stroop (1935) · agujero que se expande (Laeng 2022, 86%) · ilusión de 
 ## Lote 27/10/2026 (dia_20261027.py, 201–210)
 tablero de Adelson (1995, MIT) · Müller-Lyer (1889, Kalahari años 60) · asimetría de búsqueda Q/O (Anne Treisman 1985) · más alto por la mañana (~1 cm, NASA astronautas +3%, Scott Kelly +5 cm 2016) · mito avestruz cabeza bajo tierra (gira huevos, huevo ≈24 de gallina, 70 km/h, Plinio el Viejo) · mito Gran Muralla desde el espacio (Yang Liwei 15/10/2003, pelo a 3 km, luces de ciudades) · Júpiter 1.300 Tierras (Gran Mancha Roja ~200 años y más ancha que la Tierra, día <10 h) · ISS (28.000 km/h, Madrid-Barcelona ~1 min, 90 min, 16 amaneceres, horario UTC) · Rubik (43 trillones, 1,37 billones de años ≈100× universo, número de Dios 20 en 2010) · Phineas Gage P2 (Harlow 1868, Chile diligencias, murió 1860 SF con 36, Warren Museum Harvard, lóbulo frontal)
 
+## Lote 28/10/2026 (dia_20261028.py, 301–310)
+Europa (océano bajo 15–25 km de hielo, ~2× agua de los océanos [NASA], calentamiento de marea, Europa Clipper 14/10/2024 → 2030, ~3.100 km) · mito murciélagos ciegos (+1.400 especies, ninguna ciega, zorros voladores) · ilusión de Aristóteles (dedos cruzados, dos narices) · dedo salchicha flotante · 3 cosas del cerebro (2% peso / ~20% energía; sin receptores de dolor → cirugía despierto; ~15 parpadeos/min borrados) · mito camaleón (comunicación + temperatura, nanocristales Ginebra 2015) · Ponzo (Mario Ponzo 1911) · mito mapa de la lengua (Hänig 1901 → Boring/Harvard 1942, umami Ikeda 1908) · muro de la cafetería (Richard Gregory, Bristol 1973) · Jastrow (Joseph Jastrow 1889)
+
 ## Series abiertas (PRIORIDAD)
+- Europa → prometido 'mañana' (29/10): ÍO, la luna de los volcanes (~400 volcanes activos, el cuerpo más volcánico del Sistema Solar; verificar en NASA antes).
+- Mitos de animales: prometido 'mañana otro mito de animales' (murciélagos y camaleón).
+- Mitos del colegio: prometido 'más mitos que te tragaste en clase' (lengua).
+- Trucos con el cuerpo: prometido 'otro truco con los dedos todavía más raro' (Aristóteles) y 'más trucos que engañan a tu cerebro' (salchicha).
+- '3 cosas': prometido 'la próxima lista' (cerebro).
+- ILUSIONES IMPOSIBLES: partes 1–3 publicadas 28/10 (Ponzo, cafetería, Jastrow). CTA de la P3: 'mañana empieza una serie nueva' → abrir otra serie explícita (p. ej. 'ILUSIONES IMPOSIBLES · TEMPORADA 2' o 'TU CEREBRO TE ENGAÑA · PARTE 1/3': Hering, Zöllner, Delboeuf, Kanizsa, Poggendorff, Sander…).
+- CERRADAS 28/10: Júpiter→Europa (publicada), Müller-Lyer→'una más fuerte' (serie de ilusiones), avestruz→murciélagos/camaleón, muralla→mapa de la lengua.
+
+## Series abiertas (antiguas)
 - Júpiter → prometido 'mañana' (28/10): EUROPA, la luna con océano bajo el hielo (posiblemente ~2× el agua de los océanos de la Tierra, NASA; Europa Clipper lanzada 14/10/2024, llega 2030).
 - Ilusiones: prometido 'mañana una todavía más fuerte' (Müller-Lyer).
 - Mitos: prometido 'otro mito de animales' (avestruz) y 'otro mito que te enseñaron en el colegio' (muralla).
@@ -45,3 +57,5 @@ tablero de Adelson (1995, MIT) · Müller-Lyer (1889, Kalahari años 60) · asim
 - 2026-10-26 17:00–20:00 (debate, solo IG): 115 agujeros de una pajita, 111 tortilla con/sin cebolla, 114 vikingos sin cuernos, 112 pizza con piña (Panopoulos 1962), 113 tomate fruta/verdura (1893) (dia_20261026deb.py).
 - 2026-10-27 (producción automática 05:47, solo IG, motor v5): 201–210 (dia_20261027.py).
   Programado: 12:00 Júpiter 1.300 Tierras · 12:30 ISS 16 amaneceres · 15:00 Phineas Gage P2 · 15:30 Rubik · 21:00 más alto por la mañana · 21:30 Gran Muralla mito · 22:00 Müller-Lyer · 22:30 avestruz mito · 23:00 tablero Adelson · 23:30 encuentra la Q/O.
+- 2026-10-28 (producción automática, solo IG, motor v6 bucle invisible): 301–310 (dia_20261028.py).
+  Programado: 12:00 Europa · 12:30 murciélagos ciegos · 15:00 ilusión de Aristóteles · 15:30 dedo salchicha · 21:00 3 cosas del cerebro · 21:30 camaleón · 22:00 Ilusiones P1 Ponzo · 22:30 mapa de la lengua · 23:00 Ilusiones P2 cafetería · 23:30 Ilusiones P3 Jastrow.
