@@ -109,6 +109,7 @@ URL de cada vídeo: `https://raw.githubusercontent.com/Carlitosff/pc-health-chec
 - **`createScheduledPost`**, con providers solo instagram:
   - `instagramData`: {type: "REEL", showReelOnFeed: true, isAiGenerated: true}
   - `videoCoverMilliseconds`: 900 (portada = gancho XL ya dibujado; motor v5).
+  - `firstCommentText`: la pregunta del CTA con respuesta concreta (desde 28/10).
   - `text`: una línea gancho con emoji (+ "· Parte N" si es una serie explícita), salto de línea y 5 hashtags (#sabiasque #curiosidades + 3 del tema).
 - **Comprobación:** en la respuesta, `media` tiene que apuntar a `static.metricool.com`. Eso confirma que Metricool ya copió el vídeo. Verifica también con `getScheduledPosts`.
 
