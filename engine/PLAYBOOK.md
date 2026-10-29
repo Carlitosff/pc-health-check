@@ -79,6 +79,7 @@ Desde el 27/10: **nada de IA/noticias ni debates** (108–251 vistas, view rate 
 - **Nada de monigotes ni stick figures.** Visuales reales y movimiento constante.
 - 30–45 s, 1080×1920, 30 fps. Hook en el primer segundo. Subtítulos palabra a palabra con las keywords resaltadas.
 - Marca de agua `@videosparadormir2018`. CTA final: seguir + comentar, con un teaser del siguiente.
+- Desde 29/10 (motor v7): en los vídeos compartibles (tests, retos, animales/mascotas, espacio) añade `V['send']='ENVÍASELO A …'` (destinatario concreto: 'a alguien con perro', 'a un amigo y que lo pruebe'). Los envíos por DM son la señal de alcance más fuerte en IG.
 - Antes del render final, revisa las previews (`python3 archivo.py <idx> prev`): sin texto solapado y sin nada cortado.
 
 ## 6. Render

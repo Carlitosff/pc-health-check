@@ -324,7 +324,7 @@ def quiz(c, t, P, sid, accent):
     return dim
 
 
-def cta(c, t, lt, accent):
+def cta(c, t, lt, accent, send=None):
     s = ease_back(prog(lt, 0, 0.35), 2.2)
     pulse = 1 + 0.05 * math.sin(t * 8)
     c.save()
@@ -338,6 +338,42 @@ def cta(c, t, lt, accent):
     hs = ease_back(prog(lt, 0.4, 0.8))
     if hs > 0:
         pill(c, W / 2, 1340, HANDLE, 44, bg=accent, fg=INK, scale=hs)
+    if send:
+        send_pill(c, t, lt, send)
+
+
+def plane_icon(c, x, y, s, col=INK):
+    """Avión de papel (icono de 'enviar' de Instagram)."""
+    c.save(); c.translate(x, y); c.scale(s, s); c.rotate(-18)
+    p = skia.Path(); p.moveTo(-30, -4); p.lineTo(32, -26); p.lineTo(10, 30); p.lineTo(2, 6); p.close()
+    c.drawPath(p, fill(col))
+    q = skia.Path(); q.moveTo(2, 6); q.lineTo(32, -26); q.lineTo(-4, 2); q.close()
+    c.drawPath(q, fill(with_alpha(WHITE, 0.55)))
+    c.restore()
+
+
+def send_pill(c, t, lt, txt):
+    """v7 (29/10): llamada a ENVIAR. En IG 2026 los 'sends' (compartir por DM) son la señal que más alcance da a
+    no-seguidores; el reel con más compartidos (dedo flotante, 8) fue de los que más vistas sumó. Pill blanca con
+    avión de papel que sale volando en bucle hacia arriba a la derecha."""
+    s = ease_back(prog(lt, 0.75, 1.1), 2.2)
+    if s <= 0:
+        return
+    y = 1500
+    f = font(40, TF_XBOLD)
+    w = text_w(txt, f) + 70
+    c.save(); c.translate(W / 2, y); c.scale(s, s)
+    r = skia.RRect.MakeRectXY(skia.Rect.MakeXYWH(-w / 2 - 34, -46, w + 68, 92), 46, 46)
+    c.drawRRect(r.makeOffset(0, 8), fill(0x66000000))
+    c.drawRRect(r, fill(WHITE))
+    c.drawString(txt, -w / 2 + 70, 15, f, fill(INK))
+    k = ((lt - 1.1) % 1.6) / 1.6 if lt > 1.1 else 0.0
+    px, py = -w / 2 + 24 + 120 * ease_in_out(clamp(k * 1.6 - 0.6)), -30 * ease_in_out(clamp(k * 1.6 - 0.6))
+    a = 1 - clamp((k - 0.75) / 0.25)
+    c.saveLayerAlpha(None, int(255 * a))
+    plane_icon(c, px, py, 1.0 + 0.1 * math.sin(t * 6))
+    c.restore()
+    c.restore()
 
 
 def watermark(c):
@@ -396,7 +432,7 @@ def make_frame(V, P, scene):
                 quiz(c, t, P, sg["id"], V["accent"])
         sg = seg_at(P, t)
         if sg["id"] == "cta":
-            cta(c, t, t - sg["a"], V["accent"])
+            cta(c, t, t - sg["a"], V["accent"], V.get("send"))
         c.drawRect(skia.Rect.MakeXYWH(0, 0, W * t / total, 10), fill(V["accent"]))
         watermark(c)
         hook_extras(c, t, V, total)
@@ -443,6 +479,8 @@ def build_audio(V, P, path, extra=None):
             m.pop(a + 0.22, 0.1, 900)
         if sg["id"] == "cta":
             m.ding(a + 0.1, 1318.5, 0.07)
+            if V.get("send"):  # v7: 'swoosh' corto cuando aparece el avión de enviar
+                m.whoosh(a + 0.8, 0.3, 0.08)
     for sg in P["segs"]:
         if sg.get("quiz"):
             idx = [i for i, s in enumerate(P["segs"]) if s["id"] == sg["id"]][0]
