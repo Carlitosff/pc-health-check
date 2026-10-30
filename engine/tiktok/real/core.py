@@ -409,6 +409,44 @@ def hook_extras(c, t, V, total):
         pill(c, W / 2, y, tease, 28, bg=0xFFFE2C55, fg=WHITE, alpha=a, scale=s * (1 + 0.04 * math.sin(t * 10)))
 
 
+def rehook_t(V, P):
+    rh = V.get("rehook")
+    if not rh:
+        return None
+    return P["tl"].get(rh[0], (None,))[0]
+
+
+def rehook(c, t, V, P):
+    """v8 (30/10): RE-GANCHO A MITAD DE VÍDEO. Métricas 27-29/10: view rate >3 s alto (65-77%) pero tiempo medio
+    13-16 s en vídeos de 30-40 s -> se pierde a la gente hacia la mitad y el reel no pasa del techo de ~1.300 vistas.
+    V['rehook']=(id_segmento, 'ESPERA… LO MEJOR VIENE AHORA'): al empezar ese segmento sale una pill amarilla con
+    franjas de aviso que tiembla 1,8 s + punch-in de cámara + riser/pop (patrón de interrupción para retener)."""
+    a = rehook_t(V, P)
+    if a is None or not (a <= t < a + 1.9):
+        return
+    lt = t - a
+    s = ease_back(prog(lt, 0, 0.28), 2.6) * (1 - prog(lt, 1.6, 1.9))
+    if s <= 0:
+        return
+    txt = V["rehook"][1]
+    f = font(40, TF_XBOLD)
+    w = text_w(txt, f)
+    sh = math.sin(lt * 70) * 6 * math.exp(-lt * 3)
+    c.save(); c.translate(W / 2 + sh, 298); c.scale(s * 0.88, s * 0.88); c.rotate(-2)
+    r = skia.RRect.MakeRectXY(skia.Rect.MakeXYWH(-w / 2 - 50, -46, w + 100, 92), 18, 18)
+    c.drawRRect(r.makeOffset(0, 9), fill(0x77000000))
+    c.drawRRect(r, fill(0xFFFFD21A))
+    c.save(); c.clipRRect(r, doAntiAlias=True)
+    for k in range(-30, 30):  # franjas de aviso en los bordes
+        x = k * 34 + (lt * 120) % 34
+        for yy in (-46, 34):
+            p = skia.Path(); p.moveTo(x, yy); p.lineTo(x + 17, yy); p.lineTo(x + 5, yy + 12); p.lineTo(x - 12, yy + 12); p.close()
+            c.drawPath(p, fill(0xFF111111))
+    c.restore()
+    c.drawString(txt, -w / 2, 14, f, fill(0xFF111111))
+    c.restore()
+
+
 # ------------------------------------------------------------------ frame + audio + run
 def make_frame(V, P, scene):
     total = P["total"]
@@ -418,6 +456,9 @@ def make_frame(V, P, scene):
         c.save()
         # v4 (26/10): punch-in de gancho (zoom 1.22 -> 1 en 0,55 s) para cortar el scroll en el 1er segundo
         z = 1 + 0.035 * k + 0.22 * (1 - ease_out(clamp(t / 0.55)))
+        ra = rehook_t(V, P)
+        if ra is not None and t >= ra:  # v8: punch-in del re-gancho
+            z += 0.07 * math.exp(-(t - ra) * 5)
         c.translate(W / 2 + math.sin(t * 61) * 4 * k, H / 2)
         c.scale(z, z)
         c.translate(-W / 2, -H / 2)
@@ -436,6 +477,7 @@ def make_frame(V, P, scene):
         c.drawRect(skia.Rect.MakeXYWH(0, 0, W * t / total, 10), fill(V["accent"]))
         watermark(c)
         hook_extras(c, t, V, total)
+        rehook(c, t, V, P)
         P["caps"].draw(c, t)
         if 0.03 < t < 0.2:  # destello inicial (pattern interrupt); v5: el frame 0 queda limpio (portada/autoplay)
             c.drawPaint(fill(with_alpha(WHITE, 0.5 * (1 - (t - 0.03) / 0.17))))
@@ -481,6 +523,11 @@ def build_audio(V, P, path, extra=None):
             m.ding(a + 0.1, 1318.5, 0.07)
             if V.get("send"):  # v7: 'swoosh' corto cuando aparece el avión de enviar
                 m.whoosh(a + 0.8, 0.3, 0.08)
+    ra = rehook_t(V, P)
+    if ra is not None:  # v8: riser corto + golpe en el re-gancho
+        m.riser(max(0, ra - 0.4), 0.4, 300, 1500, 0.05)
+        m.pop(ra, 0.28, 520)
+        m.boom(ra, 0.18)
     for sg in P["segs"]:
         if sg.get("quiz"):
             idx = [i for i, s in enumerate(P["segs"]) if s["id"] == sg["id"]][0]
