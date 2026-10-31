@@ -102,3 +102,4 @@ Encélado (≈500 km, hielo, Cassini 2005 chorros polo sur, NASA 2014: 101 géis
 - 2026-10-31 (2ª producción automática, solo IG, motor v10 cama musical): 701–710 (dia_20261031c.py).
   Programado: 12:00 Encélado · 12:30 pato y eco · 15:00 María Antonieta · 15:30 picante = dolor · 21:00 Ilusiones T5 P1 Cornsweet · 21:30 ¿cuántos triángulos? (pentágono) · 22:00 Ilusiones T5 P2 Ehrenstein · 22:30 mentalista elefante gris · 23:00 Houdini P2 última sesión · 23:30 Ilusiones T5 P3 Munker.
   Montaña de la comunidad: sin actualización hoy (seguidores 25 = mismo N que ayer).
+  EXTRA 13:00: 612 montaña de la comunidad · actualización 1 (25 → 60 m: el 611 trajo +35 seguidores en una noche, dato de Carlos; siguiente hito 100 m = nieve, faltan 40). Script: dia_20261031m.py. => FORMATO GANADOR EN SEGUIDORES: repetir la actualización cada día con N real.
