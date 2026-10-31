@@ -1,12 +1,12 @@
-# Videosparadormir: producción diaria automática (v2)
+# Videosparadormir: producción diaria automática (v3 · desde 01/11/2026: MENOS Y MEJOR)
 
 **Cuenta:** @videosparadormir2018. **Desde el 27/10/2026 se publica SOLO en Instagram** (TikTok no daba alcance). Vídeos faceless de curiosidades, en español.
 
-**Objetivo único:** crecer en alcance y seguidores, día tras día. Cada ejecución (05:47) hace lo siguiente:
+**Objetivo (Carlos, 31/10):** de ~100 a **1.000 seguidores**, y subir likes, envíos y comentarios. Diagnóstico 31/10 (155 reels): techo de ~1.300 vistas por reel, 0–1 envíos, likes 1,5–2,5%, tiempo medio 11–18 s; publicar 10 o 67 al día da las mismas ~1.050 vistas por reel → el volumen no ayuda, la calidad y la compartibilidad sí. Cada ejecución (05:47) hace lo siguiente:
 1. Revisa lo publicado y cómo ha funcionado.
 2. Investiga.
 3. Mejora el motor.
-4. Genera **10 vídeos** y los programa en Metricool.
+4. Genera **4 vídeos de calidad + 1 montaña** y los programa en Metricool.
 5. Limpia el repo.
 
 El trabajo pesado tiene que estar terminado hacia las 07:00.
@@ -53,32 +53,40 @@ Si el repo no está en la sesión: `add_repo` con owner=Carlitosff, repo=pc-heal
 - Las mejoras se guardan en el repo (`engine/tiktok/...`) y se registran en `learnings.md` → "Cambios del motor".
 - Se pueden usar recursos gratuitos alcanzables desde la sesión (GitHub, npm, PyPI) si mejoran el resultado y la licencia lo permite. Nunca subas al repo público material con licencia restrictiva: se descarga en `setup.sh`.
 
-## 4. Elegir los 10 vídeos del día
+## 4. Elegir los 4 vídeos del día (CALIDAD > CANTIDAD, decisión de Carlos 31/10)
 
-Mezcla orientativa (ajústala según `learnings.md`):
+Solo 4, así que cada uno tiene que poder ser el mejor de la semana. Criterio nº 1: **¿alguien se lo mandaría a un amigo?** (los envíos por DM son lo que hace que Instagram amplíe un reel; con 0–1 envíos nunca pasa del primer grupo de ~1.200).
 
-| Cantidad | Formato | Referencia |
+Mezcla fija:
+
+| Cantidad | Formato | Por qué |
 |---|---|---|
-| 3 | Dato de cuerpo / mente / ciencia cotidiana | `real/cuerpo.py` |
-| 2 | Test interactivo ("haz esto mientras lo ves", "no dejes de mirar el punto") | `real/pruebas.py` |
-| 2 | Espacio / Tierra / escala, con texturas reales | `real/v31…v35`, `spheres.py` |
-| 2 | Historia real en partes (serie) | `real/historias.py` |
-| 1 | Formato experimental nuevo, salido de la investigación | — |
+| 1 | **Prueba con tu cuerpo / ilusión que se hace en directo** ("pon los dedos así", "mira el punto") con pregunta visual en el gancho | Únicos con 6–8 envíos (dedo flotante, dedos nunca se tocan) |
+| 1 | **Reto para retar a un amigo** (conteo, "¿a que no lo ves?", 3 segundos) con respuesta CALCULADA y CTA "envíaselo a quien crea que lo saca" | Más comentarios (triángulos 1.727, 7 comentarios) |
+| 1 | **Mito con "tú"** ("te enseñaron mal…", "tu perro…", "tu cuerpo…") con dato fuerte y fuente con nombre y fecha | Mejor view rate (70–77%) |
+| 1 | **Serie** (ilusiones por temporadas, o historia en partes / espacio "lo prometido") que obligue a seguir para ver la siguiente | Da motivo para SEGUIR |
 
-Desde el 27/10: **nada de IA/noticias ni debates** (108–251 vistas, view rate 23–48%). Lo que decide es el view rate >3 s.
+**Listón de calidad (obligatorio, no se publica si falla):**
+- Gancho que se entiende sin sonido en el frame 0 (pregunta visual, no texto genérico). Nada de "3 datos de…" sin imagen que obligue a mirar.
+- Guion corto: 25–38 s con la voz v5 (las pausas alargan); máx. 6 segmentos; un re-gancho a mitad; la revelación lo más tarde posible.
+- Movimiento en todos los planos (cámara, partículas, transiciones); nada estático más de 1 s salvo que la ilusión lo exija.
+- Revisa la preview de CADA vídeo (`prev`) y un frame del mp4 final; si algo se ve pobre o solapado, rehazlo antes de subir. Mejor 3 buenos que 4 flojos: si uno no llega, se publican 3 y se dice en el resumen.
+- CTA final con acción concreta: comenta X / envíaselo a Y / sígueme para la parte 2.
+
+Fuera: IA/noticias, debates, datos pasivos de espacio sin escala visual, números grandes sin imagen, "haz esto con tu cuerpo" sin pregunta visual (brazo flotante 281, Aristóteles 142).
 
 - **Series:**
   - A veces explícitas ("Parte 1/3").
   - A veces **implícitas**, sin decir "parte": un cliffhanger tipo "lo que pasó después lo cuento mañana…" o "…y eso no fue lo más raro. Sígueme".
   - Las partes siguientes salen otro día. Anota las series abiertas en `used_topics.md` y dales prioridad.
-- Si queda algo en `stock/`, se puede usar 1 al día. Escribe tú su texto y quítalo de `stock/` al programarlo.
+- **TRIAL REEL (Metricool `instagramData.type: "TRIAL_REEL"`):** 1 de los 4 al día (el más experimental: gancho nuevo o formato nuevo) se publica como Trial Reel, que solo se enseña a gente que no te sigue. Así se prueban ganchos sin gastar el alcance de los seguidores. Anota en learnings cuál fue y cómo rindió frente a los REEL normales.
 
 ## 4b. LA MONTAÑA DE LA COMUNIDAD (OBLIGATORIO CADA DÍA, decisión de Carlos 31/10)
-Es el formato que más seguidores trae (611: +35 en una noche; 612 → 60; 613 → 90). Cada producción hace 1 vídeo extra (el nº 11):
+Es el formato que más seguidores trae (611: +35 en una noche; 612 → 60; 613 → 90). Cada producción hace 1 vídeo extra (el nº 5):
 1. Seguidores REALES: `getAnalyticsDataByMetrics` con IGEV01 (Instagram Evolution > Followers) de los últimos 3 días; usa el último valor. Si Metricool no trae el de hoy, usa el último disponible y no inventes. El 'antes' es el N del último vídeo de montaña (ver `used_topics.md` → MONTAÑA).
 2. `python3 real/montana.py <antes> <ahora> 6NN_montana_<ahora>m` (preview con `prev` como 4º argumento). Hitos automáticos: 100 m nieve, 250, 500, 1.000, 2.000, 5.000, Everest 8.849.
 3. Si no ha crecido (o ha bajado), NO publiques montaña ese día: no se celebra un estancamiento.
-4. Prográmalo en la franja de noche (22:00–23:30) en una hora libre (p. ej. 22:15 o 22:45), sin pisar otro post. Texto: 'La montaña ya mide N metros ⛰️ …' + firstCommentText 'Comenta YO SUBO…'.
+4. Prográmalo a las **11:30** (franja de máxima actividad según Metricool). Texto: 'La montaña ya mide N metros ⛰️ …' + firstCommentText 'Comenta YO SUBO…'.
 5. Anota en `used_topics.md` → MONTAÑA el nuevo N y la fecha.
 
 ## 5. Reglas fijas del dueño
@@ -117,18 +125,20 @@ URL de cada vídeo: `https://raw.githubusercontent.com/Carlitosff/pc-health-chec
 ## 8. Programar en Metricool (todo el mismo día)
 
 - **Marca y zona:** marca **Videosparadormir**, blogId **7644457** (NUNCA el 7439936). Zona horaria Europe/Madrid.
-- **Horario de los 10 vídeos:** **12:00, 12:30, 15:00, 15:30, 21:00, 21:30, 22:00, 22:30, 23:00, 23:30**.
-  - Los mejores (según `learnings.md`) van en la franja 21–23:30.
+- **Horario (desde 01/11, según `getBestTimeToPostByNetwork` de Metricool: pico 10–12 h ≈6.500, 17–18 h ≈4.800, 22–23 h solo ≈900):**
+  - **10:00** vídeo · **11:30** MONTAÑA · **13:00** vídeo · **17:30** vídeo · **19:30** vídeo.
+  - El mejor vídeo del día va a las 10:00 o 13:00. Revisa la curva de Metricool una vez por semana por si cambia.
   - Una serie no se publica antes que su parte anterior.
 - **SOLO INSTAGRAM (decisión del dueño, desde el 27/10/2026):** no publiques nada en TikTok. providers = [{"network":"instagram"}] y sin `tiktokData`.
 - **`createScheduledPost`**, con providers solo instagram:
-  - `instagramData`: {type: "REEL", showReelOnFeed: true, isAiGenerated: true}
+  - `instagramData`: {type: "REEL", showReelOnFeed: true, isAiGenerated: true} (el Trial Reel del día: type "TRIAL_REEL").
+  - **Audio en tendencia (probar 1 vez):** `instagramData.audioConfiguration` con un audio popular y `audioVolume` bajo (10–15) y `videoVolume` 100. Solo funciona si la cuenta es de empresa conectada a una página de Facebook: si Metricool lo rechaza, anótalo en learnings y no lo vuelvas a intentar.
   - `videoCoverMilliseconds`: 900 (portada = gancho XL ya dibujado; motor v5).
   - `firstCommentText`: la pregunta del CTA con respuesta concreta (desde 28/10).
   - `text`: una línea gancho con emoji (+ "· Parte N" si es una serie explícita), salto de línea y 5 hashtags (#sabiasque #curiosidades + 3 del tema).
 - **Comprobación:** en la respuesta, `media` tiene que apuntar a `static.metricool.com`. Eso confirma que Metricool ya copió el vídeo. Verifica también con `getScheduledPosts`.
 
-## 9. Limpiar el repo (cuando los 10 estén confirmados en Metricool)
+## 9. Limpiar el repo (cuando todos estén confirmados en Metricool)
 
 ```bash
 cd /home/claude/vpd && git rm -q *.mp4 && git -c user.name=vpd -c user.email=vpd@users.noreply.github.com commit -qm "vpd YYYY-MM-DD clean" && git push origin media-tmp
@@ -140,7 +150,7 @@ Solo se borran los mp4 de la raíz; `engine/` y `stock/` se quedan. Si algún po
 
 - Actualiza `used_topics.md` (temas, series abiertas, log del día) y `learnings.md`. Haz commit y push.
 - Manda a Carlos con SendUserMessage:
-  - Las 10 líneas: hora + título.
+  - Las 5 líneas: hora + título (4 vídeos + montaña).
   - 1 línea con la mejora del motor de hoy.
   - 1 línea con el aprendizaje principal sacado de las métricas.
   - Cualquier fallo, dicho claro.

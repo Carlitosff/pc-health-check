@@ -39,6 +39,8 @@
 
 - 31/10: LA MONTAÑA DE LA COMUNIDAD (1 seguidor = 1 m) es el primer formato que mueve seguidores de verdad: 25 → 60 en ~10 h tras el 611 (dato de Carlos) y 90 por la noche. Es meta-contenido de comunidad, no curiosidad: la gente sigue para 'ser un metro'. Repetir a diario solo si crece.
 
+- 31/10 DIAGNÓSTICO GLOBAL (155 reels, Metricool): techo ~1.300 vistas (máx 2.040), vistas/reel ~1.050 publiques 10 o 67 al día; envíos 0–1 (máx 8: dedo flotante); likes 1,5–2,5%; view rate 60–77% (el gancho funciona) pero tiempo medio 11–18 s; mejor hora según Metricool 10–12 h y 17–18 h (22–23 h ≈ -85%). Con ~150 curiosidades +13 seguidores; con 3 montañas +75. DECISIÓN de Carlos: 4 vídeos de calidad + montaña al día, horario nuevo, Trial Reels, foco en envíos/likes/comentarios. Pendiente de Carlos: habilitar Pexels/Pixabay (vídeo real) y huggingface (voces) en la sesión; no cambia el nombre de la cuenta por ahora.
+
 ## Hooks que funcionan / no funcionan
 - IG 25/10 TOP (vistas): '3 cosas que hace tu cuerpo' 1633 · '3 mentiras que te creíste' 1474 (retención 70%) · cucharadita estrella de neutrones 1405 · miel no caduca 1390 (ret 69%) · humanidad en un terrón 1361 · medusa inmortal 1280 · 23 personas cumpleaños 1194 · más árboles que estrellas 1179.
 - Patrón ganador: UN dato de escala/número imposible, dicho en la primera frase, o listas de cuerpo/mitos. Ganan los de 'te rompe la cabeza' con número concreto.
