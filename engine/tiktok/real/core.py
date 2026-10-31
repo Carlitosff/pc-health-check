@@ -14,7 +14,10 @@ HANDLE = "@videosparadormir2018"
 # v3 (26/10/2026): voces Piper de locutores reales (más humanas que Kokoro en español)
 # v4 (31/10/2026, pedido de Carlos: 'menos robótica'): síntesis por FRASE completa (piperS) en vez de por cláusula
 # -> la entonación ya no 'cierra' en cada coma; velocidad 1,12 -> 1,04 (sonaba atropellada) y más variación prosódica.
-VOICES = {"nar": ("piperS:es_ES-davefx-medium:0", 1.04), "q": ("piperS:es_ES-sharvard-medium:1", 1.02)}
+# v5 (31/10/2026 noche): Carlos elige la muestra C = Kokoro em_santa, 'respetando los tiempos, las comas':
+# síntesis por cláusula con su puntuación + silencios explícitos (kokoro_tts.synth_paced). Piper queda de respaldo.
+VOICES = {"nar": ("kokoroP:em_santa", 1.0), "q": ("kokoroP:em_santa", 1.06)}
+VOICES_PIPER = {"nar": ("piperS:es_ES-davefx-medium:0", 1.04), "q": ("piperS:es_ES-sharvard-medium:1", 1.02)}
 COUNT_DUR = 2.5
 GAP = 0.08
 GREEN = 0xFF2FD46B
