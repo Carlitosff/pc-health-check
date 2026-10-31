@@ -19,7 +19,10 @@ def _synth_cached(text, voice, speed):
     path = f"{CACHE}/{key}.npy"
     if os.path.exists(path):
         return np.load(path)
-    if voice.startswith("piperS:"):  # v4: síntesis por frase completa (entonación natural)
+    if voice.startswith("kokoroP:"):  # v5: Kokoro em_santa con pausas reales en comas y puntos
+        a, _ = kokoro_tts.synth_paced(text, voice=voice.split(":")[1], speed=speed)
+        a = a / (np.abs(a).max() + 1e-9) * 0.9
+    elif voice.startswith("piperS:"):  # v4: síntesis por frase completa (entonación natural)
         _, name, sid = voice.split(":")
         y, sr = piper_tts.synth_sentences(text, name, int(sid), speed)
         n = int(len(y) * 24000 / sr)

@@ -56,6 +56,32 @@ def synth(text, voice="em_alex", speed=1.15, lang="es", out=None):
     return audio, ph
 
 
+PAUSES = {",": 0.24, ";": 0.32, ":": 0.32, ".": 0.44, "?": 0.48, "!": 0.42, "…": 0.55}
+
+
+def synth_paced(text, voice="em_santa", speed=1.0, lang="es"):
+    """Voz v5 (31/10, elegida por Carlos: em_santa): síntesis por cláusula CON su puntuación (Kokoro mantiene el tono
+    de continuación en las comas) + silencios explícitos para que se respeten comas y puntos."""
+    text = text.replace("...", "…")
+    parts = re.findall(r"[^,;:.?!…]+[,;:.?!…]*", text)
+    out = []
+    for p in parts:
+        p = p.strip()
+        if not re.search(r"\w", p):
+            continue
+        a, _ = synth(p, voice=voice, speed=speed, lang=lang)
+        a = a.astype(np.float32)
+        idx = np.where(np.abs(a) > 0.012 * (np.abs(a).max() + 1e-9))[0]
+        if len(idx):
+            a = a[max(0, idx[0] - 240): idx[-1] + 720]
+        n = min(len(a) // 2, 192)
+        if n:
+            a[:n] *= np.linspace(0, 1, n); a[-n:] *= np.linspace(1, 0, n)
+        punct = p[-1] if p[-1] in PAUSES else ""
+        out += [a, np.zeros(int(PAUSES.get(punct, 0.08) * 24000), np.float32)]
+    return (np.concatenate(out[:-1]) if out else np.zeros(1, np.float32)), None
+
+
 if __name__ == "__main__":
     a, ph = synth(sys.argv[1], sys.argv[2] if len(sys.argv) > 2 else "em_alex", out=sys.argv[3] if len(sys.argv) > 3 else "/tmp/claude-0/t.wav")
     print(ph); print(len(a) / 24000, "s")
