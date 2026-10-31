@@ -19,7 +19,13 @@ def _synth_cached(text, voice, speed):
     path = f"{CACHE}/{key}.npy"
     if os.path.exists(path):
         return np.load(path)
-    if voice.startswith("piper:"):
+    if voice.startswith("piperS:"):  # v4: síntesis por frase completa (entonación natural)
+        _, name, sid = voice.split(":")
+        y, sr = piper_tts.synth_sentences(text, name, int(sid), speed)
+        n = int(len(y) * 24000 / sr)
+        a = np.interp(np.linspace(0, len(y) - 1, n), np.arange(len(y)), y).astype(np.float32)
+        a = a / (np.abs(a).max() + 1e-9) * 0.9
+    elif voice.startswith("piper:"):
         # voz Piper (locutor real): "piper:<modelo>:<speaker>" -> remuestreo a 24 kHz
         _, name, sid = voice.split(":")
         y, sr = piper_tts.synth(text, name, int(sid), speed)

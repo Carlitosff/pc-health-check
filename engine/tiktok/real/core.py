@@ -12,7 +12,9 @@ from engine import (W, H, SR, INK, WHITE, TF_BLACK, TF_XBOLD, TF_BOLD, Captions,
 
 HANDLE = "@videosparadormir2018"
 # v3 (26/10/2026): voces Piper de locutores reales (más humanas que Kokoro en español)
-VOICES = {"nar": ("piper:es_ES-davefx-medium:0", 1.12), "q": ("piper:es_ES-sharvard-medium:1", 1.08)}
+# v4 (31/10/2026, pedido de Carlos: 'menos robótica'): síntesis por FRASE completa (piperS) en vez de por cláusula
+# -> la entonación ya no 'cierra' en cada coma; velocidad 1,12 -> 1,04 (sonaba atropellada) y más variación prosódica.
+VOICES = {"nar": ("piperS:es_ES-davefx-medium:0", 1.04), "q": ("piperS:es_ES-sharvard-medium:1", 1.02)}
 COUNT_DUR = 2.5
 GAP = 0.08
 GREEN = 0xFF2FD46B
@@ -685,7 +687,7 @@ def build_audio(V, P, path, extra=None):
     m.buf[i1:] = 0
     raw = path.replace(".wav", "_raw.wav")
     m.write(raw)
-    af = ("highpass=f=40,equalizer=f=3200:t=q:w=1.2:g=3,equalizer=f=250:t=q:w=1:g=-2,"
+    af = ("highpass=f=40,aecho=0.9:0.9:23|41:0.07|0.045,equalizer=f=3200:t=q:w=1.2:g=3,equalizer=f=250:t=q:w=1:g=-2,"
           "acompressor=threshold=-20dB:ratio=3:attack=5:release=60:makeup=2,"
           "loudnorm=I=-14:TP=-1.5:LRA=9")
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", raw, "-af", af, "-ar", "44100", path], check=True)
