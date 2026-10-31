@@ -4,7 +4,7 @@ set -e
 R=$(cd "$(dirname "$0")" && pwd)
 mkdir -p /home/claude/tiktok /home/claude/tts /home/claude/tts2 /home/claude/t3d/tex
 cp -r "$R/tiktok/." /home/claude/tiktok/; cp "$R/tts/"* /home/claude/tts/; cp "$R/tts2/"* /home/claude/tts2/
-pip install -q --break-system-packages skia-python onnxruntime numpy pillow
+pip install -q --break-system-packages skia-python onnxruntime numpy pillow scipy
 which espeak-ng >/dev/null || (apt-get update -qq && apt-get install -y -q espeak-ng) || echo "aviso: espeak-ng no instalado"
 cd /home/claude/tts && [ -f kokoro-q8.onnx ] || { npm i -s kokoro-js kokoro-q8-shards >/dev/null; cat node_modules/kokoro-q8-shards/kokoro-q8.part{0..5}.bin > kokoro-q8.onnx; }
 T3=https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/planets

@@ -82,7 +82,8 @@ Desde el 27/10: **nada de IA/noticias ni debates** (108–251 vistas, view rate 
 - Desde 29/10 (motor v7): en los vídeos compartibles (tests, retos, animales/mascotas, espacio) añade `V['send']='ENVÍASELO A …'` (destinatario concreto: 'a alguien con perro', 'a un amigo y que lo pruebe'). Los envíos por DM son la señal de alcance más fuerte en IG.
 - Desde 30/10 (motor v8): en todos los vídeos añade `V['rehook']=(seg_central, 'TEXTO')` (re-gancho a mitad: 'ESPERA… AHORA LO MÁS LOCO', 'AQUÍ FALLA CASI TODO EL MUNDO'). Duración objetivo 31–35 s (espacio/historias hasta 43 s): el tiempo medio se queda en 13–16 s.
 - Desde 31/10 (motor v9): en los vídeos con respuesta o dato diferido (retos, ilusiones, mitos) añade `V['reveal']=(seg_revelación, 'LA RESPUESTA')`: cuenta atrás visible hasta ese segmento. Ojo: Metricool puede tardar >18 h en traer los reels del día anterior; si no están, usa el lote de hace 2 días.
-- Franjas 12:30 y 15:00: históricamente muertas (ver learnings 30/10). Mientras se valida, no pongas ahí la mejor pieza del día.
+- Franjas 12:30 y 15:00: el test del 30/10 las rehabilitó (Hermann 1.351 a las 15:00, Napoleón 1.413 a las 15:30): lo que fallaba era el contenido. Los mejores siguen yendo de noche.
+- Desde 31/10 tarde (motor v10): cama musical procedural automática (`core.music_bed`). Elige `V['mood']` ('misterio', 'epico', 'luz') según el tema; `V['music']=0` la quita (p. ej. si un vídeo necesita silencio total). Necesita scipy (setup.sh).
 - Antes del render final, revisa las previews (`python3 archivo.py <idx> prev`): sin texto solapado y sin nada cortado.
 
 ## 6. Render

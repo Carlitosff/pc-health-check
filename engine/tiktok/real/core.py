@@ -556,6 +556,69 @@ def make_frame(V, P, scene):
     return looped
 
 
+MOODS = {  # progresiones (frecuencias de la fundamental de cada acorde, Hz) + tipo de acorde
+    "misterio": ([110.0, 87.31, 130.81, 98.0], "m"),     # Am F C G
+    "epico": ([73.42, 116.54, 87.31, 130.81], "m"),      # Dm Bb F C
+    "luz": ([130.81, 98.0, 110.0, 87.31], "M"),          # C G Am F
+}
+
+
+def _onepole(x, a):
+    # filtro paso bajo de un polo vectorizado por bloques (suficiente para suavizar el pad)
+    from scipy.signal import lfilter
+    return lfilter([1 - a], [1, -a], x)
+
+
+def music_bed(n, V, P):
+    """v10 (31/10): CAMA MUSICAL. Hasta ahora el fondo era solo un dron de 55 Hz: en IG más del 60% ve con sonido y
+    los reels virales de datos llevan música. Se genera por código (sin licencias): pad de 4 acordes a ~96 BPM,
+    arpegio 'pluck' en corcheas que ENTRA tras el gancho y se intensifica tras el re-gancho, bajo suave, y un HUECO de
+    silencio de 0,35 s justo antes de la revelación (V['reveal']) para que el dato caiga en seco. V['mood'] elige la
+    progresión ('misterio' por defecto, 'epico', 'luz'); V['music']=0 la desactiva."""
+    roots, kind = MOODS.get(V.get("mood", "misterio"), MOODS["misterio"])
+    bpm = V.get("bpm", 96)
+    beat = 60.0 / bpm
+    bar = 4 * beat
+    tt = np.arange(n) / SR
+    out = np.zeros(n)
+    third = 1.189207 if kind == "m" else 1.259921  # 3ª menor / mayor
+    chord_iv = [1.0, third, 1.498307]
+    ci = (tt // bar).astype(int) % len(roots)
+    # pad: 3 voces x 2 osciladores desafinados, envolvente suave por compás
+    pos = (tt % bar) / bar
+    penv = np.clip(pos / 0.18, 0, 1) * np.clip((1 - pos) / 0.12, 0, 1) ** 0.5
+    for k, iv in enumerate(chord_iv):
+        f = np.array(roots)[ci] * 2 * iv
+        ph = np.cumsum(f) / SR * 2 * np.pi
+        out += (np.sin(ph) + 0.6 * np.sin(ph * 1.003 + k) + 0.25 * np.sin(2 * ph)) * penv * 0.22
+    # bajo: fundamental en negras con caída
+    bpos = (tt % beat) / beat
+    fb = np.array(roots)[ci]
+    out += np.sin(np.cumsum(fb) / SR * 2 * np.pi) * np.exp(-bpos * 3.5) * 0.35
+    # arpegio pluck en corcheas (raíz, 3ª, 5ª, octava)
+    e8 = beat / 2
+    step = (tt // e8).astype(int)
+    epos = (tt % e8)
+    arp_iv = np.array([1.0, third, 1.498307, 2.0])[step % 4]
+    fa = np.array(roots)[ci] * 4 * arp_iv
+    arp = np.sin(np.cumsum(fa) / SR * 2 * np.pi) * np.exp(-epos * 14)
+    hook_end = getattr(P["caps"], "hook_end", 2.5)
+    lvl = np.clip((tt - hook_end) / 0.6, 0, 1) * 0.45
+    ra = rehook_t(V, P)
+    if ra is not None:
+        lvl = lvl + np.clip((tt - ra) / 0.3, 0, 1) * 0.25
+    out += arp * lvl
+    out = _onepole(out, 0.82)
+    rv = reveal_t(V, P)
+    if rv is not None:  # hueco de silencio antes de la revelación y vuelta suave
+        g = np.ones(n)
+        g[(tt > rv - 0.35) & (tt < rv)] = 0.0
+        back = (tt >= rv) & (tt < rv + 0.5)
+        g[back] = (tt[back] - rv) / 0.5
+        out *= g
+    return out / (np.abs(out).max() + 1e-9)
+
+
 def build_audio(V, P, path, extra=None):
     total = P["total"]
     m = Mixer(total)
@@ -609,6 +672,10 @@ def build_audio(V, P, path, extra=None):
     env = np.convolve(vo, np.ones(win) / win, mode="same")
     env = env / (env.max() + 1e-9)
     m.buf += drone * V.get("drone", 0.02) * (1.0 - 0.65 * np.clip(env * 4, 0, 1))
+    # v10 (31/10): CAMA MUSICAL procedural (ver music_bed) con ducking fuerte bajo la voz
+    if V.get("music", 0.05) > 0:
+        bed = music_bed(len(m.buf), V, P)
+        m.buf += bed * V.get("music", 0.05) * (1.0 - 0.72 * np.clip(env * 4, 0, 1))
     m.boom(0.0, 0.3)
     if extra:
         extra(m, P)
