@@ -447,6 +447,59 @@ def rehook(c, t, V, P):
     c.restore()
 
 
+def reveal_t(V, P):
+    rv = V.get("reveal")
+    if not rv:
+        return None
+    return P["tl"].get(rv[0], (None,))[0]
+
+
+def reveal(c, t, V, P):
+    """v9 (31/10): CUENTA ATRÁS VISIBLE HASTA LA REVELACIÓN. Métricas 29/10 a 48 h: techo de ~1.300 vistas y tiempo
+    medio 11-18 s en vídeos de 31-40 s (la mitad se va antes de la respuesta). V['reveal']=(id_segmento, 'LA RESPUESTA')
+    dibuja, desde que acaba el gancho hasta ese segmento, una pill negra con reloj y segundos restantes
+    ('LA RESPUESTA EN 9s') que baja en tiempo real: bucle abierto con fecha de cierre visible. En los 3 últimos
+    segundos late en rojo con tic sonoro; al llegar estalla '¡AHORA!' 0,7 s."""
+    a = reveal_t(V, P)
+    if a is None:
+        return
+    t0 = max(getattr(P["caps"], "hook_end", 3.0) + 0.2, 3.6)  # tras el gancho y la pill de tease/serie
+    ra = rehook_t(V, P)
+    if ra is not None and ra <= t < ra + 1.9:  # no pisar el re-gancho
+        return
+    if t0 <= t < a:
+        rem = a - t
+        n = int(math.ceil(rem))
+        hot = rem < 3.0
+        txt = f"{V['reveal'][1]} EN {n}s"
+        f = font(34, TF_XBOLD)
+        w = text_w(txt, f)
+        s = ease_back(prog(t, t0, t0 + 0.3), 2.2)
+        beat = 1 + (0.1 * max(0.0, 1 - (1 - rem % 1.0) * 6) if hot else 0.0)
+        c.save(); c.translate(W / 2, 300); c.scale(s * beat, s * beat)
+        r = skia.RRect.MakeRectXY(skia.Rect.MakeXYWH(-w / 2 - 78, -36, w + 112, 72), 36, 36)
+        c.drawRRect(r.makeOffset(0, 6), fill(0x66000000))
+        c.drawRRect(r, fill(0xFFE8213A if hot else with_alpha(0xFF0B0E1A, 0.88)))
+        c.drawRRect(r, stroke(with_alpha(WHITE, 0.9 if hot else 0.35), 4))
+        # reloj: esfera + aguja que gira y arco del tiempo que queda
+        cx = -w / 2 - 36
+        c.drawCircle(cx, 0, 22, stroke(WHITE, 4))
+        frac = clamp(rem / max(0.1, a - t0))
+        arc = skia.Path(); arc.addArc(skia.Rect.MakeXYWH(cx - 14, -14, 28, 28), -90, 360 * frac); arc.lineTo(cx, 0); arc.close()
+        c.drawPath(arc, fill(with_alpha(WHITE, 0.55)))
+        ang = -math.pi / 2 + (t * 2 * math.pi)
+        c.drawLine(cx, 0, cx + math.cos(ang) * 16, math.sin(ang) * 16, stroke(WHITE, 3))
+        c.drawString(txt, -w / 2 + 6, 12, f, fill(WHITE))
+        c.restore()
+    elif a <= t < a + 0.7:
+        lt = t - a
+        s = ease_back(prog(lt, 0, 0.2), 3.0) * (1 - prog(lt, 0.5, 0.7))
+        if s > 0:
+            c.save(); c.translate(W / 2, 300); c.scale(s, s); c.rotate(-3)
+            pill(c, 0, 0, "¡AHORA!", 46, bg=0xFF2FD46B, fg=INK)
+            c.restore()
+
+
 # ------------------------------------------------------------------ frame + audio + run
 def make_frame(V, P, scene):
     total = P["total"]
@@ -478,6 +531,7 @@ def make_frame(V, P, scene):
         watermark(c)
         hook_extras(c, t, V, total)
         rehook(c, t, V, P)
+        reveal(c, t, V, P)
         P["caps"].draw(c, t)
         if 0.03 < t < 0.2:  # destello inicial (pattern interrupt); v5: el frame 0 queda limpio (portada/autoplay)
             c.drawPaint(fill(with_alpha(WHITE, 0.5 * (1 - (t - 0.03) / 0.17))))
@@ -523,6 +577,12 @@ def build_audio(V, P, path, extra=None):
             m.ding(a + 0.1, 1318.5, 0.07)
             if V.get("send"):  # v7: 'swoosh' corto cuando aparece el avión de enviar
                 m.whoosh(a + 0.8, 0.3, 0.08)
+    rv = reveal_t(V, P)
+    if rv is not None:  # v9: tic-tac en los 3 últimos segundos antes de la revelación + 'ding' al llegar
+        for k in (3, 2, 1):
+            if rv - k > 3.0:
+                m.pop(rv - k, 0.12, 2000 + 300 * (3 - k))
+        m.ding(rv + 0.02, 1760, 0.06)
     ra = rehook_t(V, P)
     if ra is not None:  # v8: riser corto + golpe en el re-gancho
         m.riser(max(0, ra - 0.4), 0.4, 300, 1500, 0.05)
