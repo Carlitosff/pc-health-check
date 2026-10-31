@@ -73,9 +73,17 @@ Desde el 27/10: **nada de IA/noticias ni debates** (108–251 vistas, view rate 
   - Las partes siguientes salen otro día. Anota las series abiertas en `used_topics.md` y dales prioridad.
 - Si queda algo en `stock/`, se puede usar 1 al día. Escribe tú su texto y quítalo de `stock/` al programarlo.
 
+## 4b. LA MONTAÑA DE LA COMUNIDAD (OBLIGATORIO CADA DÍA, decisión de Carlos 31/10)
+Es el formato que más seguidores trae (611: +35 en una noche; 612 → 60; 613 → 90). Cada producción hace 1 vídeo extra (el nº 11):
+1. Seguidores REALES: `getAnalyticsDataByMetrics` con IGEV01 (Instagram Evolution > Followers) de los últimos 3 días; usa el último valor. Si Metricool no trae el de hoy, usa el último disponible y no inventes. El 'antes' es el N del último vídeo de montaña (ver `used_topics.md` → MONTAÑA).
+2. `python3 real/montana.py <antes> <ahora> 6NN_montana_<ahora>m` (preview con `prev` como 4º argumento). Hitos automáticos: 100 m nieve, 250, 500, 1.000, 2.000, 5.000, Everest 8.849.
+3. Si no ha crecido (o ha bajado), NO publiques montaña ese día: no se celebra un estancamiento.
+4. Prográmalo en la franja de noche (22:00–23:30) en una hora libre (p. ej. 22:15 o 22:45), sin pisar otro post. Texto: 'La montaña ya mide N metros ⛰️ …' + firstCommentText 'Comenta YO SUBO…'.
+5. Anota en `used_topics.md` → MONTAÑA el nuevo N y la fecha.
+
 ## 5. Reglas fijas del dueño
 
-- Español. **Voz v3 (desde 26/10): Piper local con voces de locutores reales** (`tts2/piper_tts.py`, definidas en `core.VOICES`: narrador `piper:es_ES-davefx-medium:0` a 1.12, preguntas `piper:es_ES-sharvard-medium:1` a 1.08). Síntesis por cláusulas con pausas naturales. Kokoro queda solo como respaldo. **Nunca Higgsfield ni servicios externos para la voz.** Si mejoras la voz (otro modelo alcanzable desde GitHub/npm/PyPI), compáralo con un A/B antes de cambiar.
+- **Voz v4 (desde 31/10, pedido de Carlos: 'menos robótica')**: Piper `piperS:` = síntesis por FRASE completa (no por cláusula), narrador davefx a 1,04 (antes 1,12) y sala ligera (aecho). Ya está en `core.VOICES`; no lo devuelvas a `piper:`. Probadas también es_MX-claude-high y es_AR-daniela-high (sherpa-onnx): acento no peninsular, descartadas por ahora. Para una voz claramente más humana (XTTS/F5) hace falta huggingface.co, que está bloqueado en la sesión: si Carlos lo habilita, probar A/B.\n- Español. **Voz v3 (desde 26/10): Piper local con voces de locutores reales** (`tts2/piper_tts.py`, definidas en `core.VOICES`: narrador `piper:es_ES-davefx-medium:0` a 1.12, preguntas `piper:es_ES-sharvard-medium:1` a 1.08). Síntesis por cláusulas con pausas naturales. Kokoro queda solo como respaldo. **Nunca Higgsfield ni servicios externos para la voz.** Si mejoras la voz (otro modelo alcanzable desde GitHub/npm/PyPI), compáralo con un A/B antes de cambiar.
 - **Nada de monigotes ni stick figures.** Visuales reales y movimiento constante.
 - 30–45 s, 1080×1920, 30 fps. Hook en el primer segundo. Subtítulos palabra a palabra con las keywords resaltadas.
 - Marca de agua `@videosparadormir2018`. CTA final: seguir + comentar, con un teaser del siguiente.
