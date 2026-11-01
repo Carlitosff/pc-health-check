@@ -102,6 +102,7 @@ Es el formato que más seguidores trae (611: +35 en una noche; 612 → 60; 613 �
 - Desde 31/10 (motor v9): en los vídeos con respuesta o dato diferido (retos, ilusiones, mitos) añade `V['reveal']=(seg_revelación, 'LA RESPUESTA')`: cuenta atrás visible hasta ese segmento. Ojo: Metricool puede tardar >18 h en traer los reels del día anterior; si no están, usa el lote de hace 2 días.
 - Franjas 12:30 y 15:00: el test del 30/10 las rehabilitó (Hermann 1.351 a las 15:00, Napoleón 1.413 a las 15:30): lo que fallaba era el contenido. Los mejores siguen yendo de noche.
 - Desde 31/10 tarde (motor v10): cama musical procedural automática (`core.music_bed`). Elige `V['mood']` ('misterio', 'epico', 'luz') según el tema; `V['music']=0` la quita (p. ej. si un vídeo necesita silencio total). Necesita scipy (setup.sh).
+- Desde 01/11 (motor v11): las ilusiones que se ven EN DIRECTO (fijar la vista) llevan `V['steady']=True` y `clean=True` (nada se mueve ni parpadea).
 - Antes del render final, revisa las previews (`python3 archivo.py <idx> prev`): sin texto solapado y sin nada cortado.
 
 ## 6. Render
@@ -132,7 +133,7 @@ URL de cada vídeo: `https://raw.githubusercontent.com/Carlitosff/pc-health-chec
 - **SOLO INSTAGRAM (decisión del dueño, desde el 27/10/2026):** no publiques nada en TikTok. providers = [{"network":"instagram"}] y sin `tiktokData`.
 - **`createScheduledPost`**, con providers solo instagram:
   - `instagramData`: {type: "REEL", showReelOnFeed: true, isAiGenerated: true} (el Trial Reel del día: type "TRIAL_REEL").
-  - **Audio en tendencia (probar 1 vez):** `instagramData.audioConfiguration` con un audio popular y `audioVolume` bajo (10–15) y `videoVolume` 100. Solo funciona si la cuenta es de empresa conectada a una página de Facebook: si Metricool lo rechaza, anótalo en learnings y no lo vuelvas a intentar.
+  - **Audio en tendencia: RECHAZADO 01/11 (403, cuenta sin acceso al catálogo). No usar.** (Antes:) `instagramData.audioConfiguration` con un audio popular y `audioVolume` bajo (10–15) y `videoVolume` 100. Solo funciona si la cuenta es de empresa conectada a una página de Facebook: si Metricool lo rechaza, anótalo en learnings y no lo vuelvas a intentar.
   - `videoCoverMilliseconds`: 900 (portada = gancho XL ya dibujado; motor v5).
   - `firstCommentText`: la pregunta del CTA con respuesta concreta (desde 28/10).
   - `text`: una línea gancho con emoji (+ "· Parte N" si es una serie explícita), salto de línea y 5 hashtags (#sabiasque #curiosidades + 3 del tema).

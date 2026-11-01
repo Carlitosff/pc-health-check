@@ -46,6 +46,7 @@
 - Lote madrugada (01:45–04:00): 1.220–1.474 vistas, igual que de día; likes/1.000 algo más altos (pájaro 33,8, Saturno 30, frío 26,8). La hora pesa menos que el contenido.
 - PERDEDORES 31/10: picante 159 (14:32), María Antonieta 284 (14:05), Houdini P2 213, MENTALISTA 333 (54% view rate: formato 'adivino lo que piensas' FUERA). Las P2 de historias siguen sin rendir.
 - ENVÍOS: siguen en 0–1 por reel (incluido el CTA 'ENVÍASELO'). Comentarios: los conteos (4–7) y la montaña (8–11) son los únicos que conversan.
+- 01/11 AUDIO EN TENDENCIA: probado 1 vez (audioConfiguration, 803) → Metricool 403 'Instagram audio catalog is not available for this account' (la cuenta no es Business conectada a página de Facebook o no tiene acceso). NO volver a intentarlo salvo que Carlos conecte la cuenta a una página de Facebook.
 - 01/11 TRIAL REEL: primero del sistema = 804 mito del perro y la cola (17:30). Comparar con los REEL normales del día cuando haya datos (solo lo ven no seguidores: mirar vistas y likes/1.000, no seguidores).
 
 ## Hooks que funcionan / no funcionan
