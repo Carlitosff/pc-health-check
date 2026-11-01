@@ -510,12 +510,16 @@ def make_frame(V, P, scene):
     total = P["total"]
 
     def draw_frame(c, t):
-        k = kick(P, t)
+        # v11 (01/11): V['steady']=True -> ilusiones EN DIRECTO (perseguidor lila, Troxler, postimágenes) necesitan
+        # que el punto de fijación no se mueva ni un píxel: sin punch-in, sin sacudidas de beat y sin destellos
+        # (cualquier movimiento 'resetea' la adaptación de la retina y la ilusión no aparece).
+        steady = V.get("steady", False)
+        k = 0.0 if steady else kick(P, t)
         c.save()
         # v4 (26/10): punch-in de gancho (zoom 1.22 -> 1 en 0,55 s) para cortar el scroll en el 1er segundo
-        z = 1 + 0.035 * k + 0.22 * (1 - ease_out(clamp(t / 0.55)))
+        z = 1 + 0.035 * k + (0.0 if steady else 0.22 * (1 - ease_out(clamp(t / 0.55))))
         ra = rehook_t(V, P)
-        if ra is not None and t >= ra:  # v8: punch-in del re-gancho
+        if ra is not None and t >= ra and not steady:  # v8: punch-in del re-gancho
             z += 0.07 * math.exp(-(t - ra) * 5)
         c.translate(W / 2 + math.sin(t * 61) * 4 * k, H / 2)
         c.scale(z, z)
@@ -538,6 +542,8 @@ def make_frame(V, P, scene):
         rehook(c, t, V, P)
         reveal(c, t, V, P)
         P["caps"].draw(c, t)
+        if steady:
+            return
         if 0.03 < t < 0.2:  # destello inicial (pattern interrupt); v5: el frame 0 queda limpio (portada/autoplay)
             c.drawPaint(fill(with_alpha(WHITE, 0.5 * (1 - (t - 0.03) / 0.17))))
         # flash de transición en cada segmento narrado nuevo

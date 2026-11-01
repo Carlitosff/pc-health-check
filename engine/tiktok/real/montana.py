@@ -21,6 +21,11 @@ GOLD = B.GOLD
 BASE_Y = B.BASE_Y
 FULL = 980
 SNOW = N >= 100
+NEW_SNOW = OLD < 100 <= N  # 01/11: hito de la nieve cruzado hoy -> se celebra en el guion
+
+
+def snow_k(m):
+    return clamp((m - 100) / 6.0) if m >= 100 else 0.0
 
 
 def num(n):
@@ -82,7 +87,7 @@ def scene(c, t, P, V):
         # temblor de 'crecimiento' mientras sube
         sh = math.sin(lt * 60) * 6 * (1 - clamp(lt / 1.6))
         c.save(); c.translate(sh, 0)
-        top = B.mountain(c, FULL * m / N, t)
+        top = B.mountain(c, FULL * m / N, t, snow=snow_k(m))
         c.restore()
         B.flag(c, W / 2 + sh, top, t, f"{int(round(m))} m")
         y_old = BASE_Y - FULL * OLD / N
@@ -92,13 +97,13 @@ def scene(c, t, P, V):
             confetti(c, lt - 1.6)
         hc.big(c, f"+{num(N - OLD)}", W / 2, 1860, 140, GOLD, lt, 0.8)
     elif sid == "s2":
-        top = B.mountain(c, FULL, t)
+        top = B.mountain(c, FULL, t, snow=1.0 if SNOW else 0.0)
         clouds_mid(c, t, top + 220)
         B.flag(c, W / 2, top, t, f"{num(N)} m")
         fireworks(c, lt)
-        hc.big(c, "GRACIAS", W / 2, 1860, 140, GOLD, lt, 0.3)
+        hc.big(c, "¡NIEVE!" if NEW_SNOW else "GRACIAS", W / 2, 1860, 140, GOLD, lt, 0.3)
     elif sid == "s3":
-        top = B.mountain(c, FULL, t)
+        top = B.mountain(c, FULL, t, snow=1.0 if SNOW else 0.0)
         B.flag(c, W / 2, top, t, f"{num(N)} m")
         floors = max(1, round(N / 3))
         bh = FULL * (floors * 3) / N * ease_out(clamp(lt / 1.2))
@@ -121,12 +126,12 @@ def scene(c, t, P, V):
         c.drawPath(g, stroke(with_alpha(GOLD, 0.5 + 0.4 * math.sin(t * 5)), 8 / max(zoom, 0.2)))
         sn = skia.Path(); sn.moveTo(W / 2, gtop); sn.lineTo(W / 2 + sc * 0.26, gtop + sc * 0.3); sn.lineTo(W / 2 - sc * 0.26, gtop + sc * 0.3); sn.close()
         c.drawPath(sn, fill(with_alpha(0xFFF4F6FF, 0.5 + 0.2 * math.sin(t * 4))))
-        top = B.mountain(c, FULL, t)
+        top = B.mountain(c, FULL, t, snow=1.0 if SNOW else 0.0)
         B.flag(c, W / 2, top, t, f"{num(N)} m")
         c.restore()
         hc.big(c, f"FALTAN {num(GOAL - N)}", W / 2, 1860, 130, GOLD, lt, 0.4)
     else:
-        top = B.mountain(c, FULL, t, ghost=1.0)
+        top = B.mountain(c, FULL, t, ghost=1.0, snow=1.0 if SNOW else 0.0)
         B.flag(c, W / 2, top - 46, t, f"{num(N + 1)} m")
 
 
@@ -147,8 +152,10 @@ V = dict(slug=SLUG, accent=GOLD, drone=0.03, scene=scene, tease="LO HABÉIS VUEL
          cap=f"Medía *{num(OLD)} metros*… | mira lo que | habéis *HECHO*", hold=0.4),
     dict(id="s1", who="nar", cut=True, say=f"¡{N} metros! {N - OLD} personas nuevas. Otra vez.",
          cap=f"¡*{num(N)} METROS*! | *{num(N - OLD)}* personas nuevas. | Otra vez"),
-    dict(id="s2", who="nar", cut=True, say="Gracias. De verdad. Cada metro de esta montaña tiene vuestro nombre.",
-         cap="*GRACIAS*. Cada metro | tiene *vuestro nombre*"),
+    (dict(id="s2", who="nar", cut=True, say="Y hemos pasado los cien. Lo prometido: ya hay nieve en la cima. Gracias, de verdad.",
+          cap="Pasamos los *100*: | ya hay *NIEVE* | en la cima") if NEW_SNOW else
+     dict(id="s2", who="nar", cut=True, say="Gracias. De verdad. Cada metro de esta montaña tiene vuestro nombre.",
+          cap="*GRACIAS*. Cada metro | tiene *vuestro nombre*")),
     dict(id="s3", who="nar", cut=True, say=f"Ya es más alta que un edificio de {round(N / 3)} plantas. Y ya toca las nubes.",
          cap=f"Ya es como un edificio | de *{round(N / 3)} PLANTAS*… | y toca las *nubes*", hold=0.2),
     dict(id="s4", who="nar", cut=True,
