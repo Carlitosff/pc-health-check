@@ -116,3 +116,4 @@ extinción de Ninio (12 puntos, Ninio y Stevens 2000) · encuentra la Ñ entre N
   EXTRA prueba de voz (Kokoro em_santa con pausas, elegida por Carlos): 23:45 614 ¿cuántos cuadrados hay en un tablero de ajedrez? (204 = 64+49+36+25+16+9+4+1) · 00:15 (1/11) 615 mito de los 5 sentidos (propiocepción, Sherrington 1906; equilibrio; +20 según cómo se cuenten). Script dia_20261031v.py.
 - 2026-11-01 (producción automática, solo IG, PLAYBOOK v3 'menos y mejor', motor v11 steady + nieve): 801–805 (dia_20261101.py).
   Programado: 10:00 perseguidor lila (en directo) · 11:30 MONTAÑA 113 m · 13:00 ¿cuántos cubos? · 17:30 mito tu perro y la cola (TRIAL REEL) · 19:30 Tritón.
+- 2026-11-01 NOCHE (pedido de Carlos en directo, voz v6 em_alex): 23:45 CIUDAD estreno 113 ventanas (809) · 00:15 Ninio 12 puntos (806) · 00:45 encuentra la Ñ + el 6 (807) · 01:15 mito afeitarse (808). Script dia_20261101n.py + ciudad.py.
