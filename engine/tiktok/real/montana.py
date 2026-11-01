@@ -3,7 +3,12 @@ Uso: python3 montana.py <seguidores_antes> <seguidores_ahora> [slug] [prev]
 Es el formato que más seguidores ha traído (611: +35 en una noche; 612: 60 m). La producción diaria lo genera cada día
 con los seguidores REALES de Metricool (IGEV01) y lo programa en la franja de noche.
 Hitos: 100 m = nieve en la cima; luego 250, 500, 1.000, 2.000, 5.000 y Everest 8.849."""
-import math, sys, random
+import math, sys, random, os
+if __name__ == "__main__" and not os.environ.get("VPD_MONTANA"):
+    # 01/11 noche: Carlos cambió la montaña por LA CIUDAD DE LA COMUNIDAD. Llamar a montana.py genera la ciudad
+    # con los mismos argumentos (antes, ahora, slug, prev). VPD_MONTANA=1 fuerza la montaña antigua.
+    print("montana.py -> ciudad.py (decisión de Carlos 01/11)")
+    os.execvp(sys.executable, [sys.executable, os.path.join(os.path.dirname(os.path.abspath(__file__)), "ciudad.py")] + sys.argv[1:])
 import skia
 sys.path.insert(0, "/home/claude/tiktok/real")
 import core as K

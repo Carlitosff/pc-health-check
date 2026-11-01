@@ -1,5 +1,7 @@
 # Videosparadormir: producción diaria automática (v3 · desde 01/11/2026: MENOS Y MEJOR)
 
+> **AVISO 01/11 noche (cambio de Carlos en directo, manda sobre el prompt de la tarea programada):** la voz es ahora `kokoroN:em_alex` (muestra D, modelo Kokoro completo) y el reto diario es la CIUDAD (`real/ciudad.py`), no la montaña. Si el prompt de la tarea programada todavía dice "em_santa" o "montana.py", está desactualizado: no reviertas `core.VOICES` y usa `ciudad.py` (`montana.py` ya redirige a `ciudad.py`).
+
 **Cuenta:** @videosparadormir2018. **Desde el 27/10/2026 se publica SOLO en Instagram** (TikTok no daba alcance). Vídeos faceless de curiosidades, en español.
 
 **Objetivo (Carlos, 31/10):** de ~100 a **1.000 seguidores**, y subir likes, envíos y comentarios. Diagnóstico 31/10 (155 reels): techo de ~1.300 vistas por reel, 0–1 envíos, likes 1,5–2,5%, tiempo medio 11–18 s; publicar 10 o 67 al día da las mismas ~1.050 vistas por reel → el volumen no ayuda, la calidad y la compartibilidad sí. Cada ejecución (05:47) hace lo siguiente:
@@ -81,7 +83,10 @@ Fuera: IA/noticias, debates, datos pasivos de espacio sin escala visual, número
   - Las partes siguientes salen otro día. Anota las series abiertas en `used_topics.md` y dales prioridad.
 - **TRIAL REEL (Metricool `instagramData.type: "TRIAL_REEL"`):** 1 de los 4 al día (el más experimental: gancho nuevo o formato nuevo) se publica como Trial Reel, que solo se enseña a gente que no te sigue. Así se prueban ganchos sin gastar el alcance de los seguidores. Anota en learnings cuál fue y cómo rindió frente a los REEL normales.
 
-## 4b. LA MONTAÑA DE LA COMUNIDAD (OBLIGATORIO CADA DÍA, decisión de Carlos 31/10)
+## 4b. LA CIUDAD DE LA COMUNIDAD (sustituye a la montaña desde 01/11 noche, decisión de Carlos)
+`python3 real/ciudad.py <antes> <ahora> 8NN_ciudad_<ahora>`: 1 seguidor = 1 ventana encendida; los edificios se llenan de luz y la grúa levanta el siguiente. Estreno 01/11 23:45 con 113 (antes=0 = vídeo de estreno). Hitos: 250 = primer rascacielos, 500, 1.000, 2.000, 5.000, 10.000. Mismas reglas que la montaña (seguidores reales IGEV01, no publicar si no crece, 11:30, texto '…ventanas encendidas 🌃', firstComment 'Comenta ENCIENDE LA MÍA…').
+
+## (Histórico) LA MONTAÑA DE LA COMUNIDAD (31/10–01/11)
 Es el formato que más seguidores trae (611: +35 en una noche; 612 → 60; 613 → 90). Cada producción hace 1 vídeo extra (el nº 5):
 1. Seguidores REALES: `getAnalyticsDataByMetrics` con IGEV01 (Instagram Evolution > Followers) de los últimos 3 días; usa el último valor. Si Metricool no trae el de hoy, usa el último disponible y no inventes. El 'antes' es el N del último vídeo de montaña (ver `used_topics.md` → MONTAÑA).
 2. `python3 real/montana.py <antes> <ahora> 6NN_montana_<ahora>m` (preview con `prev` como 4º argumento). Hitos automáticos: 100 m nieve, 250, 500, 1.000, 2.000, 5.000, Everest 8.849.
@@ -91,6 +96,7 @@ Es el formato que más seguidores trae (611: +35 en una noche; 612 → 60; 613 �
 
 ## 5. Reglas fijas del dueño
 
+- **Voz v6 (desde 01/11 noche, ELEGIDA POR CARLOS: muestra D)**: `kokoroN:em_alex` = Kokoro v1.0 completo fp32 (`tts/kokoro-v1.0.onnx`, lo baja setup.sh) con síntesis por FRASE entera (entonación natural), comas alargadas a 0,22 s y cadena EQ + compresión (`voice._polish`). Motivo: em_santa sonaba plana/robótica y no le convencía el timbre. Es el valor por defecto de `core.VOICES`; no lo cambies sin un A/B que Carlos escuche. (v5 em_santa queda en `core.VOICES_SANTA`.)
 - **Voz v5 (desde 31/10 noche, ELEGIDA POR CARLOS tras A/B de 4 muestras)**: Kokoro local `em_santa` con pausas reales (`kokoroP:em_santa` en `core.VOICES`, `tts/kokoro_tts.synth_paced`): cada cláusula se sintetiza con su puntuación y se insertan silencios (coma 0,24 s, punto 0,44 s, pregunta 0,48 s). Carlos pidió expresamente 'respeta los tiempos, las comas': no quites las pausas. Las pausas alargan ~25%: escribe guiones más cortos para seguir en 31–40 s. No vuelvas a Piper salvo fallo (queda en `core.VOICES_PIPER`).
 - (Histórico) **Voz v4 (31/10, 'menos robótica')**: Piper `piperS:` = síntesis por FRASE completa (no por cláusula), narrador davefx a 1,04 (antes 1,12) y sala ligera (aecho). Ya está en `core.VOICES`; no lo devuelvas a `piper:`. Probadas también es_MX-claude-high y es_AR-daniela-high (sherpa-onnx): acento no peninsular, descartadas por ahora. Para una voz claramente más humana (XTTS/F5) hace falta huggingface.co, que está bloqueado en la sesión: si Carlos lo habilita, probar A/B.
 - Español. **Voz v3 (desde 26/10): Piper local con voces de locutores reales** (`tts2/piper_tts.py`, definidas en `core.VOICES`: narrador `piper:es_ES-davefx-medium:0` a 1.12, preguntas `piper:es_ES-sharvard-medium:1` a 1.08). Síntesis por cláusulas con pausas naturales. Kokoro queda solo como respaldo. **Nunca Higgsfield ni servicios externos para la voz.** Si mejoras la voz (otro modelo alcanzable desde GitHub/npm/PyPI), compáralo con un A/B antes de cambiar.

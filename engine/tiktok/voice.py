@@ -19,7 +19,10 @@ def _synth_cached(text, voice, speed):
     path = f"{CACHE}/{key}.npy"
     if os.path.exists(path):
         return np.load(path)
-    if voice.startswith("kokoroP:"):  # v5: Kokoro em_santa con pausas reales en comas y puntos
+    if voice.startswith("kokoroN:"):  # v6 (01/11 noche, elegida por Carlos: muestra D = em_alex, modelo fp32, frase entera)
+        a, _ = kokoro_tts.synth_natural(text, voice=voice.split(":", 1)[1], speed=speed)
+        a = _polish(a / (np.abs(a).max() + 1e-9) * 0.9)
+    elif voice.startswith("kokoroP:"):  # v5: Kokoro em_santa con pausas reales en comas y puntos
         a, _ = kokoro_tts.synth_paced(text, voice=voice.split(":")[1], speed=speed)
         a = a / (np.abs(a).max() + 1e-9) * 0.9
     elif voice.startswith("piperS:"):  # v4: síntesis por frase completa (entonación natural)
@@ -45,6 +48,20 @@ def _synth_cached(text, voice, speed):
         a = a[max(0, idx[0] - 600): idx[-1] + 1200]
     np.save(path, a)
     return a
+
+
+def _polish(a, sr=24000):
+    """Misma cadena que las muestras que escuchó Carlos: paso alto 70 Hz, +2 dB de cuerpo a 180 Hz, −2 dB de
+    sibilancia a 6,5 kHz y compresión suave 2,5:1 (voz más presente y menos 'leída')."""
+    import subprocess, tempfile
+    with tempfile.TemporaryDirectory() as d:
+        i, o = f"{d}/i.f32", f"{d}/o.f32"
+        a.astype(np.float32).tofile(i)
+        subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "f32le", "-ar", str(sr), "-ac", "1", "-i", i, "-af",
+                        "highpass=f=70,equalizer=f=180:t=q:w=1:g=2,equalizer=f=6500:t=q:w=2:g=-2,"
+                        "acompressor=threshold=-18dB:ratio=2.5:attack=8:release=120", "-f", "f32le", o], check=True)
+        b = np.fromfile(o, dtype=np.float32)
+    return b / (np.abs(b).max() + 1e-9) * 0.9
 
 
 def _resample(a, sr_in=24000, sr_out=SR):

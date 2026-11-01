@@ -42,7 +42,11 @@ Encélado (≈500 km, hielo, Cassini 2005 chorros polo sur, NASA 2014: 101 géis
 ## Lote 01/11/2026 (dia_20261101.py, 801–805) — PLAYBOOK v3, motor v11
 perseguidor lila (Jeremy Hinton, antes de 2005; 12 discos; verde = postimagen, rosas se borran = Troxler) · ¿cuántos cubos? (escalera de 4 pisos = 30: 16+9+4+1) · mito tu perro y la cola (Quaranta, Siniscalchi, Vallortigara, Univ. Trieste, Current Biology 2007, 30 perros: dueño → derecha, perro grande desconocido → izquierda) · Tritón (luna de Neptuno, única grande retrógrada, capturada, Voyager 2 1989, géiseres de nitrógeno 8 km, −235 °C, se romperá en ≈3.600 M años) · MONTAÑA 113 m (nieve).
 
+## Lote 01/11/2026 NOCHE (dia_20261101n.py 806–808 + ciudad.py 809) — voz v6 em_alex
+extinción de Ninio (12 puntos, Ninio y Stevens 2000) · encuentra la Ñ entre N + el 6 entre los 9 · mito afeitarse = pelo más fuerte (Mildred Trotter 1928, J Invest Dermatol 1970) · CIUDAD DE LA COMUNIDAD estreno 113 ventanas.
+
 ## Series abiertas (PRIORIDAD)
+- CIUDAD: último N = 113 ventanas (809, 01/11 23:45, ciudad.py 0 113). Siguiente: ciudad.py 113 <ahora>. Hito 250 = rascacielos. (La montaña se retira.)
 - 01/11: Tritón → prometido 'la próxima luna tiene un acantilado gigante' = MIRANDA (Urano), Verona Rupes ~20 km (VERIFICAR altura y tiempo de caída). Cubos → 'reta a un amigo' (próximo conteo: cubos con huecos o cubos pintados, CALCULADO). Perro → 'otro mito de tu perro/mascota'. Perseguidor lila: si da envíos, más ilusiones EN DIRECTO con steady=True (máscara hueca, postimagen de foto en negativo, Ternus).
 - MONTAÑA: último N = 113 m (801, 01/11 11:30, montana.py 90 113, primer día con nieve). Siguiente hito: 250 m.
 - 31/10 tarde: Encélado → 'la próxima luna es todavía más rara' (Tritón: órbita retrógrada, géiseres de nitrógeno, Voyager 2 1989 — VERIFICAR; o Miranda). Pato → 'otro mito de animales'. Antonieta → 'más mitos que te tragaste en clase'. Picante → 'más cosas que hace tu cuerpo'. ILUSIONES T5 cerrada (Cornsweet, Ehrenstein, Munker) → 'mañana, más retos para tu cerebro' (T6: máscara hueca, escalera de Penrose, Wundt, Ternus, Delboeuf ya hecha). Conteo: 'el próximo reto' (35 triángulos) → cubos apilados con respuesta CALCULADA. Mentalista: si funciona (comentarios), repetir con otro truco (p. ej. 1089). HOUDINI CERRADA (P2 publicada 31/10 23:00).
