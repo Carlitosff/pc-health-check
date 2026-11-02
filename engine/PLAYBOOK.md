@@ -2,6 +2,8 @@
 
 > **AVISO 01/11 noche (cambio de Carlos en directo, manda sobre el prompt de la tarea programada):** la voz es ahora `kokoroN:em_alex` (muestra D, modelo Kokoro completo) y el reto diario es la CIUDAD (`real/ciudad.py`), no la montaña. Si el prompt de la tarea programada todavía dice "em_santa" o "montana.py", está desactualizado: no reviertas `core.VOICES` y usa `ciudad.py` (`montana.py` ya redirige a `ciudad.py`).
 
+> **AVISO 02/11 (dato de Metricool):** los TRIAL REEL NO funcionan en esta cuenta: el 804 (mito perro y cola, 01/11 17:30) dio ERROR 'The instagram account does not meet the trial reel follower requirement' y NUNCA SE PUBLICÓ. Instagram no dice el mínimo en nada que hayamos podido leer. Hasta que la cuenta crezca, los 4 van como REEL normal aunque el prompt pida un Trial; reintenta un solo Trial cuando pase de 1.000 seguidores. Tras programar, revisa también el `status` de los posts del día anterior en `getScheduledPosts` (un post PENDING puede acabar en ERROR horas después).
+
 **Cuenta:** @videosparadormir2018. **Desde el 27/10/2026 se publica SOLO en Instagram** (TikTok no daba alcance). Vídeos faceless de curiosidades, en español.
 
 **Objetivo (Carlos, 31/10):** de ~100 a **1.000 seguidores**, y subir likes, envíos y comentarios. Diagnóstico 31/10 (155 reels): techo de ~1.300 vistas por reel, 0–1 envíos, likes 1,5–2,5%, tiempo medio 11–18 s; publicar 10 o 67 al día da las mismas ~1.050 vistas por reel → el volumen no ayuda, la calidad y la compartibilidad sí. Cada ejecución (05:47) hace lo siguiente:
@@ -81,7 +83,7 @@ Fuera: IA/noticias, debates, datos pasivos de espacio sin escala visual, número
   - A veces explícitas ("Parte 1/3").
   - A veces **implícitas**, sin decir "parte": un cliffhanger tipo "lo que pasó después lo cuento mañana…" o "…y eso no fue lo más raro. Sígueme".
   - Las partes siguientes salen otro día. Anota las series abiertas en `used_topics.md` y dales prioridad.
-- **TRIAL REEL (Metricool `instagramData.type: "TRIAL_REEL"`):** 1 de los 4 al día (el más experimental: gancho nuevo o formato nuevo) se publica como Trial Reel, que solo se enseña a gente que no te sigue. Así se prueban ganchos sin gastar el alcance de los seguidores. Anota en learnings cuál fue y cómo rindió frente a los REEL normales.
+- **(SUSPENDIDO 02/11, ver aviso arriba) TRIAL REEL (Metricool `instagramData.type: "TRIAL_REEL"`):** 1 de los 4 al día (el más experimental: gancho nuevo o formato nuevo) se publica como Trial Reel, que solo se enseña a gente que no te sigue. Así se prueban ganchos sin gastar el alcance de los seguidores. Anota en learnings cuál fue y cómo rindió frente a los REEL normales.
 
 ## 4b. LA CIUDAD DE LA COMUNIDAD (sustituye a la montaña desde 01/11 noche, decisión de Carlos)
 `python3 real/ciudad.py <antes> <ahora> 8NN_ciudad_<ahora>`: 1 seguidor = 1 ventana encendida; los edificios se llenan de luz y la grúa levanta el siguiente. Estreno 01/11 23:45 con 113 (antes=0 = vídeo de estreno). Hitos: 250 = primer rascacielos, 500, 1.000, 2.000, 5.000, 10.000. Mismas reglas que la montaña (seguidores reales IGEV01, no publicar si no crece, 11:30, texto '…ventanas encendidas 🌃', firstComment 'Comenta ENCIENDE LA MÍA…').
@@ -109,6 +111,8 @@ Es el formato que más seguidores trae (611: +35 en una noche; 612 → 60; 613 �
 - Franjas 12:30 y 15:00: el test del 30/10 las rehabilitó (Hermann 1.351 a las 15:00, Napoleón 1.413 a las 15:30): lo que fallaba era el contenido. Los mejores siguen yendo de noche.
 - Desde 31/10 tarde (motor v10): cama musical procedural automática (`core.music_bed`). Elige `V['mood']` ('misterio', 'epico', 'luz') según el tema; `V['music']=0` la quita (p. ej. si un vídeo necesita silencio total). Necesita scipy (setup.sh).
 - Desde 01/11 (motor v11): las ilusiones que se ven EN DIRECTO (fijar la vista) llevan `V['steady']=True` y `clean=True` (nada se mueve ni parpadea).
+- Desde 02/11 (motor v12): `real/paisaje.py` da fondos fractales de verdad (`sunset`, `cliff_wall`, `miranda_texture`, `fbm`, `ridge`). Para animales, usa SILUETAS a contraluz (`dia_20261102.labrador`), no el perro de espaldas de 804.
+- Cap del gancho: en UN SOLO bloque (sin `|`), porque el frame 0 solo enseña el primer bloque y sin sonido no se entendía.
 - Antes del render final, revisa las previews (`python3 archivo.py <idx> prev`): sin texto solapado y sin nada cortado.
 
 ## 6. Render
