@@ -412,7 +412,8 @@ def hook_extras(c, t, V, total):
     if tease and 0.5 < t < 3.5 and not V.get("badge"):
         a = clamp((t - 0.5) / 0.25) * clamp((3.5 - t) / 0.3)
         s = ease_back(prog(t, 0.5, 0.85), 2.4)
-        pill(c, W / 2, y, tease, 28, bg=0xFFFE2C55, fg=WHITE, alpha=a, scale=s * (1 + 0.04 * math.sin(t * 10)))
+        # v13 (03/11): la pill iba a y=288, DEBAJO del gancho XL de 3 líneas (se veía un manchón rosa entre las letras)
+        pill(c, W / 2, V.get("tease_y", 672), tease, 28, bg=0xFFFE2C55, fg=WHITE, alpha=a, scale=s * (1 + 0.04 * math.sin(t * 10)))
 
 
 def rehook_t(V, P):
