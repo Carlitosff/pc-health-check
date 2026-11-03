@@ -121,6 +121,8 @@ Es el formato que más seguidores trae (611: +35 en una noche; 612 → 60; 613 �
 - Ejecuta `python3 real/dia_YYYYMMDD.py all`.
 - Comprueba duración y audio con ffprobe.
 
+- Desde 03/11 (motor v13): pasa `python3 real/qa.py outdaily/*.mp4` antes de subir; si da FALLO, se rehace (`--steady` solo para ilusiones de fijar la vista).
+
 ## 7. Subir a una URL pública (rama media-tmp)
 
 ```bash
