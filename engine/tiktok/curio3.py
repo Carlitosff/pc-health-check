@@ -121,7 +121,7 @@ def plan(V):
             continue
         vname, speed = VOICES[sg["who"]]
         aud = voice._synth_cached(sg["say"], vname, speed)
-        d = len(aud) / 24000
+        d = len(aud) / voice.VSR
         start = cur + 0.04
         placed.append((sg["who"], start, aud))
         b = start + d + GAP

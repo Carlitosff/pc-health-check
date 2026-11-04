@@ -445,7 +445,7 @@ def plan(V):
     lines, timeline, cur = [], [], 0.0
     for spoken, cap, vis in beats:
         aud = voice._synth_cached(spoken, "em_alex", voice.BASE_SPEED)
-        d = len(aud) / 24000
+        d = len(aud) / voice.VSR
         b = cur + 0.05 + d + 0.12 + GAP
         lines.append((cur, b, cap, spoken))
         timeline.append((cur, b, (spoken, cap, vis)))

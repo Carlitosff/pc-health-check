@@ -16,7 +16,9 @@ HANDLE = "@videosparadormir2018"
 # -> la entonación ya no 'cierra' en cada coma; velocidad 1,12 -> 1,04 (sonaba atropellada) y más variación prosódica.
 # v5 (31/10/2026 noche): Carlos elige la muestra C = Kokoro em_santa, 'respetando los tiempos, las comas':
 # síntesis por cláusula con su puntuación + silencios explícitos (kokoro_tts.synth_paced). Piper queda de respaldo.
-VOICES = {"nar": ("kokoroN:em_alex", 1.08), "q": ("kokoroN:em_alex", 1.12)}  # v6 01/11 noche: elegida por Carlos (muestra D)
+# v8 (04/11/2026 noche): Carlos elige la voz 5 (Supertonic 3, sid 4) 'que respete más las pausas'. Ver tts2/supertonic_tts.py
+VOICES = {"nar": ("supertonic:4", 1.1), "q": ("supertonic:4", 1.14)}
+VOICES_ALEX = {"nar": ("kokoroN:em_alex", 1.08), "q": ("kokoroN:em_alex", 1.12)}  # v6-v7 (01/11-04/11), respaldo
 VOICES_SANTA = {"nar": ("kokoroP:em_santa", 1.0), "q": ("kokoroP:em_santa", 1.06)}  # v5 (31/10–01/11)
 VOICES_PIPER = {"nar": ("piperS:es_ES-davefx-medium:0", 1.04), "q": ("piperS:es_ES-sharvard-medium:1", 1.02)}
 COUNT_DUR = 2.5
@@ -53,7 +55,8 @@ def plan(V):
             continue
         vname, speed = VOICES[sg["who"]]
         aud = voice._synth_cached(sg["say"], vname, speed)
-        d = len(aud) / 24000
+        d = len(aud) / voice.VSR
+        warp = voice.speech_warp(aud)
         start = cur + 0.04
         placed.append((sg["who"], start, aud))
         b = start + d + GAP + sg.get("hold", 0.0)
@@ -63,7 +66,7 @@ def plan(V):
         tot = sum(len(w.strip("*¡!¿?")) + 1 for w in allw)
         acc, times = 0, []
         for w in allw:
-            times.append(start + d * acc / tot)
+            times.append(start + warp(acc / tot))
             acc += len(w.strip("*¡!¿?")) + 1
         k = 0
         for ci, ch in enumerate(chunks):

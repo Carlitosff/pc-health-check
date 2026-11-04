@@ -6,20 +6,36 @@ sys.path.insert(0, "/home/claude/tts")
 import kokoro_tts  # noqa: E402
 sys.path.insert(0, "/home/claude/tts2")
 import piper_tts  # noqa: E402
+import supertonic_tts  # noqa: E402
 from engine import Captions, SR  # noqa: E402
 
 CACHE = "/home/claude/tiktok/vo_cache"
 os.makedirs(CACHE, exist_ok=True)
 BASE_SPEED = 1.18
 MAX_SPEED = 1.55
+VSR = SR  # v8 (04/11): _synth_cached devuelve siempre audio a SR (Supertonic genera a 44,1 kHz; no lo bajamos a 24 kHz)
+FALLBACK = "kokoroN:em_alex"
+FALLBACK_USED = []  # textos que no pudo generar Supertonic: la tarea diaria debe avisar a Carlos si no está vacío
 
 
 def _synth_cached(text, voice, speed):
-    key = hashlib.md5(f"{text}|{voice}|{speed:.3f}".encode()).hexdigest()[:16]
+    key = hashlib.md5(f"v8|{text}|{voice}|{speed:.3f}".encode()).hexdigest()[:16]
     path = f"{CACHE}/{key}.npy"
     if os.path.exists(path):
         return np.load(path)
-    if voice.startswith("kokoroN:"):  # v6 (01/11 noche, elegida por Carlos: muestra D = em_alex, modelo fp32, frase entera)
+    native_sr = 24000
+    if voice.startswith("supertonic:"):  # v8 (04/11, elegida por Carlos: voz 5, sid 4, con más pausas)
+        try:
+            a, native_sr, rep = supertonic_tts.synth(text, speed=speed, sid=int(voice.split(":")[1]))
+            print("  pausas:", rep)
+            a = _polish(a / (np.abs(a).max() + 1e-9) * 0.9, native_sr)
+        except Exception as e:  # sin voz no hay vídeo: respaldo a Kokoro y queda anotado
+            print(f"  AVISO: Supertonic falló ({e!r}); uso {FALLBACK} para: {text[:60]}")
+            FALLBACK_USED.append(text)
+            a, _ = kokoro_tts.synth_natural(text, voice=FALLBACK.split(":", 1)[1], speed=1.08)
+            a = _polish(a / (np.abs(a).max() + 1e-9) * 0.9)
+            native_sr = 24000
+    elif voice.startswith("kokoroN:"):  # v6 (01/11 noche, elegida por Carlos: muestra D = em_alex, modelo fp32, frase entera)
         a, _ = kokoro_tts.synth_natural(text, voice=voice.split(":", 1)[1], speed=speed)
         a = _polish(a / (np.abs(a).max() + 1e-9) * 0.9)
     elif voice.startswith("kokoroP:"):  # v5: Kokoro em_santa con pausas reales en comas y puntos
@@ -45,7 +61,9 @@ def _synth_cached(text, voice, speed):
     thr = 0.01
     idx = np.where(np.abs(a) > thr)[0]
     if len(idx):
-        a = a[max(0, idx[0] - 600): idx[-1] + 1200]
+        a = a[max(0, idx[0] - int(0.025 * native_sr)): idx[-1] + int(0.05 * native_sr)]
+    if native_sr != VSR:
+        a = _resample(a, native_sr, VSR).astype(np.float32)
     np.save(path, a)
     return a
 
@@ -64,7 +82,23 @@ def _polish(a, sr=24000):
     return b / (np.abs(b).max() + 1e-9) * 0.9
 
 
-def _resample(a, sr_in=24000, sr_out=SR):
+def speech_warp(aud, sr=None):
+    """Convierte fracción de texto (0..1) en segundos reales saltando los silencios, para que los subtítulos no se
+    adelanten al alargar las pausas."""
+    sr = sr or VSR
+    hop = max(1, int(0.01 * sr))
+    n = len(aud) // hop
+    if n == 0:
+        return lambda f: 0.0
+    rms = np.sqrt(np.mean(aud[: n * hop].reshape(n, hop) ** 2, axis=1))
+    voiced = rms > max(0.012, 0.05 * np.percentile(rms, 95))
+    cum = np.cumsum(voiced) / max(1, voiced.sum())
+    return lambda f: float(np.searchsorted(cum, f)) * hop / sr
+
+
+def _resample(a, sr_in=VSR, sr_out=SR):
+    if sr_in == sr_out:
+        return a
     n = int(len(a) * sr_out / sr_in)
     x = np.linspace(0, len(a) - 1, n)
     return np.interp(x, np.arange(len(a)), a)
@@ -82,11 +116,11 @@ def build(lines, voice="em_alex", lead=0.05):
         slot = b - a - lead - 0.12
         speed = BASE_SPEED
         aud = _synth_cached(spoken, voice, speed)
-        d = len(aud) / 24000
+        d = len(aud) / VSR
         if d > slot:
             speed = min(MAX_SPEED, speed * d / slot * 1.02)
             aud = _synth_cached(spoken, voice, speed)
-            d = len(aud) / 24000
+            d = len(aud) / VSR
         report.append((spoken, round(speed, 2), round(d, 2), round(slot, 2)))
         start = a + lead
         sig = _resample(aud)
