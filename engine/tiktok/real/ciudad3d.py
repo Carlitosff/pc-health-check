@@ -50,7 +50,7 @@ special = [dict(s, fresh=False, seq=0) for s in st["special"] if s["idx"] not in
 for i, s in enumerate(FRESH):
     special.append(dict(s, fresh=True, seq=i))
 FR = f"/home/claude/tiktok/v3d_frames/{SLUG}"
-job = dict(vote=getattr(globals().get("g"), "VOTE", False), old=OLD, n=N, goal=GOAL, tl={k: list(v) for k, v in P["tl"].items() if k in ("h", "s1", "s2", "s3", "cta")}, total=P["total"], mouth=mouth, special=special, frames=FR)
+job = dict(clock=getattr(globals().get("g"), "CLOCK", None), hito=getattr(globals().get("g"), "HITO", None), vote=getattr(globals().get("g"), "VOTE", False), old=OLD, n=N, goal=GOAL, tl={k: list(v) for k, v in P["tl"].items() if k in ("h", "s1", "s2", "s3", "cta")}, total=P["total"], mouth=mouth, special=special, frames=FR)
 os.makedirs(FR, exist_ok=True)
 jf = f"{FR}/job.json"; json.dump(job, open(jf, "w"))
 print(f"{SLUG}: {P['total']:.1f}s  tl={job['tl']}")
@@ -76,6 +76,8 @@ def scene(c, t, P_):
         k = K.smooth((t - a1 - .5) / max(.1, b1 - a1 - .75))
         n = OLD + (N - OLD) * k
         if tl["s2"][0] - .1 < t < tl["s2"][1] - .3:
+            if getattr(globals().get("g"), "HITO", None) and t > tl["s2"][0] + 1.4:
+                K.tag(c, W / 2, 1730, f"VENTANA Nº {g.HITO}", t - tl["s2"][0] - 1.4, accent=GOLD, size=52)
             return
         x, y, w = 190, 790, W - 380
         c.drawRRect(skia.RRect.MakeRectXY(skia.Rect.MakeXYWH(x, y, w, 30), 15, 15), fill(with_alpha(0xFF000000, .6)))

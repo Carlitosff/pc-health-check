@@ -17,6 +17,8 @@ El trabajo pesado tiene que estar terminado hacia las 07:00.
 
 > **AVISO 04/11 (decisión de Carlos, manda sobre lo anterior):** 1) La CIUDAD ahora es 3D: `python3 real/ciudad3d.py <antes> <ahora> <slug>`, guion propio en `real/ciudad_guion_<slug>.py` (FRESH = ventanas de color nuevas), estado en `real/ciudad_state.json` (añade ahí las nuevas tras publicar). Hitos: 200, 250, 500… Cada edición trae algo nuevo y visible. 2) 2 de los 4 vídeos diarios van en 3D con `real/v3d/` (escena propia: añade `script` al job; ver `ciudad3d.py`), medidos frente a los no 3D durante 7 días. Render: ~1 s/frame con 2 CPU; Chromium puede caerse en renders largos y `render.mjs` retoma los frames ya hechos. 3) Voz v7: em_alex a 1,08 (preguntas 1,12) y mezcla sin aecho (`V['dry']`, por defecto True). Carlos eligió seguir con voz local (no externa) el 04/11; Hugging Face sigue bloqueado.
 
+> **AVISO 04/11 mañana (motor v15):** para un vídeo 3D nuevo: escena en `real/v3d/<x>.js` que importa `./bloques.js` y un guion que llama a `v3d_run.run3d(V,'<x>.js',overlay=fn)`. Revisa stills con `run3d(...,stills=[t1,t2])` y `sheet.py` antes del render: la franja superior (hasta ~y=700) es de subtítulos y en el CTA el botón de seguir ocupa y=1120–1540; deja el sujeto fuera de ahí. Reutiliza capataz y abuela.
+
 ## 0. Preparar el entorno (sesión nueva)
 
 ```bash
