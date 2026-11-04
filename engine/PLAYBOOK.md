@@ -1,6 +1,6 @@
 # Videosparadormir: producción diaria automática (v3 · desde 01/11/2026: MENOS Y MEJOR)
 
-> **AVISO 01/11 noche (cambio de Carlos en directo, manda sobre el prompt de la tarea programada):** la voz es ahora `kokoroN:em_alex` (muestra D, modelo Kokoro completo) y el reto diario es la CIUDAD (`real/ciudad.py`), no la montaña. Si el prompt de la tarea programada todavía dice "em_santa" o "montana.py", está desactualizado: no reviertas `core.VOICES` y usa `ciudad.py` (`montana.py` ya redirige a `ciudad.py`).
+> **AVISO 01/11 noche (cambio de Carlos en directo, manda sobre el prompt de la tarea programada):** la voz es ahora `kokoroN:em_alex` (muestra D, modelo Kokoro completo) y el reto diario es la CIUDAD (`real/ciudad.py`), no la montaña. Si el prompt de la tarea programada todavía dice "em_santa" o "montana.py", está desactualizado: no reviertas `core.VOICES` y usa `ciudad.py` (`montana.py` ya redirige a `ciudad.py`; desde 04/11 usa `ciudad3d.py`).
 
 > **AVISO 02/11 (dato de Metricool):** los TRIAL REEL NO funcionan en esta cuenta: el 804 (mito perro y cola, 01/11 17:30) dio ERROR 'The instagram account does not meet the trial reel follower requirement' y NUNCA SE PUBLICÓ. Instagram no dice el mínimo en nada que hayamos podido leer. Hasta que la cuenta crezca, los 4 van como REEL normal aunque el prompt pida un Trial; reintenta un solo Trial cuando pase de 1.000 seguidores. Tras programar, revisa también el `status` de los posts del día anterior en `getScheduledPosts` (un post PENDING puede acabar en ERROR horas después).
 
@@ -14,6 +14,8 @@
 5. Limpia el repo.
 
 El trabajo pesado tiene que estar terminado hacia las 07:00.
+
+> **AVISO 04/11 (decisión de Carlos, manda sobre lo anterior):** 1) La CIUDAD ahora es 3D: `python3 real/ciudad3d.py <antes> <ahora> <slug>`, guion propio en `real/ciudad_guion_<slug>.py` (FRESH = ventanas de color nuevas), estado en `real/ciudad_state.json` (añade ahí las nuevas tras publicar). Hitos: 200, 250, 500… Cada edición trae algo nuevo y visible. 2) 2 de los 4 vídeos diarios van en 3D con `real/v3d/` (escena propia: añade `script` al job; ver `ciudad3d.py`), medidos frente a los no 3D durante 7 días. Render: ~1 s/frame con 2 CPU; Chromium puede caerse en renders largos y `render.mjs` retoma los frames ya hechos. 3) Voz v7: em_alex a 1,08 (preguntas 1,12) y mezcla sin aecho (`V['dry']`, por defecto True). Carlos eligió seguir con voz local (no externa) el 04/11; Hugging Face sigue bloqueado.
 
 ## 0. Preparar el entorno (sesión nueva)
 

@@ -16,7 +16,7 @@ HANDLE = "@videosparadormir2018"
 # -> la entonación ya no 'cierra' en cada coma; velocidad 1,12 -> 1,04 (sonaba atropellada) y más variación prosódica.
 # v5 (31/10/2026 noche): Carlos elige la muestra C = Kokoro em_santa, 'respetando los tiempos, las comas':
 # síntesis por cláusula con su puntuación + silencios explícitos (kokoro_tts.synth_paced). Piper queda de respaldo.
-VOICES = {"nar": ("kokoroN:em_alex", 1.0), "q": ("kokoroN:em_alex", 1.05)}  # v6 01/11 noche: elegida por Carlos (muestra D)
+VOICES = {"nar": ("kokoroN:em_alex", 1.08), "q": ("kokoroN:em_alex", 1.12)}  # v6 01/11 noche: elegida por Carlos (muestra D)
 VOICES_SANTA = {"nar": ("kokoroP:em_santa", 1.0), "q": ("kokoroP:em_santa", 1.06)}  # v5 (31/10–01/11)
 VOICES_PIPER = {"nar": ("piperS:es_ES-davefx-medium:0", 1.04), "q": ("piperS:es_ES-sharvard-medium:1", 1.02)}
 COUNT_DUR = 2.5
@@ -698,7 +698,7 @@ def build_audio(V, P, path, extra=None):
     m.buf[i1:] = 0
     raw = path.replace(".wav", "_raw.wav")
     m.write(raw)
-    af = ("highpass=f=40,aecho=0.9:0.9:23|41:0.07|0.045,equalizer=f=3200:t=q:w=1.2:g=3,equalizer=f=250:t=q:w=1:g=-2,"
+    af = ("highpass=f=40," + ("" if V.get("dry", True) else "aecho=0.9:0.9:23|41:0.07|0.045,") + "equalizer=f=3200:t=q:w=1.2:g=3,equalizer=f=250:t=q:w=1:g=-2,"
           "acompressor=threshold=-20dB:ratio=3:attack=5:release=60:makeup=2,"
           "loudnorm=I=-14:TP=-1.5:LRA=9")
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", raw, "-af", af, "-ar", "44100", path], check=True)

@@ -21,3 +21,5 @@ for m in es_ES-davefx-medium es_ES-sharvard-medium; do
   [ -d vits-piper-$m ] || { curl -sfL -o $m.tar.bz2 https://github.com/k2-fsa/sherpa-onnx/releases/download/tts-models/vits-piper-$m.tar.bz2 && tar xjf $m.tar.bz2 && rm $m.tar.bz2; }
 done
 ls -d /home/claude/tts2/vits-piper-* | wc -l
+# v14 (04/11): 3D con Three.js (real/v3d, render determinista con el Chromium preinstalado)
+cd /home/claude/tiktok/real/v3d && [ -d node_modules/three ] || npm i --silent three@0.187.0
