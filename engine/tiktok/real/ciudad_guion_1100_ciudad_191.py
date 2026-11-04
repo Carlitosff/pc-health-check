@@ -1,4 +1,5 @@
 # 04/11: actualización pedida por Carlos: casi 200 y 3 luces rojas pedidas por seguidores.
+VOTE = True
 FRESH = [dict(idx=70, color="#ff1a2a"), dict(idx=74, color="#ff1a2a"), dict(idx=78, color="#ff1a2a")]
 SEGS = [
  dict(id="h", who="nar", say="Estamos a solo nueve seguidores de los doscientos.", cap="Solo faltan *9* para los *200*", hold=.1),

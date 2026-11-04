@@ -14,5 +14,5 @@ await p.goto(`http://localhost:${srv.address().port}/`);await p.waitForFunction(
 fs.mkdirSync(job.frames,{recursive:true});const t0=Date.now();
 const shot=async(t,name)=>{await p.evaluate(x=>window.renderAt(x),t);await p.screenshot({path:path.join(job.frames,name),type:'jpeg',quality:95})};
 if(stills.length){for(const t of stills)await shot(t,`still_${t}.jpg`)}
-else{const n=Math.ceil(job.total*30)+1;for(let i=0;i<n;i++){const f=path.join(job.frames,`f${String(i).padStart(5,'0')}.jpg`);if(fs.existsSync(f))continue;await shot(i/30,path.basename(f));if(i%60===0)console.log(i,n,Math.round((Date.now()-t0)/1000)+'s')}}
+else{const n=Math.ceil(job.total*30)+1;for(let i=0;i<n;i++){const f=path.join(job.frames,`f${String(i).padStart(5,'0')}.jpg`);const fz=(process.env.FORCE||'').split('-').map(Number);if(fs.existsSync(f)&&!(fz.length===2&&i>=fz[0]&&i<=fz[1]))continue;await shot(i/30,path.basename(f));if(i%60===0)console.log(i,n,Math.round((Date.now()-t0)/1000)+'s')}}
 await b.close();srv.close();console.log('ok',Math.round((Date.now()-t0)/1000)+'s');

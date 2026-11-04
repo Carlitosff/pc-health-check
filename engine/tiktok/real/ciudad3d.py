@@ -16,6 +16,9 @@ if "--prev" in sys.argv:
     prev = sys.argv[sys.argv.index("--prev") + 1]; args = [a for a in args if a != prev]
 GOALS = [200, 250, 500, 1000, 2000, 5000, 10000]
 GOAL = next(g for g in GOALS if g > N)
+for a_ in sys.argv:
+    if a_.startswith("--goal="):
+        GOAL = int(a_[7:])
 GOLD = 0xFFFFC23A
 STATE = os.environ.get("CIUDAD_STATE", os.path.join(HERE, "ciudad_state.json"))
 st = json.load(open(STATE)) if os.path.exists(STATE) else {"special": []}
@@ -33,6 +36,8 @@ if SEGS is None:
             dict(id="s3", who="nar", cut=True, say=f"Quedan {GOAL - N} a oscuras.", cap=f"Quedan *{num(GOAL - N)}* | a oscuras"),
             dict(id="cta", who="nar", cut=True, say="Sígueme, y la siguiente ventana es la tuya.", cap="La siguiente | ventana | es la *TUYA*")]
 V = dict(slug=SLUG, accent=GOLD, drone=0.02, mood="epico", tease=None, rehook=None, segs=SEGS)
+if SEGS and globals().get("g") is not None:
+    V.update(getattr(g, "EXTRA", {}))
 P = K.plan(V)
 hop = K.voice.SR // 30 if hasattr(K.voice, "SR") else 44100 // 30
 vo = P["vo"]["nar"]
@@ -40,11 +45,12 @@ rms = np.sqrt(np.convolve(vo ** 2, np.ones(hop) / hop, mode="same"))[::hop]
 rms = rms / (np.percentile(rms[rms > 1e-4], 95) + 1e-9)
 mouth = [round(float(min(1, max(0, (x - .1) * 1.3))), 2) for x in rms]
 idx = len(st["special"])
-special = [dict(s, fresh=False, seq=0) for s in st["special"]]
+fresh_idx = {s["idx"] for s in FRESH}
+special = [dict(s, fresh=False, seq=0) for s in st["special"] if s["idx"] not in fresh_idx]
 for i, s in enumerate(FRESH):
     special.append(dict(s, fresh=True, seq=i))
 FR = f"/home/claude/tiktok/v3d_frames/{SLUG}"
-job = dict(old=OLD, n=N, goal=GOAL, tl={k: list(v) for k, v in P["tl"].items() if k in ("h", "s1", "s2", "s3", "cta")}, total=P["total"], mouth=mouth, special=special, frames=FR)
+job = dict(vote=getattr(globals().get("g"), "VOTE", False), old=OLD, n=N, goal=GOAL, tl={k: list(v) for k, v in P["tl"].items() if k in ("h", "s1", "s2", "s3", "cta")}, total=P["total"], mouth=mouth, special=special, frames=FR)
 os.makedirs(FR, exist_ok=True)
 jf = f"{FR}/job.json"; json.dump(job, open(jf, "w"))
 print(f"{SLUG}: {P['total']:.1f}s  tl={job['tl']}")
