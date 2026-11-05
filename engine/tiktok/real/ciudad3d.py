@@ -72,7 +72,7 @@ def scene(c, t, P_):
     im = skia.Image.MakeFromEncoded(skia.Data.MakeWithCopy(open(p, "rb").read()))
     c.drawImage(im, 0, 0)
     a1, b1 = tl["s1"]
-    if t >= a1:
+    if a1 <= t < tl['cta'][0]:  # v16: en el CTA, el contador ya no pisa a la obrera
         k = K.smooth((t - a1 - .5) / max(.1, b1 - a1 - .75))
         n = OLD + (N - OLD) * k
         if tl["s2"][0] - .1 < t < tl["s2"][1] - .3:

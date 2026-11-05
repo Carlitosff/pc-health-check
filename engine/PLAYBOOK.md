@@ -21,6 +21,8 @@ El trabajo pesado tiene que estar terminado hacia las 07:00.
 
 > **AVISO 04/11 mañana (motor v15):** para un vídeo 3D nuevo: escena en `real/v3d/<x>.js` que importa `./bloques.js` y un guion que llama a `v3d_run.run3d(V,'<x>.js',overlay=fn)`. Revisa stills con `run3d(...,stills=[t1,t2])` y `sheet.py` antes del render: la franja superior (hasta ~y=700) es de subtítulos y en el CTA el botón de seguir ocupa y=1120–1540; deja el sujeto fuera de ahí. Reutiliza capataz y abuela.
 
+> **AVISO 05/11 (motor v16):** el reto de 1.000 en 24 h terminó sin llegar; 1.000 queda como meta sin plazo hasta que Carlos elija otro reto. Render 3D: `render.mjs` añade desenfoque de movimiento en los cortes; ~1,9–2,9 s/frame con dos a la vez. Para esperar un render usa `ps aux | grep "[n]ombre"`: `pgrep -f nombre` se encuentra a sí mismo y cuelga el bucle. Si lanzas varias esperas, en serie, no en paralelo.
+
 ## 0. Preparar el entorno (sesión nueva)
 
 ```bash

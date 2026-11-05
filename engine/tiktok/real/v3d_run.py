@@ -6,6 +6,7 @@ sys.path.insert(0, "/home/claude/tiktok/real")
 import core as K
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = "/home/claude/tiktok/outdaily"
+VIG = skia.Paint(Shader=skia.GradientShader.MakeRadial(skia.Point(K.W / 2, K.H * .56), K.H * .72, [skia.Color4f(0, 0, 0, 0), skia.Color4f(0, 0, 0, 0), skia.Color4f(0, 0, 0, .42)], [0, .62, 1]))
 
 
 def run3d(V, script, overlay=None, stills=None, extra_job=None, keep=False):
@@ -35,6 +36,7 @@ def run3d(V, script, overlay=None, stills=None, extra_job=None, keep=False):
         i = min(int(round(t * 30)), int(P["total"] * 30))
         p = f"{FR}/f{i:05d}.jpg"
         c.drawImage(skia.Image.MakeFromEncoded(skia.Data.MakeWithCopy(open(p, "rb").read())), 0, 0)
+        c.drawRect(skia.Rect.MakeWH(K.W, K.H), VIG)  # v16: viñeta de cine: centra la mirada sin coste de render
         if overlay:
             overlay(c, t, P)
     K.run(V, scene, OUT)

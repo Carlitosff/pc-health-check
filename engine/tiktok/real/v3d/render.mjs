@@ -12,7 +12,11 @@ const p=await b.newPage({viewport:{width:1080,height:1920},deviceScaleFactor:1})
 p.on('pageerror',e=>{console.error('ERR',e.message);process.exitCode=1});p.on('console',m=>{if(m.type()==='error')console.error(m.text())});
 await p.goto(`http://localhost:${srv.address().port}/`);await p.waitForFunction('window.ready===true',{timeout:90000});
 fs.mkdirSync(job.frames,{recursive:true});const t0=Date.now();
-const shot=async(t,name)=>{await p.evaluate(x=>window.renderAt(x),t);await p.screenshot({path:path.join(job.frames,name),type:'jpeg',quality:95})};
+// v16 (05/11): desenfoque de movimiento REAL en los cambios de plano: en los 0,4 s tras cada corte se promedian 4 subframes (coste +~20 %). job.blur=false lo quita.
+const CUTS=job.blur===false?[]:Object.entries(job.tl||{}).filter(([k])=>k!=='h').map(([,v])=>v[0]);
+const inCut=t=>CUTS.some(a=>t>=a&&t<a+.4);
+await p.evaluate(()=>{const c=document.createElement('canvas');c.width=1080;c.height=1920;c.id='mb';c.style.cssText='position:fixed;left:0;top:0;width:1080px;height:1920px;display:none;z-index:9';document.body.appendChild(c)});
+const shot=async(t,name)=>{if(inCut(t)){await p.evaluate(x=>{const c=document.getElementById('mb'),g=c.getContext('2d'),src=document.querySelector('canvas');for(let k=0;k<4;k++){window.renderAt(x+k/120);g.globalAlpha=1/(k+1);g.drawImage(src,0,0,1080,1920)}g.globalAlpha=1;c.style.display='block'},t)}else{await p.evaluate(x=>{document.getElementById('mb').style.display='none';window.renderAt(x)},t)}await p.screenshot({path:path.join(job.frames,name),type:'jpeg',quality:95})};
 if(stills.length){for(const t of stills)await shot(t,`still_${t}.jpg`)}
 else{const n=Math.ceil(job.total*30)+1;for(let i=0;i<n;i++){const f=path.join(job.frames,`f${String(i).padStart(5,'0')}.jpg`);const fz=(process.env.FORCE||'').split('-').map(Number);if(fs.existsSync(f)&&!(fz.length===2&&i>=fz[0]&&i<=fz[1]))continue;await shot(i/30,path.basename(f));if(i%60===0)console.log(i,n,Math.round((Date.now()-t0)/1000)+'s')}}
 await b.close();srv.close();console.log('ok',Math.round((Date.now()-t0)/1000)+'s');
