@@ -101,9 +101,20 @@ const shots={
  s3:J.goal>=500?{p:V3(0,13,wideZ+8),q:V3(0,17,-20)}:{p:V3(LW.x+1.2,LW.y+.3,LW.z+16),q:V3(LW.x-.4,LW.y+2,LW.z)},
  cta:J.clock?(J.clock.secs==null?{p:V3(.1,3,34.6),q:V3(.1,1.43,0)}:{p:V3(1.2,5.2,20),q:V3(1,2.6,0)}):{p:V3(.6,4.6,17.5),q:V3(.5,6.6,0)}};
 if(J.clock){shots.h={p:V3(1.4,4.4,25),q:V3(1.4,5.4,3)};if(J.hito)shots.s2={p:V3(focus.x+.6,focus.y-2,focus.z+19),q:V3(focus.x,focus.y+2.6,focus.z)};shots.s3={p:V3(PX-.4,PY+.35,PZ+9),q:V3(PX-.1,PY+1.5,PZ)}}
+if(J.noria){const[nx,nz]=J.noria.at||[-7.5,5.5];shots.h={p:V3(-3.4,4.4,34),q:V3(-3.4,6.4,2)};shots.s2={p:V3(nx+.8,3.6,nz+22),q:V3(nx,6.3,nz)};shots.s3={p:V3(nx-1,3.8,nz+21),q:V3(nx+.1,6.2,nz)}}
 function camAt(t){const ord=['h','s1','s2','s3','cta'];let p=shots.h.p.clone(),q=shots.h.q.clone();for(const k of ord.slice(1)){const a=TL[k][0],e=ss(a,a+.85,t);p.lerp(shots[k].p,e);q.lerp(shots[k].q,e)}p.x+=Math.sin(t*.55)*.35;p.y+=Math.sin(t*.8)*.12;const s=seg(t);if(s==='s1'||s==='s2')p.z-=(t-TL[s][0])*.32;return{p,q}}
+// --- v17 (06/11): LA NORIA DE LA CIUDAD: de la ventana 250 a la 300, cada seguidor pone 1 pieza de 50. En 300 se enciende y gira.
+let NOR=null;if(J.noria){const[nx,nz]=J.noria.at||[-7.5,5.5],RAD=3.4,HUB=4.5,g=new THREE.Group();g.position.set(nx,0,nz);scene.add(g);const wheel=new THREE.Group();wheel.position.y=HUB;g.add(wheel);
+ const steel=new THREE.MeshStandardMaterial({color:0x8a94b8,roughness:.45,metalness:.3});[-1,1].forEach(sx=>[-1,1].forEach(sz=>{const L=Math.hypot(HUB,1.9),leg=new THREE.Mesh(new THREE.BoxGeometry(.2,L,.2),steel);leg.position.set(sx*.95,HUB/2,sz*.55);leg.rotation.z=sx*Math.atan2(1.9,HUB);g.add(leg)}));const axle=new THREE.Mesh(new THREE.BoxGeometry(.4,.4,1.5),steel);axle.position.y=HUB;g.add(axle);const base=new THREE.Mesh(new THREE.BoxGeometry(5,.3,2.2),new THREE.MeshStandardMaterial({color:0x2a3050,roughness:.8}));base.position.y=.15;g.add(base);
+ const NP=50,ghost=new THREE.MeshBasicMaterial({color:0xa8b8ff,transparent:true,opacity:.5,toneMapped:false}),gold=0xffc23a,pieces=[];for(let i=0;i<NP;i++){const a=i/NP*6.2832+1.57,p=new THREE.Mesh(new THREE.BoxGeometry(.5,.2,.38),ghost);p.position.set(Math.cos(a)*RAD,Math.sin(a)*RAD,0);p.rotation.z=a+1.57;wheel.add(p);pieces.push(p)}
+ const spokes=[];for(let i=0;i<8;i++){const a=i/8*6.2832+1.57,sp=new THREE.Mesh(new THREE.BoxGeometry(RAD,.07,.07),ghost);sp.position.set(Math.cos(a)*RAD/2,Math.sin(a)*RAD/2,0);sp.rotation.z=a;wheel.add(sp);spokes.push(sp)}
+ const COLS=[0xff4d6d,0x20e8d8,0xffc23a,0x7dff6a,0xff7a2e,0x8a7dff,0xff3fb0,0x4dc3ff];const gond=COLS.map((c,i)=>{const a=i/8*6.2832+1.57,q=box(.62,.56,.56,c,.08,{emissive:c,emissiveIntensity:.25});q.position.set(Math.cos(a)*RAD,Math.sin(a)*RAD-.42,0);wheel.add(q);return q});
+ const on=new THREE.MeshStandardMaterial({color:gold,emissive:gold,emissiveIntensity:.9,roughness:.4});const hot=new THREE.MeshBasicMaterial({color:0xffffff,toneMapped:false});const sprk=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex,color:0xffd040,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false}));scene.add(sprk);
+ NOR={x:nx,z:nz,HUB,RAD,draw(t,s){const a=TL.s2[0],b=TL.s3[1];const n0=Math.max(0,J.old-250),n1=Math.max(0,J.n-250);const cnt=n0+(n1-n0)*ss(a+.6,a+(TL.s2[1]-a)*.9,t);const k=Math.floor(cnt+1e-6);pieces.forEach((p,i)=>{p.material=i<k?on:ghost;p.scale.setScalar(i<k?1.25:1);if(i<k&&i===k-1&&cnt<n1)p.material=hot});gond.forEach((q,i)=>{const need=(i+1)*50/8;q.visible=cnt>=need-1;});spokes.forEach((sp,i)=>{sp.material=cnt>=(i+1)*50/8-1?on:ghost});
+  if(J.n>=300)wheel.rotation.z=t*.5;else wheel.rotation.z=Math.sin(t*.8)*.012;
+  const ang=k/50*6.2832+1.57;const wp=new THREE.Vector3(nx+Math.cos(ang)*RAD,HUB+Math.sin(ang)*RAD,nz+.3);sprk.position.copy(wp);const go=cnt<n1&&cnt>n0;const pul=.5+.5*Math.sin(t*30);sprk.visible=(s==='s2'||s==='s3')&&(go||s==='s3');sprk.scale.setScalar(go?2+pul*1.5:1.2+.5*Math.sin(t*4));sprk.material.opacity=go?.9:.65}}}
 const tmp=new THREE.Color(),black=new THREE.Color(0x0a0e22),amber=new THREE.Color(0xffc23a);
-window.renderAt=t=>{const s=seg(t);const{p,q}=camAt(t);if(panel){drawPanel(t);panel.visible=s!=='s2'}if(FW.length)drawFW(t);cam.position.copy(p);cam.lookAt(q);
+window.renderAt=t=>{const s=seg(t);const{p,q}=camAt(t);if(panel){drawPanel(t);panel.visible=s!=='s2'}if(NOR)NOR.draw(t,s);if(FW.length)drawFW(t);cam.position.copy(p);cam.lookAt(q);
  // cuántas encendidas
  const a1=TL.s1[0],b1=TL.s1[1];const lit=J.old+(J.n-J.old)*ss(a1+.5,b1-.25,t);
  const red_a=TL.s2?TL.s2[0]+1.4:1e9;
@@ -114,7 +125,7 @@ window.renderAt=t=>{const s=seg(t);const{p,q}=camAt(t);if(panel){drawPanel(t);pa
   }else{c=tmp.copy(black);
    const lead=s==='s3'||s==='cta';if(lead){const pu=.5+.5*Math.sin(t*4+i*.8);const k=J.goal>=500?.5:1;c.lerp(amber,(.1+.24*pu)*k);g=(.05+.08*pu)*k}
    if(J.vote&&i===lastIdx&&s==='cta'){const pu=.5+.5*Math.sin(t*7);c.set(0xffffff).multiplyScalar(.45+.55*pu);g=.7+.9*pu}}
-  if(J.hito&&i!==J.hito-1){const d=1-.68*ss(TL.s2[0]+.9,TL.s2[0]+1.5,t)*(1-ss(TL.s2[1]-.5,TL.s2[1],t));c.multiplyScalar(d);g*=d}else if(J.hito&&t>TL.s2[0]+1.2){c.set(0xffa800);g=1.6+.5*Math.sin(t*5)}wins.setColorAt(i,c);gc[i*3]=c.r*g;gc[i*3+1]=c.g*g;gc[i*3+2]=c.b*g});
+  if(J.hito&&i!==J.hito-1){const d=1-.68*ss(TL.s2[0]+.9,TL.s2[0]+1.5,t)*(1-ss(TL.s2[1]-.5,TL.s2[1],t));c.multiplyScalar(d);g*=d}else if(J.hito&&t>TL.s2[0]+1.2){c.set(0xffa800);g=1.6+.5*Math.sin(t*5)}if(J.noria){const dk=1-.72*ss(TL.s2[0]+.2,TL.s2[0]+.9,t)*(1-ss(TL.s3[1]-.6,TL.s3[1],t));c.multiplyScalar(dk);g*=dk}wins.setColorAt(i,c);gc[i*3]=c.r*g;gc[i*3+1]=c.g*g;gc[i*3+2]=c.b*g});
  col.needsUpdate=true;gg.attributes.color.needsUpdate=true;
  // grúa, balizas, coches
  crane.visible=s!=='s2';const U=crane.userData;U.J2.rotation.y=Math.sin(t*.32)*.4-.2;const tx=-3-1.7*Math.sin(t*.7),ln=2.2+1.1*Math.sin(t*.9);U.c.position.set(tx,-ln/2,0);U.c.scale.y=ln;U.beam.position.set(tx,-ln-.1,0);U.beam.rotation.y=Math.sin(t*.8)*.5;U.lamp.material.opacity=Math.floor(t*2)%2?1:.1;

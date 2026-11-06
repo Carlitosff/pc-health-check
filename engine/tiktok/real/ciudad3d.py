@@ -50,7 +50,7 @@ special = [dict(s, fresh=False, seq=0) for s in st["special"] if s["idx"] not in
 for i, s in enumerate(FRESH):
     special.append(dict(s, fresh=True, seq=i))
 FR = f"/home/claude/tiktok/v3d_frames/{SLUG}"
-job = dict(clock=getattr(globals().get("g"), "CLOCK", None), hito=getattr(globals().get("g"), "HITO", None), vote=getattr(globals().get("g"), "VOTE", False), old=OLD, n=N, goal=GOAL, tl={k: list(v) for k, v in P["tl"].items() if k in ("h", "s1", "s2", "s3", "cta")}, total=P["total"], mouth=mouth, special=special, frames=FR)
+job = dict(noria=getattr(globals().get("g"), "NORIA", None), clock=getattr(globals().get("g"), "CLOCK", None), hito=getattr(globals().get("g"), "HITO", None), vote=getattr(globals().get("g"), "VOTE", False), old=OLD, n=N, goal=GOAL, tl={k: list(v) for k, v in P["tl"].items() if k in ("h", "s1", "s2", "s3", "cta")}, total=P["total"], mouth=mouth, special=special, frames=FR)
 os.makedirs(FR, exist_ok=True)
 jf = f"{FR}/job.json"; json.dump(job, open(jf, "w"))
 print(f"{SLUG}: {P['total']:.1f}s  tl={job['tl']}")
@@ -75,7 +75,7 @@ def scene(c, t, P_):
     if a1 <= t < tl['cta'][0]:  # v16: en el CTA, el contador ya no pisa a la obrera
         k = K.smooth((t - a1 - .5) / max(.1, b1 - a1 - .75))
         n = OLD + (N - OLD) * k
-        if tl["s2"][0] - .1 < t < tl["s2"][1] - .3:
+        if tl["s2"][0] - .1 < t < (tl["s3"][1] if job.get("noria") else tl["s2"][1] - .3):  # v17: con noria, el contador no pisa la rueda
             if getattr(globals().get("g"), "HITO", None) and t > tl["s2"][0] + 1.4:
                 K.tag(c, W / 2, 1730, f"VENTANA Nº {g.HITO}", t - tl["s2"][0] - 1.4, accent=GOLD, size=52)
             return

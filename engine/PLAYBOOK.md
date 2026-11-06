@@ -23,6 +23,8 @@ El trabajo pesado tiene que estar terminado hacia las 07:00.
 
 > **AVISO 05/11 (motor v16):** el reto de 1.000 en 24 h terminó sin llegar; 1.000 queda como meta sin plazo hasta que Carlos elija otro reto. Render 3D: `render.mjs` añade desenfoque de movimiento en los cortes; ~1,9–2,9 s/frame con dos a la vez. Para esperar un render usa `ps aux | grep "[n]ombre"`: `pgrep -f nombre` se encuentra a sí mismo y cuelga el bucle. Si lanzas varias esperas, en serie, no en paralelo.
 
+> **AVISO 06/11 (motor v17):** multitudes y partículas en `v3d/bloques.js` (`crowd`, `puffs`, `snow`). Whisper en `check_voice` con los renders 3D en marcha tarda >8 min: lánzalo con nohup a un log, no en primer plano. Para matar un render no uses `ps | grep` con texto que también salga en tu propio comando (mata el shell). La CIUDAD tiene ya la noria hasta la 300 (`NORIA` en el guion). Franja: 10:00 rindió lo peor dos días seguidos; se está probando con otro formato (06/11).
+
 ## 0. Preparar el entorno (sesión nueva)
 
 ```bash
