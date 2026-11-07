@@ -25,6 +25,8 @@ El trabajo pesado tiene que estar terminado hacia las 07:00.
 
 > **AVISO 06/11 (motor v17):** multitudes y partículas en `v3d/bloques.js` (`crowd`, `puffs`, `snow`). Whisper en `check_voice` con los renders 3D en marcha tarda >8 min: lánzalo con nohup a un log, no en primer plano. Para matar un render no uses `ps | grep` con texto que también salga en tu propio comando (mata el shell). La CIUDAD tiene ya la noria hasta la 300 (`NORIA` en el guion). Franja: 10:00 rindió lo peor dos días seguidos; se está probando con otro formato (06/11).
 
+> **AVISO 07/11 (motor v18):** en `v3d/bloques.js` hay `label3d` (cifras y rótulos dentro de la escena), `ruler` (regla a escala), `plane`, `stars` y `voxGlobe`. En retratos 1080×1920 con fov 35 el ancho visible es ~0,35× la distancia: para que quepan dos personajes separados 5 u, la cámara va a ~25 u (los planos de 12–15 u del primer intento cortaban a los personajes). Comprueba `check_voice` también en el guion de la ciudad (hoy 'nueve más' salía 'nuevas').
+
 ## 0. Preparar el entorno (sesión nueva)
 
 ```bash
