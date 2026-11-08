@@ -27,6 +27,8 @@ El trabajo pesado tiene que estar terminado hacia las 07:00.
 
 > **AVISO 07/11 (motor v18):** en `v3d/bloques.js` hay `label3d` (cifras y rótulos dentro de la escena), `ruler` (regla a escala), `plane`, `stars` y `voxGlobe`. En retratos 1080×1920 con fov 35 el ancho visible es ~0,35× la distancia: para que quepan dos personajes separados 5 u, la cámara va a ~25 u (los planos de 12–15 u del primer intento cortaban a los personajes). Comprueba `check_voice` también en el guion de la ciudad (hoy 'nueve más' salía 'nuevas').
 
+> **AVISO 08/11 (motor v19):** el MITO vuelve al motor 2D (4 mitos 3D seguidos por debajo: media 788 vistas); el 2º 3D del día puede ser el RETO si la pregunta se enseña quieta y exacta y el 3D solo muestra la respuesta (`foldNet` en `v3d/bloques.js`, ejemplo `reto_plegado.py`). Anillos reutilizables: `ringSystem`, `skyArch`. Ciudad: guirnaldas de la noria desde la pieza 25. Mientras rendericen dos 3D a la vez y corra Whisper, el render baja a ~3–4 s/frame: lanza los 2D y la ciudad en cola (`/tmp/queue.sh`-style: espera al PID del primero) para no ahogar la CPU.
+
 ## 0. Preparar el entorno (sesión nueva)
 
 ```bash
