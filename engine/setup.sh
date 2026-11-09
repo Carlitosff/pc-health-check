@@ -8,7 +8,7 @@ pip install -q --break-system-packages skia-python onnxruntime numpy pillow scip
 which espeak-ng >/dev/null || (apt-get update -qq && apt-get install -y -q espeak-ng) || echo "aviso: espeak-ng no instalado"
 cd /home/claude/tts && [ -f kokoro-q8.onnx ] || { npm i -s kokoro-js kokoro-q8-shards >/dev/null; cat node_modules/kokoro-q8-shards/kokoro-q8.part{0..5}.bin > kokoro-q8.onnx; }
 # v6 voz (01/11 noche): modelo Kokoro v1.0 COMPLETO fp32 (GitHub kokoro-onnx), usado por core.VOICES kokoroN:em_alex
-cd /home/claude/tts && [ -f kokoro-v1.0.onnx ] || curl -sfL -o kokoro-v1.0.onnx https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/kokoro-v1.0.onnx
+cd /home/claude/tts && [ -f kokoro-v1.0.onnx ] || curl -sfL --retry 4 --retry-delay 5 -o kokoro-v1.0.onnx https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/kokoro-v1.0.onnx || { rm -f kokoro-v1.0.onnx; echo "aviso: Kokoro v1.0 (respaldo) no descargado"; }
 T3=https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/planets
 TX=https://raw.githubusercontent.com/jeromeetienne/threex.planets/master/images
 cd /home/claude/t3d/tex

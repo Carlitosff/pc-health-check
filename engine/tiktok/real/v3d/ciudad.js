@@ -127,7 +127,19 @@ if(NOR&&J.n-250>=25){const GB=[];const cols=[0xff4d6d,0xffc23a,0x20e8d8,0x7dff6a
   const wire=new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(Array.from({length:12},(_,k)=>{const u=k/11;const pp=top.clone().lerp(end,u);pp.y-=Math.sin(u*Math.PI)*1.1;return pp})),40,.025,4),new THREE.MeshStandardMaterial({color:0x1a1a22}));scene.add(wire)});
  const t0=Math.max(TL.s3?TL.s3[0]+.35:0,0);const _d=NOR.draw;NOR.draw=(t,s)=>{_d(t,s);GB.forEach((o,i)=>{const on=ss(t0+o.u*1.3,t0+o.u*1.3+.12,t);const tw=.75+.25*Math.sin(t*6+i*1.7);o.b.material.emissiveIntensity=on*2.2*tw;o.g.material.opacity=on*.85*tw})}}
 const tmp=new THREE.Color(),black=new THREE.Color(0x0a0e22),amber=new THREE.Color(0xffc23a);
-window.renderAt=t=>{const s=seg(t);const{p,q}=camAt(t);if(panel){drawPanel(t);panel.visible=s!=='s2'}if(NOR)NOR.draw(t,s);if(FW.length)drawFW(t);cam.position.copy(p);cam.lookAt(q);
+// --- v20 (09/11): FOCO BUSCADOR (J.spot): un cañón de luz barre la ciudad en s2 y se clava en la ventana nueva (J.n-1). Para días de pocas ventanas: se ve CUÁL es.
+let SPOT=null;if(J.spot){const W0=WIN[Math.min(J.n-1,WIN.length-1)],src=V3(W0.x+4.2,.2,W0.z+8);const L=1;const geo=new THREE.ConeGeometry(.55,1,32,1,true);geo.translate(0,-.5,0);geo.rotateX(-Math.PI/2);
+ const mat=new THREE.MeshBasicMaterial({color:0xfff0c0,transparent:true,opacity:.0,blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.DoubleSide,toneMapped:false});const beam=new THREE.Mesh(geo,mat);beam.position.copy(src);scene.add(beam);
+ const base=new THREE.Mesh(new THREE.CylinderGeometry(.45,.6,.5,16),new THREE.MeshStandardMaterial({color:0x30343c,roughness:.6}));base.position.set(src.x,.25,src.z);scene.add(base);
+ const lens=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex,color:0xfff2c0,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false}));lens.position.copy(src).add(V3(0,.3,0));lens.scale.setScalar(1.6);scene.add(lens);
+ const hal=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex,color:0xffe080,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false,opacity:0}));hal.position.set(W0.x,W0.y,W0.z+.25);scene.add(hal);
+ const a=TL.s2[0],lock=a+Math.min(2.2,(TL.s2[1]-a)*.55);const tgt=V3();
+ SPOT={lock,idx:Math.min(J.n-1,WIN.length-1),draw(t,s){const on=s==='s2'||s==='s3'||(s==='s1'&&t>TL.s1[1]-.6);beam.visible=base.visible=lens.visible=on;hal.visible=on||s==='cta';
+  const k=ss(a-.2,lock,t);const sw=(1-k);tgt.set(W0.x+Math.sin(t*2.3)*7*sw,W0.y+Math.cos(t*1.7)*4*sw,W0.z);
+  const d=src.distanceTo(tgt);beam.scale.set(1+d*.04,1+d*.04,d);beam.lookAt(tgt);beam.position.copy(src);mat.opacity=.10+.08*Math.sin(t*9)*(1-k)+.12*k;
+  const lk=ss(lock,lock+.25,t);hal.material.opacity=lk*(.85+.15*Math.sin(t*6));hal.scale.setScalar(1.2+2.2*lk+1.5*Math.exp(-Math.max(0,t-lock)*3)*lk)}};
+ shots.s2={p:V3(W0.x+1.3,W0.y+1.1,W0.z+13.5),q:V3(W0.x+.2,W0.y-.4,W0.z)}}
+window.renderAt=t=>{const s=seg(t);const{p,q}=camAt(t);if(panel){drawPanel(t);panel.visible=s!=='s2'}if(NOR)NOR.draw(t,s);if(SPOT)SPOT.draw(t,s);if(FW.length)drawFW(t);cam.position.copy(p);cam.lookAt(q);
  // cuántas encendidas
  const a1=TL.s1[0],b1=TL.s1[1];const lit=J.old+(J.n-J.old)*ss(a1+.5,b1-.25,t);
  const red_a=TL.s2?TL.s2[0]+1.4:1e9;
@@ -138,7 +150,7 @@ window.renderAt=t=>{const s=seg(t);const{p,q}=camAt(t);if(panel){drawPanel(t);pa
   }else{c=tmp.copy(black);
    const lead=s==='s3'||s==='cta';if(lead){const pu=.5+.5*Math.sin(t*4+i*.8);const k=J.goal>=500?.5:1;c.lerp(amber,(.1+.24*pu)*k);g=(.05+.08*pu)*k}
    if(J.vote&&i===lastIdx&&s==='cta'){const pu=.5+.5*Math.sin(t*7);c.set(0xffffff).multiplyScalar(.45+.55*pu);g=.7+.9*pu}}
-  if(J.hito&&i!==J.hito-1){const d=1-.68*ss(TL.s2[0]+.9,TL.s2[0]+1.5,t)*(1-ss(TL.s2[1]-.5,TL.s2[1],t));c.multiplyScalar(d);g*=d}else if(J.hito&&t>TL.s2[0]+1.2){c.set(0xffa800);g=1.6+.5*Math.sin(t*5)}if(J.noria){const dk=1-.72*ss(TL.s2[0]+.2,TL.s2[0]+.9,t)*(1-ss(TL.s3[1]-.6,TL.s3[1],t));c.multiplyScalar(dk);g*=dk}wins.setColorAt(i,c);gc[i*3]=c.r*g;gc[i*3+1]=c.g*g;gc[i*3+2]=c.b*g});
+  if(J.hito&&i!==J.hito-1){const d=1-.68*ss(TL.s2[0]+.9,TL.s2[0]+1.5,t)*(1-ss(TL.s2[1]-.5,TL.s2[1],t));c.multiplyScalar(d);g*=d}else if(J.hito&&t>TL.s2[0]+1.2){c.set(0xffa800);g=1.6+.5*Math.sin(t*5)}if(J.noria){const dk=1-.72*ss(TL.s2[0]+.2,TL.s2[0]+.9,t)*(1-ss(TL.s3[1]-.6,TL.s3[1],t));c.multiplyScalar(dk);g*=dk}if(SPOT&&i===SPOT.idx){const on=ss(SPOT.lock,SPOT.lock+.2,t);if(on>0){c.lerp(new THREE.Color(0xfff2b0),on);g=Math.max(g,(1.8+.6*Math.sin(t*6))*on)}}wins.setColorAt(i,c);gc[i*3]=c.r*g;gc[i*3+1]=c.g*g;gc[i*3+2]=c.b*g});
  col.needsUpdate=true;gg.attributes.color.needsUpdate=true;
  // grúa, balizas, coches
  crane.visible=s!=='s2';const U=crane.userData;U.J2.rotation.y=Math.sin(t*.32)*.4-.2;const tx=-3-1.7*Math.sin(t*.7),ln=2.2+1.1*Math.sin(t*.9);U.c.position.set(tx,-ln/2,0);U.c.scale.y=ln;U.beam.position.set(tx,-ln-.1,0);U.beam.rotation.y=Math.sin(t*.8)*.5;U.lamp.material.opacity=Math.floor(t*2)%2?1:.1;
@@ -151,4 +163,4 @@ window.renderAt=t=>{const s=seg(t);const{p,q}=camAt(t);if(panel){drawPanel(t);pa
  const c0=s==='cta'||s==='h';const wave=c0?(.5+.5*Math.sin(t*6)):0;armR.rotation.z=c0?2.55+wave*.35:.16+Math.sin(t*1.7)*.05;armR.rotation.x=0;armL.rotation.z=-.16-Math.sin(t*1.5)*.05-m*.25;armL.rotation.x=-m*.5;
  hero.visible=lift.visible=!(J.hito&&s==='s2');hero.rotation.y=-.1+Math.sin(t*.6)*.05;hero.position.y=Math.abs(Math.sin(t*2.1))*.03;
  r.render(scene,cam);return true};
-window.layout={wins:WIN.length,blds:blds.length,lastBuilt:LAST.floors};window.ready=true;
+window.layout={w283:J.spot?[WIN[J.n-1].x,WIN[J.n-1].y,WIN[J.n-1].z,wideZ]:0,wins:WIN.length,blds:blds.length,lastBuilt:LAST.floors};if(J.spot&&J.debug)console.error("LAYOUT",JSON.stringify(window.layout),JSON.stringify(blds.map(b=>[b.x,b.z,b.w,b.d,b.h].map(v=>v==null?null:+(+v).toFixed(2)))));window.ready=true;

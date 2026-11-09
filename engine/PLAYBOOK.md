@@ -29,6 +29,8 @@ El trabajo pesado tiene que estar terminado hacia las 07:00.
 
 > **AVISO 08/11 (motor v19):** el MITO vuelve al motor 2D (4 mitos 3D seguidos por debajo: media 788 vistas); el 2º 3D del día puede ser el RETO si la pregunta se enseña quieta y exacta y el 3D solo muestra la respuesta (`foldNet` en `v3d/bloques.js`, ejemplo `reto_plegado.py`). Anillos reutilizables: `ringSystem`, `skyArch`. Ciudad: guirnaldas de la noria desde la pieza 25. Mientras rendericen dos 3D a la vez y corra Whisper, el render baja a ~3–4 s/frame: lanza los 2D y la ciudad en cola (`/tmp/queue.sh`-style: espera al PID del primero) para no ahogar la CPU.
 
+> **AVISO 09/11 (motor v20):** CIUDAD con foco buscador (`SPOT=True` en el guion): úsalo los días de pocas ventanas, el vídeo prometió 'mañana el foco busca tu ventana'. Si un día crece poco (+1), dilo tal cual en el gancho; no se celebra como hito. Franja en prueba: SERIE 17:30 y MITO 19:30 (el mito a las 17:30 cayó 4 días seguidos, también en 2D). Escenas nuevas: `roche.js` (`tideMoon`), `agua.js` (`glass`). En planos espaciales verticales, gira la cámara 90° (`cam.rotateZ`) y bájala con `translateY` para que nada quede bajo los subtítulos. `cam.far` por defecto es corto: súbelo si usas `skyArch` o grupos lejanos.
+
 ## 0. Preparar el entorno (sesión nueva)
 
 ```bash

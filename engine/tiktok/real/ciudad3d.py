@@ -50,7 +50,7 @@ special = [dict(s, fresh=False, seq=0) for s in st["special"] if s["idx"] not in
 for i, s in enumerate(FRESH):
     special.append(dict(s, fresh=True, seq=i))
 FR = f"/home/claude/tiktok/v3d_frames/{SLUG}"
-job = dict(noria=getattr(globals().get("g"), "NORIA", None), clock=getattr(globals().get("g"), "CLOCK", None), hito=getattr(globals().get("g"), "HITO", None), vote=getattr(globals().get("g"), "VOTE", False), old=OLD, n=N, goal=GOAL, tl={k: list(v) for k, v in P["tl"].items() if k in ("h", "s1", "s2", "s3", "cta")}, total=P["total"], mouth=mouth, special=special, frames=FR)
+job = dict(spot=getattr(globals().get("g"), "SPOT", None), noria=getattr(globals().get("g"), "NORIA", None), clock=getattr(globals().get("g"), "CLOCK", None), hito=getattr(globals().get("g"), "HITO", None), vote=getattr(globals().get("g"), "VOTE", False), old=OLD, n=N, goal=GOAL, tl={k: list(v) for k, v in P["tl"].items() if k in ("h", "s1", "s2", "s3", "cta")}, total=P["total"], mouth=mouth, special=special, frames=FR)
 os.makedirs(FR, exist_ok=True)
 jf = f"{FR}/job.json"; json.dump(job, open(jf, "w"))
 print(f"{SLUG}: {P['total']:.1f}s  tl={job['tl']}")
