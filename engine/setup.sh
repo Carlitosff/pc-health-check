@@ -5,7 +5,7 @@ R=$(cd "$(dirname "$0")" && pwd)
 mkdir -p /home/claude/tiktok /home/claude/tts /home/claude/tts2 /home/claude/t3d/tex
 cp -r "$R/tiktok/." /home/claude/tiktok/; cp "$R/tts/"* /home/claude/tts/; cp "$R/tts2/"* /home/claude/tts2/
 pip install -q --break-system-packages skia-python onnxruntime numpy pillow scipy sherpa-onnx num2words
-which espeak-ng >/dev/null || (apt-get update -qq && apt-get install -y -q espeak-ng) || echo "aviso: espeak-ng no instalado"
+which espeak-ng >/dev/null || (timeout 120 apt-get update -qq && timeout 180 apt-get install -y -q espeak-ng) || echo "aviso: espeak-ng no instalado"  # v21: timeout, el 10/11 se colgó
 cd /home/claude/tts && [ -f kokoro-q8.onnx ] || { npm i -s kokoro-js kokoro-q8-shards >/dev/null; cat node_modules/kokoro-q8-shards/kokoro-q8.part{0..5}.bin > kokoro-q8.onnx; }
 # v6 voz (01/11 noche): modelo Kokoro v1.0 COMPLETO fp32 (GitHub kokoro-onnx), usado por core.VOICES kokoroN:em_alex
 cd /home/claude/tts && [ -f kokoro-v1.0.onnx ] || curl -sfL --retry 4 --retry-delay 5 -o kokoro-v1.0.onnx https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/kokoro-v1.0.onnx || { rm -f kokoro-v1.0.onnx; echo "aviso: Kokoro v1.0 (respaldo) no descargado"; }

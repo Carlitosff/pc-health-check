@@ -31,6 +31,8 @@ El trabajo pesado tiene que estar terminado hacia las 07:00.
 
 > **AVISO 09/11 (motor v20):** CIUDAD con foco buscador (`SPOT=True` en el guion): úsalo los días de pocas ventanas, el vídeo prometió 'mañana el foco busca tu ventana'. Si un día crece poco (+1), dilo tal cual en el gancho; no se celebra como hito. Franja en prueba: SERIE 17:30 y MITO 19:30 (el mito a las 17:30 cayó 4 días seguidos, también en 2D). Escenas nuevas: `roche.js` (`tideMoon`), `agua.js` (`glass`). En planos espaciales verticales, gira la cámara 90° (`cam.rotateZ`) y bájala con `translateY` para que nada quede bajo los subtítulos. `cam.far` por defecto es corto: súbelo si usas `skyArch` o grupos lejanos.
 
+> **AVISO 10/11 (motor v21):** CIUDAD: `SPOT=dict(sweep=True)` hace que el foco recorra una a una todas las ventanas nuevas del día; `NORIA=dict(seg='s3', fill=.42)` llena la noria en s3 y, el día que cruza la pieza 50, la noria ARRANCA en ese momento (ya está completa desde el 10/11: desde ahora gira siempre). La FRANJA DE 17:30 lleva 5 días por debajo de 1.000 con cualquier formato (mito 2D, mito 3D y la serie, que a las 19:30 hace ~1.350): la serie se queda a las 19:30; si el 10/11 el mito vuelve a caer a las 17:30, proponer a Carlos mover esa franja (p. ej. 15:00). `setup.sh`: si `apt-get update` se cuelga (10/11 colgó >10 min), mata el proceso apt por PID y el setup sigue sin espeak-ng (no hace falta). Escenas nuevas: `giro.js` (playa del ecuador, báscula, ciclo día/noche), `rayo.js` (tormenta, relámpagos, guardabosques).
+
 ## 0. Preparar el entorno (sesión nueva)
 
 ```bash
