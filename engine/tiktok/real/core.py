@@ -695,6 +695,18 @@ def build_audio(V, P, path, extra=None):
     m.boom(0.0, 0.3)
     if extra:
         extra(m, P)
+    # v22 (11/11): SILENCIO TOTAL CONTROLADO. V['hush']='id_segmento' (o lista) apaga TODO (música, dron, pops, extra) en la pausa de ese
+    # segmento, desde que acaba la voz hasta el corte, con rampas de 0,15 s. Para pruebas que dependen del silencio (GIF que 'suena', escuchar
+    # tu propio cuerpo): sin esto la cama musical y los pops de los subtítulos tapaban justo lo que se pide al espectador que note.
+    hs = V.get("hush")
+    if hs:
+        tt2 = np.arange(len(m.buf)) / SR
+        g = np.ones(len(m.buf))
+        for sid in ([hs] if isinstance(hs, str) else hs):
+            sg = [x for x in P["segs"] if x["id"] == sid][0]
+            a, b = sg["speech"][1] + 0.08, sg["b"] - 0.05
+            g = np.minimum(g, np.clip(np.maximum((a - tt2) / 0.15, (tt2 - b) / 0.15), 0, 1))
+        m.buf *= g
     # v6: cola de audio en fundido (los últimos LOOP_DUR s) para que el bucle no dé un 'clic' al reiniciar
     i0, i1 = int((total - LOOP_DUR) * SR), min(len(m.buf), int(total * SR))
     m.buf[i0:i1] *= np.linspace(1, 0, i1 - i0) ** 1.5
