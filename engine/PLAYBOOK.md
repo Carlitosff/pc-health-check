@@ -35,6 +35,8 @@ El trabajo pesado tiene que estar terminado hacia las 07:00.
 
 > **AVISO 11/11 (motor v22):** `V['hush']='<id>'` deja en silencio total la pausa de ese segmento (pruebas que dependen de escuchar). VEREDICTO 3D tras 7 días (en learnings): el 3D sube likes/1.000 (+31 %) y view rate, pero tiene −17 % de vistas, el mismo tiempo medio y 0 envíos; propuesto a Carlos dejar el 3D solo para la SERIE y la CIUDAD. Hasta que conteste, 2 en 3D al día como pide el prompt. Las vistas caen todos los días desde el 04/11 en todos los formatos (463 de media el 10/11): prioriza ganchos que no pidan material y respuestas SÍ/NO. Franja: el 11/11 el RETO va a las 17:30 y el MITO a las 13:00 para separar franja y formato. Escenas nuevas: `ovejas.js` (oveja = personaje nº 3, cama, dormitorio, reloj, laboratorio con burbujas) e `inclina.js` (globo con eje que se endereza, reloj de sol con sombra real, polo).
 
+> **AVISO 12/11 (motor v23):** ilusiones AUDITIVAS por código en `real/ilusion_audio.py` (Shepard–Risset; `layers(t)` para dibujar lo mismo que suena; `core.run(..., extra_audio=IA.mixer_hook(gain))` y `music=0`). Escenas nuevas: `v3d/arana.js` (`spider()`, `bed()`, `lieDown()` en `bloques.js`) y `v3d/cerca.js` (Sol de cubos, eje vertical Sol arriba/Tierra abajo, medidor de luz). Datos 11/11: las 17:30 no hunden un RETO (1.221); el MITO cae en cualquier franja y motor (6 de 6 <1.000): si el 2003 (arañas, 17:30) cae también, proponer a Carlos cambiar el hueco del mito por una 2ª prueba en directo SÍ/NO. Mientras renderizan dos 3D a la vez el render va a ~3,5 s/frame (unos 65 min por vídeo): lanza los 3D lo antes posible y programa los 2D en cuanto estén.
+
 ## 0. Preparar el entorno (sesión nueva)
 
 ```bash

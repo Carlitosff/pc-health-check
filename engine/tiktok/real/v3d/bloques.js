@@ -88,3 +88,23 @@ export function skyArch({r=520,w=90,center=[0,-330,-620],tilt=-.3,seed=5}={}){co
  const mat=new THREE.MeshBasicMaterial({map:bandTex((r-w)/r,{seed}),transparent:true,opacity:.8,side:THREE.DoubleSide,fog:false,depthWrite:false,toneMapped:false});const m=new THREE.Mesh(new THREE.RingGeometry(r-w,r,256,1,0,Math.PI),mat);g.add(m);
  const sh=new THREE.Mesh(new THREE.RingGeometry(r-w-2,r+2,64,1,Math.PI/2-.11,.22),new THREE.MeshBasicMaterial({color:0x02030a,transparent:true,opacity:0,fog:false,depthWrite:false,side:THREE.DoubleSide}));sh.position.z=.5;sh.renderOrder=3;m.renderOrder=1;g.add(sh);
  return{g,draw(t,{night=0,gap=0}={}){mat.opacity=.85+.15*night;mat.color.setScalar(1+.25*night);sh.material.opacity=.85*gap}}}
+// v23 (12/11): ARAÑA de bloques (personaje propio, diseño de la cuenta: cuerpo granate con rombo naranja, 8 ojos brillantes) y CAMA reutilizable.
+// spider(s): o.g, o.walk(fase) anda con marcha alterna de 4+4 patas, o.freeze(k) encoge las patas (susto), o.wave(t) saluda con una pata delantera.
+export function spider(s=1){const g=new THREE.Group();const body=new THREE.Group();g.add(body);body.position.y=.9;
+ const ab=box(1.5,1.1,1.8,0x5a1e24,.4);ab.position.set(0,.25,-1.05);body.add(ab);const mark=box(.6,.08,.6,0xff8a2a,.05,{emissive:0xff6a10,emissiveIntensity:.35});mark.position.set(0,.82,-1.05);mark.rotation.y=Math.PI/4;body.add(mark);
+ const ce=box(1.05,.75,1.05,0x3a1418,.3);ce.position.set(0,.1,.2);body.add(ce);
+ const eyes=[];[[-.22,.32,.74,.13],[.22,.32,.74,.13],[-.42,.22,.68,.08],[.42,.22,.68,.08],[-.12,.5,.66,.07],[.12,.5,.66,.07],[-.3,.5,.6,.06],[.3,.5,.6,.06]].forEach(([x,y,z,r])=>{const e=new THREE.Mesh(new THREE.SphereGeometry(r,10,8),new THREE.MeshBasicMaterial({color:0xfff4e0,toneMapped:false}));e.position.set(x,y,z);body.add(e);eyes.push(e)});
+ [-1,1].forEach(x=>{const f=box(.16,.32,.16,0x2a0e10,.04);f.position.set(x*.14,-.18,.72);body.add(f)});
+ const legs=[];for(let side of[-1,1])for(let i=0;i<4;i++){const hip=new THREE.Group();hip.position.set(side*.45,.05,.55-i*.36);hip.rotation.y=side*(-.75+i*.5)+(side<0?Math.PI:0);body.add(hip);
+  const up=new THREE.Group();up.rotation.z=.75;hip.add(up);const u=box(1.15,.16,.16,0x3a1418,.05);u.position.x=.55;up.add(u);
+  const kn=new THREE.Group();kn.position.x=1.12;up.add(kn);kn.rotation.z=-1.9;const l=box(1.35,.13,.13,0x2a0e10,.05);l.position.x=.66;kn.add(l);
+  legs.push({hip,up,kn,side,i,base:hip.rotation.y})}
+ g.scale.setScalar(s);
+ const o={g,body,eyes,legs,walk(ph){legs.forEach(L=>{const p=ph+((L.i+(L.side>0?1:0))%2)*Math.PI;L.hip.rotation.y=L.base+Math.sin(p)*.28;L.up.rotation.z=.75+Math.max(0,Math.cos(p))*.35;L.kn.rotation.z=-1.9});body.position.y=.9+Math.abs(Math.sin(ph*2))*.05},
+  freeze(k){legs.forEach(L=>{L.up.rotation.z=.75+.55*k;L.kn.rotation.z=-1.9-.6*k});body.position.y=.9-.35*k},
+  wave(t){const L=legs[0];L.up.rotation.z=1.6+Math.sin(t*7)*.35;L.kn.rotation.z=-1.1}};
+ return o}
+export function bed(col=0x3a6fd8){const g=new THREE.Group();const fr=box(4.4,.8,7,0x7a4e2e,.08);fr.position.y=.6;g.add(fr);const mat=box(4.1,.5,6.6,0xf2efe8,.15);mat.position.y=1.2;g.add(mat);
+ const hb=box(4.6,3,.4,0x7a4e2e,.1);hb.position.set(0,1.6,-3.4);g.add(hb);const pil=box(2.6,.5,1.3,0xffffff,.22);pil.position.set(0,1.65,-2.4);g.add(pil);return g}
+// persona TUMBADA boca arriba sobre una cama de bed() (cabeza en la almohada); devuelve la manta para animar la respiración
+export function lieDown(o,B,col=0x3a6fd8){o.g.rotation.x=-Math.PI/2;o.g.position.set(0,1.92,1.25);B.add(o.g);const bl=box(4.3,.9,4.6,col,.25);bl.position.set(0,2.15,1.15);B.add(bl);const fold=box(4.32,.92,.6,0xf4f4f4,.22);fold.position.set(0,2.17,-1.05);B.add(fold);return{blanket:bl,fold}}
