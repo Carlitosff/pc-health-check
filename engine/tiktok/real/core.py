@@ -361,14 +361,13 @@ def plane_icon(c, x, y, s, col=INK):
     c.restore()
 
 
-def send_pill(c, t, lt, txt):
+def send_pill(c, t, lt, txt, y=1500):
     """v7 (29/10): llamada a ENVIAR. En IG 2026 los 'sends' (compartir por DM) son la señal que más alcance da a
     no-seguidores; el reel con más compartidos (dedo flotante, 8) fue de los que más vistas sumó. Pill blanca con
     avión de papel que sale volando en bucle hacia arriba a la derecha."""
     s = ease_back(prog(lt, 0.75, 1.1), 2.2)
     if s <= 0:
         return
-    y = 1500
     f = font(40, TF_XBOLD)
     w = text_w(txt, f) + 70
     c.save(); c.translate(W / 2, y); c.scale(s, s)
@@ -417,6 +416,25 @@ def hook_extras(c, t, V, total):
         s = ease_back(prog(t, 0.5, 0.85), 2.4)
         # v13 (03/11): la pill iba a y=288, DEBAJO del gancho XL de 3 líneas (se veía un manchón rosa entre las letras)
         pill(c, W / 2, V.get("tease_y", 672), tease, 28, bg=0xFFFE2C55, fg=WHITE, alpha=a, scale=s * (1 + 0.04 * math.sin(t * 10)))
+
+
+def dare(c, t, V, P):
+    """v24 (13/11): ENVÍO EN CALIENTE. V['dare']=(seg, 'TEXTO'[, y]) saca la pill de enviar (avión de papel) DURANTE la pregunta,
+    antes de la solución, 3 s desde el inicio de ese segmento. Motivo: 7 días seguidos con 0 envíos con la llamada solo en el CTA,
+    cuando ya se sabe la respuesta y no hay a quién retar; el impulso de 'a ver si mi amigo lo saca' existe mientras no se sabe."""
+    d = V.get("dare")
+    if not d:
+        return
+    sid, txt = d[0], d[1]
+    y = d[2] if len(d) > 2 else 1500
+    a = P["tl"].get(sid, (None,))[0]
+    if a is None or not (a <= t < a + 3.2):
+        return
+    lt = t - a
+    out = clamp((a + 3.2 - t) / 0.3)
+    c.saveLayerAlpha(None, int(255 * out))
+    send_pill(c, t, lt + 0.75, txt, y=y)
+    c.restore()
 
 
 def rehook_t(V, P):
@@ -546,6 +564,7 @@ def make_frame(V, P, scene):
         hook_extras(c, t, V, total)
         rehook(c, t, V, P)
         reveal(c, t, V, P)
+        dare(c, t, V, P)
         P["caps"].draw(c, t)
         if steady:
             return

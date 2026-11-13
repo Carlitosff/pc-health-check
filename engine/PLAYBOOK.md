@@ -37,6 +37,8 @@ El trabajo pesado tiene que estar terminado hacia las 07:00.
 
 > **AVISO 12/11 (motor v23):** ilusiones AUDITIVAS por código en `real/ilusion_audio.py` (Shepard–Risset; `layers(t)` para dibujar lo mismo que suena; `core.run(..., extra_audio=IA.mixer_hook(gain))` y `music=0`). Escenas nuevas: `v3d/arana.js` (`spider()`, `bed()`, `lieDown()` en `bloques.js`) y `v3d/cerca.js` (Sol de cubos, eje vertical Sol arriba/Tierra abajo, medidor de luz). Datos 11/11: las 17:30 no hunden un RETO (1.221); el MITO cae en cualquier franja y motor (6 de 6 <1.000): si el 2003 (arañas, 17:30) cae también, proponer a Carlos cambiar el hueco del mito por una 2ª prueba en directo SÍ/NO. Mientras renderizan dos 3D a la vez el render va a ~3,5 s/frame (unos 65 min por vídeo): lanza los 3D lo antes posible y programa los 2D en cuanto estén.
 
+> **AVISO 13/11 (motor v24):** `V['dare']=(seg, 'TEXTO'[, y])` saca la pill de enviar durante 3 s al empezar ese segmento, con la pregunta todavía abierta (7 días con 0 envíos con la llamada solo en el CTA). Úsalo en retos y pruebas que NO sean de fijar la vista (en las `steady` rompe la ilusión). Texto ≤22 caracteres. Escenas nuevas: `v3d/sonambulo.js` (casa de noche con escalera, pose de sonámbulo, despertar confuso; `fov` por plano en interiores) y `v3d/lejos.js` (hielo que avanza desde los polos, límite y franja de zona habitable). Datos 12/11: el MITO volvió a pasar de 1.000 (arañas 1.160): no se propone todavía cambiar su hueco. Pasa `check_voice` ANTES del render aunque Whisper vaya lento (hoy el 3D se lanzó antes y el check se hizo con el render en marcha).
+
 ## 0. Preparar el entorno (sesión nueva)
 
 ```bash
