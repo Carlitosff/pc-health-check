@@ -39,6 +39,8 @@ El trabajo pesado tiene que estar terminado hacia las 07:00.
 
 > **AVISO 13/11 (motor v24):** `V['dare']=(seg, 'TEXTO'[, y])` saca la pill de enviar durante 3 s al empezar ese segmento, con la pregunta todavía abierta (7 días con 0 envíos con la llamada solo en el CTA). Úsalo en retos y pruebas que NO sean de fijar la vista (en las `steady` rompe la ilusión). Texto ≤22 caracteres. Escenas nuevas: `v3d/sonambulo.js` (casa de noche con escalera, pose de sonámbulo, despertar confuso; `fov` por plano en interiores) y `v3d/lejos.js` (hielo que avanza desde los polos, límite y franja de zona habitable). Datos 12/11: el MITO volvió a pasar de 1.000 (arañas 1.160): no se propone todavía cambiar su hueco. Pasa `check_voice` ANTES del render aunque Whisper vaya lento (hoy el 3D se lanzó antes y el check se hizo con el render en marcha).
 
+> **AVISO 14/11 (motor v25):** `real/palillos.py`: `candidates()` da 150 retos de palillos con solución ÚNICA entre dos números (añade el usado a `USED`). La pill `dare` en el reto coincidió con 10 comentarios (13/11): mantenla en retos y pruebas no fijas. Escenas nuevas: `v3d/dossoles.js` (`mkSun`: dos soles con dos sombras reales, doble atardecer, sistema binario, órbitas 1 y √2) y `v3d/leer.js` (dormitorio con linterna volumétrica, lectora incorporada, ojo de vóxeles con párpado y medidor de vista). En `skia` `image.toarray()` devuelve BGRA: invierte canales antes de tratar color por píxel.
+
 ## 0. Preparar el entorno (sesión nueva)
 
 ```bash
