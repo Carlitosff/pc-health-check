@@ -41,6 +41,8 @@ El trabajo pesado tiene que estar terminado hacia las 07:00.
 
 > **AVISO 14/11 (motor v25):** `real/palillos.py`: `candidates()` da 150 retos de palillos con solución ÚNICA entre dos números (añade el usado a `USED`). La pill `dare` en el reto coincidió con 10 comentarios (13/11): mantenla en retos y pruebas no fijas. Escenas nuevas: `v3d/dossoles.js` (`mkSun`: dos soles con dos sombras reales, doble atardecer, sistema binario, órbitas 1 y √2) y `v3d/leer.js` (dormitorio con linterna volumétrica, lectora incorporada, ojo de vóxeles con párpado y medidor de vista). En `skia` `image.toarray()` devuelve BGRA: invierte canales antes de tratar color por píxel.
 
+> **AVISO 15/11 (motor v26):** CIUDAD: `SIGN=dict(lines=[..], seg='s3', col='#hex')` en el guion pone un cartel de neón sobre la ventana nueva (con `FRESH` del mismo color, y se añade a `ciudad_state.json` tras publicar). Escenas nuevas: `v3d/crece.js` (báscula, salto con regla, globos ×2, cohete) y `v3d/pelo.js` (calle de invierno, `virus()`, laboratorio con barras 3D, nariz por dentro). Las pruebas de COLOR con píxel medido dan el mejor tiempo medio de la cuenta (fresas 25,7 s): la de hoy es la rejilla de asimilación (no repetir). Propuesto a Carlos sustituir el hueco del MITO (8 de 9 <1.000); hasta que conteste, la mezcla del prompt.
+
 ## 0. Preparar el entorno (sesión nueva)
 
 ```bash

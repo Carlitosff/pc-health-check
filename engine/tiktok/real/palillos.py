@@ -2,10 +2,10 @@
 Uso: from palillos import solutions, candidates
   solutions(7, '+', 6, 1) -> {(1,'+',6,7, i_origen, seg_origen, j_destino, seg_destino)}  (0=1er número, 1=signo, 2=2º número, 3=resultado)
   candidates() -> lista de (a, op, b, c, solución) con solución ÚNICA, para elegir el reto del día sin repetir (ver used_topics.md).
-Usados: 5+7=2 (13/11, → 9−7=2), 7+6=1 (14/11, → 1+6=7)."""
+Usados: 5+7=2 (13/11, → 9−7=2), 7+6=1 (14/11, → 1+6=7), 3+8=5 (15/11, → 3+6=9)."""
 SEG7 = {0: 'abcdef', 1: 'bc', 2: 'abged', 3: 'abgcd', 4: 'fgbc', 5: 'afgcd', 6: 'afgedc', 7: 'abc', 8: 'abcdefg', 9: 'abcdfg'}
 INV = {frozenset(v): k for k, v in SEG7.items()}
-USED = {(5, '+', 7, 2), (7, '+', 6, 1)}
+USED = {(5, '+', 7, 2), (7, '+', 6, 1), (3, '+', 8, 5)}
 
 
 def solutions(a, op, b, c_):

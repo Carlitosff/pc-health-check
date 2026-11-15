@@ -136,13 +136,23 @@ let SPOT=null;if(J.spot){const W0=WIN[Math.min(J.n-1,WIN.length-1)],src=V3(W0.x+
  const lens=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex,color:0xfff2c0,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false}));lens.position.copy(src).add(V3(0,.3,0));lens.scale.setScalar(1.6);scene.add(lens);
  const hal=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex,color:0xffe080,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false,opacity:0}));hal.position.set(W0.x,W0.y,W0.z+.25);scene.add(hal);
  const a=TL.s2[0],lock=a+Math.min(2.2,(TL.s2[1]-a)*.55);const tgt=V3();
- SPOT={lock,idx:Math.min(J.n-1,WIN.length-1),draw(t,s){const on=s==='s2'||s==='s3'||(s==='s1'&&t>TL.s1[1]-.6);beam.visible=base.visible=lens.visible=on;hal.visible=on||s==='cta';
+ SPOT={lock,idx:Math.min(J.n-1,WIN.length-1),draw(t,s){const on=s==='s2'||s==='s3'||(s==='s1'&&t>TL.s1[1]-.6);const sg=J.sign&&t>TL[J.sign.seg||'s3'][0]+.35;beam.visible=base.visible=lens.visible=on&&!sg;hal.visible=(on||s==='cta')&&!sg;
   const k=ss(a-.2,lock,t);const sw=(1-k);if(J.spot.sweep&&J.n-J.old>1){const u=ss(a+.1,lock-.15,t),j=Math.min(J.n-1,J.old+Math.floor(u*(J.n-J.old))),Wj=WIN[Math.min(j,WIN.length-1)];tgt.set(Wj.x,Wj.y,Wj.z);SPOT.cur=j}else tgt.set(W0.x+Math.sin(t*2.3)*7*sw,W0.y+Math.cos(t*1.7)*4*sw,W0.z);// v21: con sweep el foco recorre UNA A UNA las ventanas nuevas
   const d=src.distanceTo(tgt);beam.scale.set(1+d*.04,1+d*.04,d);beam.lookAt(tgt);beam.position.copy(src);mat.opacity=.10+.08*Math.sin(t*9)*(1-k)+.12*k;
   const lk=ss(lock,lock+.25,t);hal.material.opacity=lk*(.85+.15*Math.sin(t*6));hal.scale.setScalar(1.2+2.2*lk+1.5*Math.exp(-Math.max(0,t-lock)*3)*lk)}};
  if(J.spot.sweep){const nw=WIN.slice(J.old,J.n);const cx=nw.reduce((s,w)=>s+w.x,0)/nw.length,cy=nw.reduce((s,w)=>s+w.y,0)/nw.length,cz=Math.max(...nw.map(w=>w.z));const ex=Math.max(...nw.map(w=>Math.abs(w.x-cx)),...nw.map(w=>Math.abs(w.y-cy)*.56));const D=Math.max(15,ex/.17+4)+(J.spot.dz||0);shots.s2={p:V3(cx+1,cy+1.2,cz+D),q:V3(cx,cy-.2,cz)}}else
  shots.s2={p:V3(W0.x+1.3,W0.y+1.1,W0.z+13.5),q:V3(W0.x+.2,W0.y-.4,W0.z)}}
-window.renderAt=t=>{const s=seg(t);const{p,q}=camAt(t);if(panel){drawPanel(t);panel.visible=s!=='s2'}if(NOR)NOR.draw(t,s);if(SPOT)SPOT.draw(t,s);if(FW.length)drawFW(t);cam.position.copy(p);cam.lookAt(q);
+// --- v26 (15/11): CARTEL DE NEÓN (J.sign = {lines:['π','3,14'], seg:'s3', col:'#ff3fb0'}): rótulo luminoso que se enciende con parpadeo de neón encima de la ventana nueva (J.n-1); el plano de ese segmento lo encuadra y la ventana no se apaga con la noria.
+let SIGN=null;if(J.sign){const W0=WIN[Math.min(J.n-1,WIN.length-1)],c=document.createElement('canvas');c.width=512;c.height=384;const g=c.getContext('2d');const col=J.sign.col||'#ff3fb0';
+ g.fillStyle='rgba(18,8,30,.82)';g.beginPath();g.roundRect(16,16,480,352,40);g.fill();g.lineWidth=12;g.strokeStyle=col;g.shadowColor=col;g.shadowBlur=30;g.stroke();g.textAlign='center';g.textBaseline='middle';g.fillStyle='#fff';
+ g.font='900 190px serif';g.fillText(J.sign.lines[0],256,150);g.font='900 92px sans-serif';g.fillStyle=col;g.fillText(J.sign.lines[1]||'',256,300);
+ const tx=new THREE.CanvasTexture(c);tx.colorSpace=THREE.SRGBColorSpace;const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:tx,transparent:true,toneMapped:false,depthTest:false,fog:false}));sp.renderOrder=20;scene.add(sp);
+ const hl=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex,color:new THREE.Color(col),transparent:true,blending:THREE.AdditiveBlending,depthWrite:false,fog:false}));scene.add(hl);
+ const SG=J.sign.seg||'s3',a=TL[SG][0];const pos=V3(W0.x,W0.y+2.6,W0.z+1.4);sp.position.copy(pos);hl.position.copy(pos);
+ shots[SG]={p:V3(W0.x+.8,W0.y+1.4,W0.z+15),q:V3(W0.x,W0.y+1.5,W0.z)};
+ SIGN={draw(t,s){const on=t>=a+.35&&(s===SG||s==='cta');sp.visible=hl.visible=on;if(!on)return;const lt=t-a-.35;const fl=lt<.9?((Math.sin(lt*47)+Math.sin(lt*23))>.2?1:.15):1;const pu=1+.04*Math.sin(t*4);
+  sp.material.opacity=fl;sp.scale.set(3.4*pu,2.55*pu,1);hl.material.opacity=.55*fl;hl.scale.setScalar(7*pu)}};}
+window.renderAt=t=>{const s=seg(t);const{p,q}=camAt(t);if(panel){drawPanel(t);panel.visible=s!=='s2'}if(NOR)NOR.draw(t,s);if(SPOT)SPOT.draw(t,s);if(FW.length)drawFW(t);if(SIGN)SIGN.draw(t,s);cam.position.copy(p);cam.lookAt(q);
  // cuántas encendidas
  const a1=TL.s1[0],b1=TL.s1[1];const lit=J.old+(J.n-J.old)*ss(a1+.5,b1-.25,t);
  const red_a=TL.s2?TL.s2[0]+1.4:1e9;
@@ -153,7 +163,7 @@ window.renderAt=t=>{const s=seg(t);const{p,q}=camAt(t);if(panel){drawPanel(t);pa
   }else{c=tmp.copy(black);
    const lead=s==='s3'||s==='cta';if(lead){const pu=.5+.5*Math.sin(t*4+i*.8);const k=J.goal>=500?.5:1;c.lerp(amber,(.1+.24*pu)*k);g=(.05+.08*pu)*k}
    if(J.vote&&i===lastIdx&&s==='cta'){const pu=.5+.5*Math.sin(t*7);c.set(0xffffff).multiplyScalar(.45+.55*pu);g=.7+.9*pu}}
-  if(J.hito&&i!==J.hito-1){const d=1-.68*ss(TL.s2[0]+.9,TL.s2[0]+1.5,t)*(1-ss(TL.s2[1]-.5,TL.s2[1],t));c.multiplyScalar(d);g*=d}else if(J.hito&&t>TL.s2[0]+1.2){c.set(0xffa800);g=1.6+.5*Math.sin(t*5)}if(J.noria){const dk=1-.72*ss(TL.s2[0]+.2,TL.s2[0]+.9,t)*(1-ss(TL.s3[1]-.6,TL.s3[1],t));c.multiplyScalar(dk);g*=dk}if(SPOT&&J.spot.sweep&&SPOT.cur!=null&&i>=J.old&&i<=SPOT.cur&&t<SPOT.lock+.4&&i!==SPOT.idx){const hot=i===SPOT.cur?1:.45;c.lerp(new THREE.Color(0xfff2b0),hot);g=Math.max(g,1.1+1.2*hot)}if(SPOT&&i===SPOT.idx){const on=ss(SPOT.lock,SPOT.lock+.2,t);if(on>0){c.lerp(new THREE.Color(0xfff2b0),on);g=Math.max(g,(1.8+.6*Math.sin(t*6))*on)}}wins.setColorAt(i,c);gc[i*3]=c.r*g;gc[i*3+1]=c.g*g;gc[i*3+2]=c.b*g});
+  if(J.hito&&i!==J.hito-1){const d=1-.68*ss(TL.s2[0]+.9,TL.s2[0]+1.5,t)*(1-ss(TL.s2[1]-.5,TL.s2[1],t));c.multiplyScalar(d);g*=d}else if(J.hito&&t>TL.s2[0]+1.2){c.set(0xffa800);g=1.6+.5*Math.sin(t*5)}if(J.noria&&!(J.sign&&i===J.n-1)){const dk=1-.72*ss(TL.s2[0]+.2,TL.s2[0]+.9,t)*(1-ss(TL.s3[1]-.6,TL.s3[1],t));c.multiplyScalar(dk);g*=dk}if(SPOT&&J.spot.sweep&&SPOT.cur!=null&&i>=J.old&&i<=SPOT.cur&&t<SPOT.lock+.4&&i!==SPOT.idx){const hot=i===SPOT.cur?1:.45;c.lerp(new THREE.Color(0xfff2b0),hot);g=Math.max(g,1.1+1.2*hot)}if(SPOT&&i===SPOT.idx){const on=ss(SPOT.lock,SPOT.lock+.2,t);if(on>0&&J.sign&&t>TL[J.sign.seg||'s3'][0]+.35){c.set(J.sign.col||'#ff3fb0');g=1.0+.25*Math.sin(t*4)}else if(on>0){c.lerp(new THREE.Color(0xfff2b0),on);g=Math.max(g,(1.8+.6*Math.sin(t*6))*on)}}wins.setColorAt(i,c);gc[i*3]=c.r*g;gc[i*3+1]=c.g*g;gc[i*3+2]=c.b*g});
  col.needsUpdate=true;gg.attributes.color.needsUpdate=true;
  // grúa, balizas, coches
  crane.visible=s!=='s2';const U=crane.userData;U.J2.rotation.y=Math.sin(t*.32)*.4-.2;const tx=-3-1.7*Math.sin(t*.7),ln=2.2+1.1*Math.sin(t*.9);U.c.position.set(tx,-ln/2,0);U.c.scale.y=ln;U.beam.position.set(tx,-ln-.1,0);U.beam.rotation.y=Math.sin(t*.8)*.5;U.lamp.material.opacity=Math.floor(t*2)%2?1:.1;
