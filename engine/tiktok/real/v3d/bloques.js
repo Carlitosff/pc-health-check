@@ -108,3 +108,18 @@ export function bed(col=0x3a6fd8){const g=new THREE.Group();const fr=box(4.4,.8,
  const hb=box(4.6,3,.4,0x7a4e2e,.1);hb.position.set(0,1.6,-3.4);g.add(hb);const pil=box(2.6,.5,1.3,0xffffff,.22);pil.position.set(0,1.65,-2.4);g.add(pil);return g}
 // persona TUMBADA boca arriba sobre una cama de bed() (cabeza en la almohada); devuelve la manta para animar la respiración
 export function lieDown(o,B,col=0x3a6fd8){o.g.rotation.x=-Math.PI/2;o.g.position.set(0,1.92,1.25);B.add(o.g);const bl=box(4.3,.9,4.6,col,.25);bl.position.set(0,2.15,1.15);B.add(bl);const fold=box(4.32,.92,.6,0xf4f4f4,.22);fold.position.set(0,2.17,-1.05);B.add(fold);return{blanket:bl,fold}}
+// v27: MOSQUITO de bloques (personaje propio, rayado blanco y negro): alas que baten, patas largas con bandas, trompa. o.buzz(t) bate alas;
+// swarmPos(i,t,c,rx,ry,rz) da una trayectoria de zumbido determinista alrededor de c (para enjambres).
+export function mosquito(s=1){const g=new THREE.Group();const D=0x2a2622,Wt=0xf2f2ee;
+ const th=box(.5,.46,.56,D,.14);g.add(th);[-.12,.12].forEach(x=>{const m=box(.05,.3,.05,Wt,.01);m.position.set(x,.2,.12);g.add(m)});
+ const ab=new THREE.Group();ab.position.set(0,.02,-.25);ab.rotation.x=-.18;g.add(ab);const a=box(.34,.3,1.25,D,.12);a.position.z=-.62;ab.add(a);
+ for(let i=0;i<4;i++){const b=box(.36,.32,.07,Wt,.02);b.position.z=-.3-i*.26;ab.add(b)}
+ const hd=box(.34,.32,.3,D,.1);hd.position.set(0,-.02,.42);g.add(hd);[-1,1].forEach(x=>{const e=box(.13,.18,.16,0x8a1418,.04,{emissive:0x4a0808,emissiveIntensity:.5});e.position.set(x*.13,0,.48);g.add(e)});
+ const pr=box(.05,.05,.85,0x1a1612,.01);pr.position.set(0,-.18,.88);pr.rotation.x=.45;g.add(pr);[-1,1].forEach(x=>{const an=box(.03,.03,.45,0x1a1612,.01);an.position.set(x*.1,.08,.7);an.rotation.set(-.5,x*.35,0);g.add(an)});
+ const legs=[];for(const sd of[-1,1])for(let i=0;i<3;i++){const hip=new THREE.Group();hip.position.set(sd*.2,-.18,.15-i*.18);hip.rotation.set(0,sd*(.5-i*.5)+(sd<0?Math.PI:0),.75);g.add(hip);
+  const u=box(.85,.05,.05,D,.01);u.position.x=.42;hip.add(u);const kn=new THREE.Group();kn.position.x=.84;kn.rotation.z=-1.6;hip.add(kn);const l=box(1.05,.045,.045,D,.01);l.position.x=.52;kn.add(l);
+  for(let k=0;k<3;k++){const w=box(.07,.06,.06,Wt,.01);w.position.x=.22+k*.32;kn.add(w)}legs.push(hip)}
+ const wm=new THREE.MeshStandardMaterial({color:0xcfe6ff,transparent:true,opacity:.42,roughness:.2,side:THREE.DoubleSide,depthWrite:false});
+ const wings=[-1,1].map(sd=>{const p=new THREE.Group();p.position.set(sd*.18,.24,-.05);const w=new THREE.Mesh(new THREE.PlaneGeometry(1.25,.36),wm);w.rotation.x=-Math.PI/2;w.position.x=sd*.62;p.add(w);g.add(p);p.userData.sd=sd;return p});
+ g.scale.setScalar(s);const o={g,wings,legs,buzz(t){wings.forEach(p=>{p.rotation.z=p.userData.sd*(.25+.55*Math.sin(t*95));p.rotation.y=-p.userData.sd*.35})}};return o}
+export const swarmPos=(i,t,c,rx=1.5,ry=1,rz=1.2)=>{const a=1.3+i*.37,b=.9+i*.23,ph=i*2.1;return new THREE.Vector3(c.x+rx*Math.sin(t*a+ph)*Math.cos(t*.31*b+i),c.y+ry*Math.sin(t*b*1.4+ph*1.7),c.z+rz*Math.cos(t*a*.8+ph))};

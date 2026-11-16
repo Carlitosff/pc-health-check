@@ -152,7 +152,25 @@ let SIGN=null;if(J.sign){const W0=WIN[Math.min(J.n-1,WIN.length-1)],c=document.c
  shots[SG]={p:V3(W0.x+.8,W0.y+1.4,W0.z+15),q:V3(W0.x,W0.y+1.5,W0.z)};
  SIGN={draw(t,s){const on=t>=a+.35&&(s===SG||s==='cta');sp.visible=hl.visible=on;if(!on)return;const lt=t-a-.35;const fl=lt<.9?((Math.sin(lt*47)+Math.sin(lt*23))>.2?1:.15):1;const pu=1+.04*Math.sin(t*4);
   sp.material.opacity=fl;sp.scale.set(3.4*pu,2.55*pu,1);hl.material.opacity=.55*fl;hl.scale.setScalar(7*pu)}};}
-window.renderAt=t=>{const s=seg(t);const{p,q}=camAt(t);if(panel){drawPanel(t);panel.visible=s!=='s2'}if(NOR)NOR.draw(t,s);if(SPOT)SPOT.draw(t,s);if(FW.length)drawFW(t);if(SIGN)SIGN.draw(t,s);cam.position.copy(p);cam.lookAt(q);
+
+// --- v27 (16/11): ESPECTÁCULO DE DRONES (J.drones = {seg:'s3', lines:['+10','324'], at:[x,y,z], w:16}): cientos de drones de luz despegan de las azoteas,
+// dibujan la primera cifra y luego se recolocan en la segunda. Los puntos salen de muestrear el texto en un canvas (cualquier número o palabra corta).
+let DRN=null;if(J.drones){const D=J.drones,F=V3(...(D.at||[0,20,-4])),WD=D.w||16;const pts=txt=>{const c=document.createElement('canvas');c.width=320;c.height=128;const g=c.getContext('2d');g.fillStyle='#fff';g.font='900 112px sans-serif';g.textAlign='center';g.textBaseline='middle';g.fillText(txt,160,66);const d=g.getImageData(0,0,320,128).data;const o=[];for(let y=2;y<128;y+=6)for(let x=2;x<320;x+=6)if(d[(y*320+x)*4+3]>128)o.push(V3(F.x+(x-160)/320*WD,F.y+(64-y)/320*WD,F.z));return o};
+ const A=pts(D.lines[0]),B=pts(D.lines[1]||D.lines[0]);const n=Math.max(A.length,B.length);const q=mk(77);const S0=[];for(let i=0;i<n;i++)S0.push(V3((q()-.5)*26,2+q()*8,-8+q()*16));
+ // emparejar por orden de x para que el cambio de cifra sea un barrido limpio
+ A.sort((a,b)=>a.x-b.x||a.y-b.y);B.sort((a,b)=>a.x-b.x||a.y-b.y);
+ const m=new THREE.InstancedMesh(new THREE.BoxGeometry(.2,.2,.2),new THREE.MeshBasicMaterial({color:0xffffff,toneMapped:false}),n);m.frustumCulled=false;scene.add(m);const O=new THREE.Object3D(),C=new THREE.Color(),cA=new THREE.Color(0xffc23a),cB=new THREE.Color(0x7ff0ff);
+ const hz=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex,color:0x7ff0ff,opacity:0,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false}));hz.scale.set(WD*1.1,WD*.6,1);hz.position.copy(F);scene.add(hz);
+ const SG=D.seg||'s3';
+ DRN={draw(t,s){const a=TL[SG][0],b=TL[SG][1],mid=a+(b-a)*.48;const on=t>a-.2;m.visible=on;hz.visible=on;if(!on)return;
+  for(let i=0;i<n;i++){const pa=A[i%A.length],pb=B[i%B.length];const ex=i>=A.length,exB=i>=B.length;
+   const u1=ss(a+.05+(i%17)*.02,a+1.35+(i%17)*.02,t),u2=ss(mid+(i/n)*.5,mid+.7+(i/n)*.5,t);
+   const P=S0[i].clone().lerp(pa,u1).lerp(pb,u2);P.x+=Math.sin(t*2.1+i)*.05;P.y+=Math.sin(t*2.7+i*1.3)*.05;
+   const vis=(ex?u2:1)*(exB?1-u2:1);O.position.copy(P);O.scale.setScalar(Math.max(.001,vis*(1+.25*Math.sin(t*9+i))));O.updateMatrix();m.setMatrixAt(i,O.matrix);
+   C.copy(cA).lerp(cB,u2).multiplyScalar(1.6+.6*Math.sin(t*7+i*.7));m.setColorAt(i,C)}
+  m.instanceMatrix.needsUpdate=true;m.instanceColor.needsUpdate=true;hz.material.opacity=.22*ss(a+.8,a+1.6,t)}};
+ shots[SG]={p:V3(F.x,F.y-8,F.z+WD*2.3),q:V3(F.x,F.y+1.2,F.z)};}
+window.renderAt=t=>{const s=seg(t);const{p,q}=camAt(t);if(panel){drawPanel(t);panel.visible=s!=='s2'}if(NOR)NOR.draw(t,s);if(SPOT)SPOT.draw(t,s);if(FW.length)drawFW(t);if(SIGN)SIGN.draw(t,s);if(DRN)DRN.draw(t,s);cam.position.copy(p);cam.lookAt(q);
  // cuántas encendidas
  const a1=TL.s1[0],b1=TL.s1[1];const lit=J.old+(J.n-J.old)*ss(a1+.5,b1-.25,t);
  const red_a=TL.s2?TL.s2[0]+1.4:1e9;
