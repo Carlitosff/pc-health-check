@@ -264,13 +264,13 @@ def s_match(c, t, P, V):
 V2402 = dict(slug="2402_mueve_un_palillo_3_6_9", accent=GOLD, drone=0.02, scene=s_match, mood="misterio",
              send="ENVÍASELO A QUIEN CREA QUE LO SACA", dare=("s1", "RETA A UN AMIGO YA", 1440),
              rehook=("s2", "AQUÍ FALLA CASI TODO EL MUNDO"), reveal=("s4", "LA RESPUESTA"), segs=[
-    dict(id="h", who="nar", say="Tres menos seis, igual a nueve. Mueve un solo palillo para que la cuenta sea correcta.", cap="Arregla *3−6=9* moviendo 1 palillo", hold=0.2),
+    dict(id="h", who="nar", say="Esta cuenta dice que tres menos seis es igual a nueve. Mueve un solo palillo para que sea correcta.", cap="Arregla *3−6=9* moviendo 1 palillo", hold=0.2),
     dict(id="s1", who="nar", cut=True, say="Solo uno, sin quitar ni añadir ninguno más. Tienes cinco segundos.", cap="Solo *UNO*. | *5 segundos*", hold=3.5),
     dict(id="s2", who="nar", cut=True, say="Casi todo el mundo intenta cambiar el seis, y así no sale de ninguna forma.",
          cap="Tocando el *6*… | *NO sale*", hold=0.3),
     dict(id="s3", who="nar", cut=True, say="El truco está en el nueve del final: le sobra el palillo de arriba a la izquierda, y sin él es un tres.",
          cap="El truco: | al *9* le sobra uno", hold=0.3),
-    dict(id="s4", who="nar", cut=True, say="Ponlo en el tres del principio, que se convierte en un nueve. Nueve menos seis, tres.",
+    dict(id="s4", who="nar", cut=True, say="Ponlo en el tres del principio, que se convierte en un nueve. Y queda nueve menos seis, que son tres.",
          cap="*9 − 6 = 3*", hold=0.6),
     dict(id="cta", who="nar", cut=True, say="Comenta si lo sacaste, y envíaselo a quien crea que lo saca a la primera.", cap="¿Lo sacaste? | *COMENTA*"),
 ])
