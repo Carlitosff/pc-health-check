@@ -43,6 +43,8 @@ El trabajo pesado tiene que estar terminado hacia las 07:00.
 
 > **AVISO 15/11 (motor v26):** CIUDAD: `SIGN=dict(lines=[..], seg='s3', col='#hex')` en el guion pone un cartel de neón sobre la ventana nueva (con `FRESH` del mismo color, y se añade a `ciudad_state.json` tras publicar). Escenas nuevas: `v3d/crece.js` (báscula, salto con regla, globos ×2, cohete) y `v3d/pelo.js` (calle de invierno, `virus()`, laboratorio con barras 3D, nariz por dentro). Las pruebas de COLOR con píxel medido dan el mejor tiempo medio de la cuenta (fresas 25,7 s): la de hoy es la rejilla de asimilación (no repetir). Propuesto a Carlos sustituir el hueco del MITO (8 de 9 <1.000); hasta que conteste, la mezcla del prompt.
 
+> **AVISO 16/11 (motor v27):** CIUDAD: `DRONES=dict(seg='s3', lines=['+10','324'], at=[0,20,4], w=16)` en el guion → drones que dibujan dos cifras (o palabras cortas) sobre la ciudad. `v3d/bloques.js`: `mosquito()` y `swarmPos()` (enjambres). Escenas nuevas: `v3d/mosquito.js` (terraza de noche, olfatómetro, barras horizontales, piel con penacho de olor) y `v3d/encoge.js` (Tierra ÷2, `airLoss`, Marte). Whisper confunde frases CORTAS con cifras ('Tres menos seis, igual a nueve'): en retos numéricos mete las cifras dentro de una frase larga ('Esta cuenta dice que tres menos seis es igual a nueve'). Letras sueltas ('el cuadro A y el B') también se entienden mal: nómbralas por su sitio.
+
 ## 0. Preparar el entorno (sesión nueva)
 
 ```bash
