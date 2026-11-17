@@ -170,7 +170,16 @@ let DRN=null;if(J.drones){const D=J.drones,F=V3(...(D.at||[0,20,-4])),WD=D.w||16
    C.copy(cA).lerp(cB,u2).multiplyScalar(1.6+.6*Math.sin(t*7+i*.7));m.setColorAt(i,C)}
   m.instanceMatrix.needsUpdate=true;m.instanceColor.needsUpdate=true;hz.material.opacity=.22*ss(a+.8,a+1.6,t)}};
  shots[SG]={p:V3(F.x,F.y-8,F.z+WD*2.3),q:V3(F.x,F.y+1.2,F.z)};}
-window.renderAt=t=>{const s=seg(t);const{p,q}=camAt(t);if(panel){drawPanel(t);panel.visible=s!=='s2'}if(NOR)NOR.draw(t,s);if(SPOT)SPOT.draw(t,s);if(FW.length)drawFW(t);if(SIGN)SIGN.draw(t,s);if(DRN)DRN.draw(t,s);cam.position.copy(p);cam.lookAt(q);
+// --- v28 (17/11): PRIMERA NEVADA (J.snow = {seg:'s3', ground:true}): copos suaves (sprite redondo, deriva con viento) desde el inicio de ese segmento
+// hasta el final, y el suelo se va cubriendo de blanco. Sirve para cualquier día de invierno o como 'evento' de la ciudad.
+let SNW=null;if(J.snow){const SG=J.snow.seg||'s3',n=J.snow.n||2400,q=mk(77);const P=[];for(let i=0;i<n;i++)P.push([(q()-.5)*70,q()*42,-34+q()*52,.6+q()*.8,q()*9]);
+ const c=document.createElement('canvas');c.width=c.height=64;{const g=c.getContext('2d');const d=g.createRadialGradient(32,32,0,32,32,32);d.addColorStop(0,'rgba(255,255,255,1)');d.addColorStop(.45,'rgba(255,255,255,.8)');d.addColorStop(1,'rgba(255,255,255,0)');g.fillStyle=d;g.fillRect(0,0,64,64)}
+ const tx=new THREE.CanvasTexture(c);const g=new THREE.BufferGeometry(),a=new Float32Array(n*3);g.setAttribute('position',new THREE.BufferAttribute(a,3));
+ const mat=new THREE.PointsMaterial({map:tx,color:0xf4f8ff,size:J.snow.size||1.1,transparent:true,opacity:0,depthWrite:false,sizeAttenuation:true});const pts=new THREE.Points(g,mat);pts.frustumCulled=false;scene.add(pts);
+ const gm=new THREE.Mesh(new THREE.PlaneGeometry(160,120),new THREE.MeshStandardMaterial({color:0xe8f0ff,roughness:.9,transparent:true,opacity:0,depthWrite:false}));gm.rotation.x=-Math.PI/2;gm.position.set(0,-.38,-20);scene.add(gm);
+ SNW={draw(t,s){const a0=TL[SG][0];const on=ss(a0-.3,a0+1.2,t);mat.opacity=.95*on;pts.visible=on>0;gm.material.opacity=J.snow.ground===false?0:.55*ss(a0+.5,a0+9,t);
+  if(!pts.visible)return;const tt=t-a0+20;P.forEach((p,i)=>{a[i*3]=p[0]+Math.sin(tt*.6+p[4])*.9+tt*.35;a[i*3]=((a[i*3]+35)%70+70)%70-35;a[i*3+1]=42-((p[1]+tt*1.3*p[3])%42)-.3;a[i*3+2]=p[2]+Math.cos(tt*.5+p[4])*.5});g.attributes.position.needsUpdate=true}}}
+window.renderAt=t=>{const s=seg(t);const{p,q}=camAt(t);if(panel){drawPanel(t);panel.visible=s!=='s2'}if(NOR)NOR.draw(t,s);if(SPOT)SPOT.draw(t,s);if(FW.length)drawFW(t);if(SIGN)SIGN.draw(t,s);if(DRN)DRN.draw(t,s);if(SNW)SNW.draw(t,s);cam.position.copy(p);cam.lookAt(q);
  // cuántas encendidas
  const a1=TL.s1[0],b1=TL.s1[1];const lit=J.old+(J.n-J.old)*ss(a1+.5,b1-.25,t);
  const red_a=TL.s2?TL.s2[0]+1.4:1e9;

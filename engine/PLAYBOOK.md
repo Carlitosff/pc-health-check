@@ -45,6 +45,8 @@ El trabajo pesado tiene que estar terminado hacia las 07:00.
 
 > **AVISO 16/11 (motor v27):** CIUDAD: `DRONES=dict(seg='s3', lines=['+10','324'], at=[0,20,4], w=16)` en el guion → drones que dibujan dos cifras (o palabras cortas) sobre la ciudad. `v3d/bloques.js`: `mosquito()` y `swarmPos()` (enjambres). Escenas nuevas: `v3d/mosquito.js` (terraza de noche, olfatómetro, barras horizontales, piel con penacho de olor) y `v3d/encoge.js` (Tierra ÷2, `airLoss`, Marte). Whisper confunde frases CORTAS con cifras ('Tres menos seis, igual a nueve'): en retos numéricos mete las cifras dentro de una frase larga ('Esta cuenta dice que tres menos seis es igual a nueve'). Letras sueltas ('el cuadro A y el B') también se entienden mal: nómbralas por su sitio.
 
+> **AVISO 17/11 (motor v28):** CIUDAD: `SNOW=dict(seg='s3', ground=True)` en el guion → nevada (copos + suelo blanco); prometido 'la próxima, tu ventana se enciende bajo la nieve': mantener SNOW en la próxima ciudad que crezca. `v3d/bloques.js`: `voxShell()` (planeta de cubos cortado en cuña con capas). Escenas nuevas: `v3d/hueca.js` (Tierra hueca, interior con capataz flotando) y `v3d/bizco.js` (salón; `crossEyes` pone bizco al personaje; par de ojos con recto medio). OJO: en 3D NO uses un dedo levantado delante de la cara (se lee como peineta): usa un lápiz u otro objeto. NUNCA borres `outdaily/*.wav` mientras haya un montaje en marcha (17/11 se perdieron dos montajes; `core.run` ya no se cae, pero el mp4 se rehace). Los 3D salen a menudo de 38–40 s: mide la duración con `prev` ANTES del render y recorta el guion ahí, no después. La ciudad del 16/11 (drones, gancho-afirmación) se hundió a 369: gancho de la ciudad en PREGUNTA con 'tú'.
+
 ## 0. Preparar el entorno (sesión nueva)
 
 ```bash

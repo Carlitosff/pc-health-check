@@ -766,5 +766,6 @@ def run(V, scene, outdir, preview=None, extra_audio=None):
     wav = f"{outdir}/{V['slug']}.wav"
     build_audio(V, P, wav, extra_audio)
     render(draw_frame, P["total"], f"{outdir}/{V['slug']}.mp4", wav)
-    os.remove(wav)
+    if os.path.exists(wav):  # v28: no falla si alguien ya limpió los .wav (17/11 se perdió un montaje 3D por esto)
+        os.remove(wav)
     return P

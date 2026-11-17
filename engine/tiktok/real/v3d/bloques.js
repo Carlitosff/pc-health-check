@@ -123,3 +123,12 @@ export function mosquito(s=1){const g=new THREE.Group();const D=0x2a2622,Wt=0xf2
  const wings=[-1,1].map(sd=>{const p=new THREE.Group();p.position.set(sd*.18,.24,-.05);const w=new THREE.Mesh(new THREE.PlaneGeometry(1.25,.36),wm);w.rotation.x=-Math.PI/2;w.position.x=sd*.62;p.add(w);g.add(p);p.userData.sd=sd;return p});
  g.scale.setScalar(s);const o={g,wings,legs,buzz(t){wings.forEach(p=>{p.rotation.z=p.userData.sd*(.25+.55*Math.sin(t*95));p.rotation.y=-p.userData.sd*.35})}};return o}
 export const swarmPos=(i,t,c,rx=1.5,ry=1,rz=1.2)=>{const a=1.3+i*.37,b=.9+i*.23,ph=i*2.1;return new THREE.Vector3(c.x+rx*Math.sin(t*a+ph)*Math.cos(t*.31*b+i),c.y+ry*Math.sin(t*b*1.4+ph*1.7),c.z+rz*Math.cos(t*a*.8+ph))};
+// v28 (17/11): PLANETA DE CUBOS CORTADO: corteza de `layers` capas (Fibonacci), cuña abierta entre los ángulos cut=[a0,a1] (en y),
+// cara interior de roca y colores propios para esferas internas. Devuelve {group, im}. Sirve para 'por dentro de la Tierra', capas, núcleos.
+export function voxShell({n=5000,rad=10,layers=3,cube=.55,cut=[0,Math.PI/2],cols=null,land=true,seed=0}={}){const grp=new THREE.Group();const noise=(x,y,z)=>Math.sin(x*3.1+1.3+seed)*Math.cos(y*3.7-.7)+Math.sin(y*2.9+z*4.3)*.8+Math.cos(z*3.3-x*2.7+2)*.7;
+ const P=[];for(let L=0;L<layers;L++){const rr=rad-L*cube*.95;const nn=Math.round(n*(rr/rad)**2);for(let i=0;i<nn;i++){const y=1-2*(i+.5)/nn,r=Math.sqrt(1-y*y),a=i*Math.PI*(3-Math.sqrt(5));const x=Math.cos(a)*r,z=Math.sin(a)*r;let ang=Math.atan2(z,x);if(ang<0)ang+=6.283;if(ang>=cut[0]&&ang<=cut[1])continue;P.push([x,y,z,rr,L,i])}}
+ const im=new THREE.InstancedMesh(new THREE.BoxGeometry(cube,cube,cube),new THREE.MeshStandardMaterial({roughness:.7}),P.length);im.frustumCulled=false;grp.add(im);const O=new THREE.Object3D(),C=new THREE.Color();
+ P.forEach(([x,y,z,rr,L,i],k)=>{if(L>0)C.setHex(L===1?0x8a5a36:0x6a4428);else if(cols)C.setHex(cols[i%cols.length]);else{const ld=land&&noise(x,y,z)>.55;C.setHex(Math.abs(y)>.92?0xeef6ff:ld?(i%3?0x58a84a:0x4f9842):(i%2?0x1467c8:0x0c4fae))}C.multiplyScalar(.9+((i*7)%5)*.03);im.setColorAt(k,C);O.position.set(x*rr,y*rr,z*rr);O.lookAt(0,0,0);O.updateMatrix();im.setMatrixAt(k,O.matrix)});
+ // caras del corte: dos medios discos de roca que tapan el grosor de la corteza
+ const capM=new THREE.MeshStandardMaterial({color:0x7a5034,roughness:1,side:THREE.DoubleSide});[cut[0],cut[1]].forEach(a=>{const g=new THREE.RingGeometry(rad-layers*cube*.95,rad+cube*.4,48,1,-Math.PI/2,Math.PI);const m=new THREE.Mesh(g,capM);m.rotation.y=-a;grp.add(m)});
+ return{group:grp,im}}
