@@ -132,3 +132,21 @@ export function voxShell({n=5000,rad=10,layers=3,cube=.55,cut=[0,Math.PI/2],cols
  // caras del corte: dos medios discos de roca que tapan el grosor de la corteza
  const capM=new THREE.MeshStandardMaterial({color:0x7a5034,roughness:1,side:THREE.DoubleSide});[cut[0],cut[1]].forEach(a=>{const g=new THREE.RingGeometry(rad-layers*cube*.95,rad+cube*.4,48,1,-Math.PI/2,Math.PI);const m=new THREE.Mesh(g,capM);m.rotation.y=-a;grp.add(m)});
  return{group:grp,im}}
+// v29 (18/11): SAPO de bloques (personaje propio nº 5): cuerpo achatado con BULTOS (glándulas de la piel, no verrugas), dos GLÁNDULAS PAROTOIDES
+// grandes detrás de los ojos (o.paro, se pueden iluminar), ojos dorados con pupila horizontal que parpadean, buche que respira y SALTO con arco.
+// o.pose(t,{hop:0..1 fase del salto, breathe:1, glow:0..1 bultos, paro:0..1 parotoides}). Mide ~2,4 u de largo con s=1.
+export function toad(s=1,{col=0x7a7a3a,belly=0xd8c890,wart=0x5e5a2a}={}){const g=new THREE.Group();const b=new THREE.Group();g.add(b);g.scale.setScalar(s);
+ const mt=c=>new THREE.MeshStandardMaterial({color:c,roughness:.75});const body=new THREE.Mesh(new THREE.SphereGeometry(1,24,16),mt(col));body.scale.set(1.15,.62,1.25);body.position.y=.72;b.add(body);
+ const bel=new THREE.Mesh(new THREE.SphereGeometry(1,20,12),mt(belly));bel.scale.set(1.0,.45,1.05);bel.position.set(0,.55,.12);b.add(bel);
+ const head=new THREE.Mesh(new THREE.SphereGeometry(.8,20,14),mt(col));head.scale.set(1.1,.62,.9);head.position.set(0,.95,.95);b.add(head);
+ const throat=new THREE.Mesh(new THREE.SphereGeometry(.5,16,10),mt(belly));throat.scale.set(1,.55,.8);throat.position.set(0,.55,1.25);b.add(throat);
+ const R=mk(505);const warts=[];const wm=new THREE.MeshStandardMaterial({color:wart,roughness:.7,emissive:0x4de3ff,emissiveIntensity:0});
+ for(let i=0;i<46;i++){const a=R()*6.28,u=.25+R()*.7;const x=Math.cos(a)*1.1*u,z=Math.sin(a)*1.2*u-.1;const y=.72+.62*Math.sqrt(Math.max(0,1-(x/1.15)**2-(z/1.25)**2))-.02;const w=new THREE.Mesh(new THREE.SphereGeometry(.07+R()*.07,8,6),wm);w.position.set(x,y,z);b.add(w);warts.push(w)}
+ const pm=new THREE.MeshStandardMaterial({color:0x8a7a3a,roughness:.6,emissive:0xff6a2a,emissiveIntensity:0});const paro=[-1,1].map(d=>{const p=new THREE.Mesh(new THREE.SphereGeometry(.3,14,10),pm);p.scale.set(.75,.55,1.5);p.position.set(d*.48,1.28,.45);p.rotation.y=d*.35;b.add(p);return p});
+ const eyes=[-1,1].map(d=>{const e=new THREE.Group();const ball=new THREE.Mesh(new THREE.SphereGeometry(.24,16,12),new THREE.MeshStandardMaterial({color:0xe0a820,emissive:0x5a3a00,roughness:.25}));const pu=box(.3,.07,.05,0x0a0a0a,.02);pu.position.z=.22;const lid=new THREE.Mesh(new THREE.SphereGeometry(.26,14,8,0,6.29,0,1.6),mt(col));lid.rotation.x=-.4;e.add(ball,pu,lid);e.position.set(d*.42,1.32,1.2);e.userData.lid=lid;b.add(e);return e});
+ const legs=[];[[-1,1],[1,1],[-1,-1],[1,-1]].forEach(([dx,dz])=>{const l=new THREE.Group();const th=box(.42,.32,.8,col,.12);th.position.set(0,.1,0);const ft=box(.5,.1,.45,belly,.04);ft.position.set(dx*.12,-.12,.32*dz+(dz>0?.1:.25));l.add(th,ft);l.position.set(dx*.95,.3,dz*.7);b.add(l);legs.push(l)});
+ const o={g,b,paro,warts,eyes,legs};
+ o.pose=(t,{hop=null,breathe=1,glow=0,paro:pg=0}={})=>{throat.scale.y=.55+.12*breathe*Math.max(0,Math.sin(t*5));const bl=(t%3.7)>3.55;eyes.forEach(e=>{e.userData.lid.rotation.x=bl?.9:-.4});
+  wm.emissiveIntensity=glow*(1.1+.5*Math.sin(t*6));pm.emissiveIntensity=pg*(1.3+.6*Math.sin(t*5));
+  if(hop!==null){const u=hop%1;b.position.y=Math.sin(Math.PI*u)*1.4;b.rotation.x=-Math.sin(Math.PI*2*u)*.25;legs.forEach((l,i)=>{l.rotation.x=(i>1?1:.4)*Math.sin(Math.PI*u)*-.9})}else{b.position.y=0;b.rotation.x=0}};
+ return o}
