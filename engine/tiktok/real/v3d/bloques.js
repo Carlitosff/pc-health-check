@@ -150,3 +150,21 @@ export function toad(s=1,{col=0x7a7a3a,belly=0xd8c890,wart=0x5e5a2a}={}){const g
   wm.emissiveIntensity=glow*(1.1+.5*Math.sin(t*6));pm.emissiveIntensity=pg*(1.3+.6*Math.sin(t*5));
   if(hop!==null){const u=hop%1;b.position.y=Math.sin(Math.PI*u)*1.4;b.rotation.x=-Math.sin(Math.PI*2*u)*.25;legs.forEach((l,i)=>{l.rotation.x=(i>1?1:.4)*Math.sin(Math.PI*u)*-.9})}else{b.position.y=0;b.rotation.x=0}};
  return o}
+
+// --- v31 (20/11): MANO DE BLOQUES articulada con modo RAYOS X (reutilizable para cualquier vídeo de manos, dedos, huesos o articulaciones)
+// h=hand(+1|-1,{skin}) → h.g (grupo; dedos hacia +y, dorso hacia +z). h.curl(k[,i]) dobla (0–1) todos los dedos o el i (0 índice … 3 meñique);
+// h.xray(k) vuelve la piel azul translúcida y enseña los huesos; h.knuckles = 4 objetos en los nudillos (getWorldPosition para chispas).
+export function hand(side=1,{skin=0xd9a06a,bone=0xf4f6ff,blue=0x4aa8ff}={}){const g=new THREE.Group();const skins=[],bones=[];
+ const sm=()=>{const m=new THREE.MeshStandardMaterial({color:skin,roughness:.65,transparent:true,opacity:1});skins.push(m);return m};
+ const seg=(w,h,d,par,y)=>{const m=new THREE.Mesh(new RoundedBoxGeometry(w,h,d,2,Math.min(w,d)*.22),sm());m.castShadow=true;m.position.y=h/2;par.add(m);
+  const b=new THREE.Mesh(new RoundedBoxGeometry(w*.42,h*.84,d*.42,2,.06),new THREE.MeshBasicMaterial({color:bone,toneMapped:false,transparent:true,opacity:0}));b.position.y=h/2;b.renderOrder=3;par.add(b);bones.push(b);return m};
+ const palm=new THREE.Group();g.add(palm);seg(3.1,3.3,1.05,palm);palm.children[0].position.y=0;palm.children[1].position.y=0;
+ const wrist=new THREE.Group();wrist.position.y=-1.65;g.add(wrist);const wr=seg(2.5,1.6,.95,wrist);wr.position.y=-.8;wrist.children[1].position.y=-.8;
+ const fingers=[],knuckles=[],L=[[1.25,.85,.7],[1.45,.95,.75],[1.35,.9,.7],[1.0,.7,.6]];
+ [-1.13,-.38,.38,1.13].forEach((x,i)=>{let par=palm;const js=[];L[i].forEach((len,k)=>{const j=new THREE.Group();j.position.set(k?0:x*side,k?L[i][k-1]:1.65,0);par.add(j);seg(.66-k*.05,len,.78-k*.05,j);js.push(j);par=j});
+  const kn=new THREE.Mesh(new THREE.BoxGeometry(.5,.3,.2),sm());kn.position.set(x*side,1.62,.52);palm.add(kn);knuckles.push(kn);fingers.push(js)});
+ const th=new THREE.Group();th.position.set(-1.55*side,-.5,.1);th.rotation.z=.4*side;palm.add(th);const t1=new THREE.Group();th.add(t1);seg(.74,1.05,.8,t1);const t2=new THREE.Group();t2.position.y=1.05;t1.add(t2);seg(.68,.8,.74,t2);
+ const o={g,fingers,knuckles,thumb:[t1,t2],palm};
+ o.curl=(k,i=null)=>{(i===null?[0,1,2,3]:[i]).forEach(n=>{const js=fingers[n];js[0].rotation.x=-1.45*k;js[1].rotation.x=-1.6*k;js[2].rotation.x=-1.2*k});};
+ o.xray=k=>{const C=new THREE.Color(skin).lerp(new THREE.Color(blue),k);skins.forEach(m=>{m.color.copy(C);m.opacity=1-.72*k;m.emissive=new THREE.Color(blue);m.emissiveIntensity=.35*k;m.depthWrite=k<.5});bones.forEach(b=>b.material.opacity=k)};
+ return o}
