@@ -168,3 +168,21 @@ export function hand(side=1,{skin=0xd9a06a,bone=0xf4f6ff,blue=0x4aa8ff}={}){cons
  o.curl=(k,i=null)=>{(i===null?[0,1,2,3]:[i]).forEach(n=>{const js=fingers[n];js[0].rotation.x=-1.45*k;js[1].rotation.x=-1.6*k;js[2].rotation.x=-1.2*k});};
  o.xray=k=>{const C=new THREE.Color(skin).lerp(new THREE.Color(blue),k);skins.forEach(m=>{m.color.copy(C);m.opacity=1-.72*k;m.emissive=new THREE.Color(blue);m.emissiveIntensity=.35*k;m.depthWrite=k<.5});bones.forEach(b=>b.material.opacity=k)};
  return o}
+// v32 (21/11): CANASTA de baloncesto a escala (aro a 3,05 m; U = metros por unidad de escena), VASO de cristal transparente,
+// VELA con llama que parpadea y luz puntual que tiembla (c.tick(t)), y RELOJ DE PARED analógico (k.set(horas)) para escenas de noche.
+export function hoop(U=1.75/4.1){const g=new THREE.Group();const H=3.05/U;const pole=box(.35,H+.8,.35,0x4a4f5c,.05);pole.position.set(0,(H+.8)/2,-2.2);g.add(pole);
+ const arm=box(.3,.3,1.8,0x4a4f5c,.04);arm.position.set(0,H+.6,-1.4);g.add(arm);const bd=box(4.2,2.6,.15,0xf6f6f6,.05);bd.position.set(0,H+1.1,-.5);g.add(bd);
+ const sq=box(1.5,1.1,.17,0xe0343a,.02);sq.position.set(0,H+.85,-.49);g.add(sq);const sq2=box(1.2,.8,.18,0xf6f6f6,.02);sq2.position.set(0,H+.85,-.48);g.add(sq2);
+ const rim=new THREE.Mesh(new THREE.TorusGeometry(.62,.07,8,24),new THREE.MeshStandardMaterial({color:0xff6a1a,roughness:.4}));rim.rotation.x=Math.PI/2;rim.position.set(0,H,.25);g.add(rim);
+ for(let i=0;i<10;i++){const a=i/10*Math.PI*2;const n=box(.05,.9,.05,0xffffff,.01);n.position.set(Math.cos(a)*.52,H-.45,.25+Math.sin(a)*.52);n.rotation.z=Math.cos(a)*.15;g.add(n)}g.userData.H=H;return g}
+export function glassCup(col=0x9ad8ff){const g=new THREE.Group();const m=new THREE.MeshStandardMaterial({color:col,transparent:true,opacity:.45,roughness:.05,metalness:.1});
+ const c=new THREE.Mesh(new THREE.CylinderGeometry(.42,.34,1.1,16,1,true),m);c.position.y=.55;g.add(c);const b=new THREE.Mesh(new THREE.CylinderGeometry(.34,.34,.08,16),m);b.position.y=.04;g.add(b);
+ const w=new THREE.Mesh(new THREE.CylinderGeometry(.38,.33,.6,16),new THREE.MeshStandardMaterial({color:0x4aa8ff,transparent:true,opacity:.6,roughness:.1}));w.position.y=.34;g.add(w);return g}
+export function candle(scene,{h=1.2,col=0xf2e8d0}={}){const g=new THREE.Group();const plate=box(1.1,.12,1.1,0xb8902a,.04);plate.position.y=.06;g.add(plate);const wax=box(.42,h,.42,col,.05);wax.position.y=.12+h/2;g.add(wax);
+ const fl=new THREE.Mesh(new THREE.ConeGeometry(.13,.42,8),new THREE.MeshBasicMaterial({color:0xffc04a,toneMapped:false}));fl.position.y=.12+h+.25;g.add(fl);const gl=glow(0xffa040,2.6,.85);gl.position.y=.12+h+.28;g.add(gl);
+ const L=new THREE.PointLight(0xffa850,24,16,1.6);L.position.y=.12+h+.4;g.add(L);
+ const o={g,light:L,tick(t,on=1){const f=.85+.1*Math.sin(t*23)+.06*Math.sin(t*41+1.3);fl.scale.set(1,f,1);fl.visible=gl.visible=on>0;L.intensity=24*f*on;gl.material.opacity=.85*f*on;fl.rotation.z=.08*Math.sin(t*7)}};return o}
+export function wallClock(R=1.2){const g=new THREE.Group();const face=new THREE.Mesh(new THREE.CylinderGeometry(R,R,.2,32),new THREE.MeshStandardMaterial({color:0xf4efe2,roughness:.6}));face.rotation.x=Math.PI/2;g.add(face);
+ const rim=new THREE.Mesh(new THREE.TorusGeometry(R,.1,8,32),new THREE.MeshStandardMaterial({color:0x6a4a30}));g.add(rim);for(let i=0;i<12;i++){const a=i/12*Math.PI*2;const m=box(.08,i%3?.14:.28,.05,0x20202a,.01);m.position.set(Math.sin(a)*R*.82,Math.cos(a)*R*.82,.12);m.rotation.z=-a;g.add(m)}
+ const hh=new THREE.Group(),mm=new THREE.Group();const a=box(.12,R*.5,.05,0x20202a,.02);a.position.y=R*.25;hh.add(a);const b=box(.07,R*.78,.05,0x20202a,.02);b.position.y=R*.39;mm.add(b);hh.position.z=.15;mm.position.z=.18;g.add(hh,mm);
+ return{g,set(hours){mm.rotation.z=-(hours%1)*Math.PI*2;hh.rotation.z=-(hours%12)/12*Math.PI*2}}}

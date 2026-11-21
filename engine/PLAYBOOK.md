@@ -53,6 +53,8 @@ El trabajo pesado tiene que estar terminado hacia las 07:00.
 
 > **AVISO 20/11 (motor v31):** `v3d/bloques.js`: `hand()` (mano de bloques articulada: `curl`, `xray`, `knuckles`). Escenas nuevas: `v3d/nudillos.js` (manos que crujen con chispas, rayos X, corte de articulación con burbuja) y `v3d/cubo.js` (`cubePlanet`: esfera ↔ cubo, mares y cúpulas de aire por cara, personaje que se inclina con la gravedad calculada). 2D: disco de Benham por código (`dia_20261120.py`, assert de gris). Encuadre 3D: dos manos de bloques lado a lado necesitan la cámara a ~36–38 u; un planeta de 20 u de lado, a ~100 u. Rótulos con cifras que cambian: mejor pill 2D en el overlay que `label3d` (se cortaba por el borde). Franja en prueba: el MITO 3D va a las 13:00 (los 3D de 17:30/19:30 llevan 3 días <210 mientras los 2D de mañana vuelven a 800–1.200).
 
+> **AVISO 21/11 (motor v32):** `v3d/bloques.js`: `hoop()`, `glassCup()`, `candle()`, `wallClock()`. Escenas nuevas: `v3d/lunag.js` (gravedad distinta: báscula, salto real con canasta, vasos que caen, aire que se escapa; reutilizable para la Parte 19 'gravedad de Júpiter') y `v3d/dossuenos.js` (dormitorio de noche con vela y vecina). En `lieDown`, el personaje TUMBADO es `sitUp(Math.PI/2)`; `sitUp(0)` lo pone de pie dentro de la cama. Barras, cronómetros y cifras que cambian: mejor en el overlay 2D que en 3D (se salían del plano). Pasa `check_voice` del 2D ANTES del render (hoy se rehízo el 2902 por eso). El 20/11 volvió el alcance en todo (incluidos 3D de tarde): la caída 16–19/11 fue de la cuenta.
+
 ## 0. Preparar el entorno (sesión nueva)
 
 ```bash
