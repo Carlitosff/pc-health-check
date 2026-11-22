@@ -55,6 +55,8 @@ El trabajo pesado tiene que estar terminado hacia las 07:00.
 
 > **AVISO 21/11 (motor v32):** `v3d/bloques.js`: `hoop()`, `glassCup()`, `candle()`, `wallClock()`. Escenas nuevas: `v3d/lunag.js` (gravedad distinta: báscula, salto real con canasta, vasos que caen, aire que se escapa; reutilizable para la Parte 19 'gravedad de Júpiter') y `v3d/dossuenos.js` (dormitorio de noche con vela y vecina). En `lieDown`, el personaje TUMBADO es `sitUp(Math.PI/2)`; `sitUp(0)` lo pone de pie dentro de la cama. Barras, cronómetros y cifras que cambian: mejor en el overlay 2D que en 3D (se salían del plano). Pasa `check_voice` del 2D ANTES del render (hoy se rehízo el 2902 por eso). El 20/11 volvió el alcance en todo (incluidos 3D de tarde): la caída 16–19/11 fue de la cuenta.
 
+> **AVISO 22/11 (motor v33):** `v3d/bloques.js`: `gasGiant()` (planeta gaseoso con bandas que se mueven y Gran Mancha Roja), `mug()` y `steam()`. Escenas nuevas: `v3d/jupiterg.js` (gravedad de Júpiter; reutilizable para otros planetas cambiando G1) y `v3d/cafe.js` (cocina, depósito 'agua de tu cuerpo' con `tank()`, laboratorio con 50 voluntarios). Dentro de un grupo desplazado (GL en x=600) los hijos van en coordenadas LOCALES. Los rótulos 3D grandes (carteles de pared) caen en la franja de subtítulos en planos abiertos: ocúltalos fuera de su segmento. Seguidores planos 5 días (331): propuesto a Carlos publicar la ciudad con un reto corto con plazo aunque no crezca; hasta que conteste, la regla de no publicarla.
+
 ## 0. Preparar el entorno (sesión nueva)
 
 ```bash

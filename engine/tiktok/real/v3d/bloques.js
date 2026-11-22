@@ -186,3 +186,22 @@ export function wallClock(R=1.2){const g=new THREE.Group();const face=new THREE.
  const rim=new THREE.Mesh(new THREE.TorusGeometry(R,.1,8,32),new THREE.MeshStandardMaterial({color:0x6a4a30}));g.add(rim);for(let i=0;i<12;i++){const a=i/12*Math.PI*2;const m=box(.08,i%3?.14:.28,.05,0x20202a,.01);m.position.set(Math.sin(a)*R*.82,Math.cos(a)*R*.82,.12);m.rotation.z=-a;g.add(m)}
  const hh=new THREE.Group(),mm=new THREE.Group();const a=box(.12,R*.5,.05,0x20202a,.02);a.position.y=R*.25;hh.add(a);const b=box(.07,R*.78,.05,0x20202a,.02);b.position.y=R*.39;mm.add(b);hh.position.z=.15;mm.position.z=.18;g.add(hh,mm);
  return{g,set(hours){mm.rotation.z=-(hours%1)*Math.PI*2;hh.rotation.z=-(hours%12)/12*Math.PI*2}}}
+// --- v33 (22/11): GIGANTE GASEOSO. Textura equirectangular con bandas de latitud que ondulan, remolinos y Gran Mancha Roja;
+// tick(t) desliza las bandas a distinta velocidad (corrientes en chorro) sin re-dibujar el canvas. Reutilizable: Júpiter, Saturno (pal), planetas ficticios.
+export function gasGiant(rad=10,{seed=4,spot=true,pal=['#e9dcc4','#c99a6b','#f3eadb','#b9774f','#e2c9a4','#a8683f','#efe2cb','#d3ae84'],seg=96}={}){
+ const q=mk(seed),c=document.createElement('canvas');c.width=1024;c.height=512;const g=c.getContext('2d');
+ let y=0;const bands=[];while(y<512){const h=10+q()*38;bands.push([y,h,pal[Math.floor(q()*pal.length)]]);y+=h}
+ bands.forEach(([y0,h,col])=>{g.fillStyle=col;g.beginPath();g.moveTo(0,y0);for(let x=0;x<=1024;x+=16)g.lineTo(x,y0+Math.sin(x*.012+y0)*3+Math.sin(x*.041+y0*.3)*1.5);g.lineTo(1024,y0+h+2);for(let x=1024;x>=0;x-=16)g.lineTo(x,y0+h+2+Math.sin(x*.013+y0+h)*3);g.closePath();g.fill()});
+ for(let i=0;i<260;i++){const x=q()*1024,yy=60+q()*392,r=2+q()*9;g.fillStyle=`rgba(${q()<.5?'255,250,240':'120,70,40'},${.12+q()*.22})`;g.beginPath();g.ellipse(x,yy,r*2.4,r,0,0,6.283);g.fill()}
+ if(spot){const sx=700,sy=330;for(let k=0;k<5;k++){g.fillStyle=['#a8452c','#c0583a','#d4744f','#e39a74','#f0c4a0'][k];g.beginPath();g.ellipse(sx,sy,62-k*10,30-k*5,0,0,6.283);g.fill()}}
+ const tex=new THREE.CanvasTexture(c);tex.colorSpace=THREE.SRGBColorSpace;tex.wrapS=THREE.RepeatWrapping;tex.anisotropy=8;
+ const mesh=new THREE.Mesh(new THREE.SphereGeometry(rad,seg,seg/2),new THREE.MeshStandardMaterial({map:tex,roughness:.9}));
+ const haze=new THREE.Mesh(new THREE.SphereGeometry(rad*1.03,48,24),new THREE.MeshBasicMaterial({color:0xffe2b8,transparent:true,opacity:.12,side:THREE.BackSide,depthWrite:false}));mesh.add(haze);
+ return{mesh,tex,tick(t){tex.offset.x=(t*.012)%1;mesh.rotation.y=t*.05}}}
+// --- v33 (22/11): taza de café con asa y vapor. mug({col}) → Group; m.userData.coffee (superficie) y steam(t, puffsObj, i0, x,y,z) para el humo.
+export function mug(col=0xf2efe8){const g=new THREE.Group();const m=new THREE.MeshStandardMaterial({color:col,roughness:.35});
+ const c=new THREE.Mesh(new THREE.CylinderGeometry(.5,.44,1.0,20,1,true),m);c.position.y=.5;g.add(c);const b=new THREE.Mesh(new THREE.CylinderGeometry(.44,.44,.08,20),m);b.position.y=.04;g.add(b);
+ const inner=new THREE.Mesh(new THREE.CylinderGeometry(.47,.42,.96,20,1,true),new THREE.MeshStandardMaterial({color:col,roughness:.4,side:THREE.BackSide}));inner.position.y=.5;g.add(inner);
+ const cof=new THREE.Mesh(new THREE.CylinderGeometry(.47,.47,.04,20),new THREE.MeshStandardMaterial({color:0x3b2214,roughness:.15}));cof.position.y=.86;g.add(cof);g.userData.coffee=cof;
+ const h=new THREE.Mesh(new THREE.TorusGeometry(.26,.07,8,16,Math.PI),m);h.rotation.z=-Math.PI/2;h.position.set(.5,.5,0);g.add(h);return g}
+export function steam(P,i0,n,x,y,z,t,s=1){for(let i=0;i<n;i++){const f=((t*.5+i/n)%1);P.set(i0+i,x+Math.sin(t*2+i*1.7)*.18*s*(1+f),y+f*1.6*s,z+Math.cos(t*1.6+i)*.12*s,(1-f)*.35*s)}}
