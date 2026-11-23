@@ -205,3 +205,36 @@ export function mug(col=0xf2efe8){const g=new THREE.Group();const m=new THREE.Me
  const cof=new THREE.Mesh(new THREE.CylinderGeometry(.47,.47,.04,20),new THREE.MeshStandardMaterial({color:0x3b2214,roughness:.15}));cof.position.y=.86;g.add(cof);g.userData.coffee=cof;
  const h=new THREE.Mesh(new THREE.TorusGeometry(.26,.07,8,16,Math.PI),m);h.rotation.z=-Math.PI/2;h.position.set(.5,.5,0);g.add(h);return g}
 export function steam(P,i0,n,x,y,z,t,s=1){for(let i=0;i<n;i++){const f=((t*.5+i/n)%1);P.set(i0+i,x+Math.sin(t*2+i*1.7)*.18*s*(1+f),y+f*1.6*s,z+Math.cos(t*1.6+i)*.12*s,(1-f)*.35*s)}}
+// v34 (23/11): QUESO de bloques (cuña con agujeros; azul=true → queso azul con vetas), GATITO de bloques (personaje de sueño; casco y espada de cartón opcionales),
+// COCODRILO de bloques (boca que se abre; zanahoria opcional) e ISLA DE SUEÑO movida aquí desde suenos.js para reutilizarla (dreamIsle).
+export function cheese(s=1,{blue=false}={}){const g=new THREE.Group();const col=blue?0xeae6d6:0xffc83a;
+ const sh=new THREE.Shape();sh.moveTo(0,0);sh.lineTo(3,0);sh.lineTo(0,1.7);sh.lineTo(0,0);
+ const geo=new THREE.ExtrudeGeometry(sh,{depth:1.4,bevelEnabled:true,bevelSize:.06,bevelThickness:.06,bevelSegments:2});geo.translate(-1,0,-.7);
+ const m=new THREE.Mesh(geo,new THREE.MeshStandardMaterial({color:col,roughness:.55}));m.rotation.x=-Math.PI/2;m.rotation.z=0;m.castShadow=true;
+ const w=new THREE.Group();w.add(m);m.rotation.set(0,0,0);
+ // agujeros (o vetas azules) en la cara frontal y lateral
+ const hole=blue?0x3f6fa8:0xd89a1a;const Q=mk(blue?9:4);for(let i=0;i<(blue?9:6);i++){const x=-.8+Q()*2.2,y=.15+Q()*(1.5-(x+1)*.5);if(y<.1)continue;const h=new THREE.Mesh(blue?new THREE.BoxGeometry(.32+Q()*.3,.06,.04):new THREE.CircleGeometry(.12+Q()*.12,14),new THREE.MeshStandardMaterial({color:hole,roughness:.9}));if(blue)h.rotation.z=Q()*3;h.position.set(x,Math.min(y,1.55-(x+1)*.55),.77);w.add(h)}
+ g.add(w);g.scale.setScalar(s);return g}
+export function kitten(col=0xff9a3a,{helmet=true,sword=true}={}){const g=new THREE.Group();const b=box(1.4,.9,.8,col,.2);b.position.y=.75;g.add(b);
+ const hd=new THREE.Group();hd.position.set(.85,1.35,0);g.add(hd);hd.add(box(.9,.8,.85,col,.2));[-.24,.24].forEach(z=>{const e=new THREE.Mesh(new THREE.ConeGeometry(.16,.34,4),new THREE.MeshStandardMaterial({color:col}));e.position.set(0,.5,z);hd.add(e);const ey=box(.06,.16,.12,0x15101c,.02);ey.position.set(.45,.08,z*.8);hd.add(ey)});
+ const ns=box(.06,.1,.12,0xff6aa0,.02);ns.position.set(.46,-.08,0);hd.add(ns);
+ if(helmet){const hm=box(.95,.28,.92,0xb8c0cc,.08,{metalness:.6,roughness:.3});hm.position.y=.42;hd.add(hm);const pl=box(.1,.34,.1,0xe5343f,.02);pl.position.set(0,.7,0);hd.add(pl)}
+ const legs=[[-.45,-.25],[-.45,.25],[.45,-.25],[.45,.25]].map(([x,z])=>{const l=box(.24,.5,.24,col,.06);l.position.set(x,.25,z);g.add(l);return l});
+ const tail=box(.16,.9,.16,col,.06);tail.position.set(-.75,1.3,0);tail.rotation.z=.5;g.add(tail);
+ let sw=null;if(sword){sw=new THREE.Group();const bl=box(.1,1.3,.04,0xdfe6ee,.02,{metalness:.7,roughness:.25});bl.position.y=.75;const gd=box(.36,.08,.1,0xc8902a,.02);sw.add(bl,gd);sw.position.set(.6,.6,.45);g.add(sw)}
+ g.tick=(t,ph=0)=>{const w=Math.sin(t*8+ph);legs.forEach((l,i)=>l.rotation.z=(i%2?1:-1)*w*.4);tail.rotation.z=.5+Math.sin(t*3+ph)*.3;if(sw)sw.rotation.z=-.4+Math.sin(t*4+ph)*.5;g.position.y=g.userData.y0+Math.abs(w)*.08};g.userData.y0=0;return g}
+export function croc({col=0x3f8a3a,carrot=true}={}){const g=new THREE.Group();const b=box(3.4,.8,1.3,col,.25);b.position.y=.6;g.add(b);
+ for(let i=0;i<5;i++){const sc=box(.3,.22,.5,0x2f6a2c,.05);sc.position.set(-1.2+i*.6,1.08,0);g.add(sc)}
+ const tail=box(2.2,.5,.7,col,.2);tail.position.set(-2.6,.45,0);g.add(tail);
+ const jawU=new THREE.Group();jawU.position.set(1.6,.85,0);g.add(jawU);const up=box(1.8,.32,.95,col,.12);up.position.x=.9;jawU.add(up);[-.25,.25].forEach(z=>{const e=box(.3,.3,.3,0xf2f2ee,.08);e.position.set(.1,.3,z);jawU.add(e);const p=box(.12,.16,.1,0x15101c,.02);p.position.set(.2,.32,z);jawU.add(p)});
+ for(let i=0;i<5;i++){const tt=box(.1,.14,.08,0xffffff,.01);tt.position.set(.4+i*.32,-.2,.42);jawU.add(tt)}
+ const jawL=box(1.8,.22,.9,0x5fae54,.1);jawL.position.set(2.5,.5,0);g.add(jawL);
+ [[-1,-.55],[-1,.55],[1,-.55],[1,.55]].forEach(([x,z])=>{const l=box(.4,.4,.4,col,.08);l.position.set(x,.2,z);g.add(l)});
+ let cr=null;if(carrot){cr=new THREE.Group();const c=new THREE.Mesh(new THREE.ConeGeometry(.18,1.1,8),new THREE.MeshStandardMaterial({color:0xff7a1e}));c.rotation.z=Math.PI/2;cr.add(c);const lf=box(.3,.3,.08,0x3cc46a,.04);lf.position.x=-.6;cr.add(lf);cr.position.set(3.1,.75,.0);g.add(cr)}
+ g.tick=t=>{jawU.rotation.z=.15+.2*(.5+.5*Math.sin(t*4));tail.rotation.y=Math.sin(t*2)*.25};return g}
+export function dreamIsle(isGray=false,seed=5){const gray=c=>{const C=new THREE.Color(c);const l=.2126*C.r+.7152*C.g+.0722*C.b;return new THREE.Color(l,l,l)};const g=new THREE.Group();const Q=mk(seed);const col=c=>isGray?gray(c).getHex():c;
+ const top=box(7,1,5.2,col(0x58c25a),.2);g.add(top);const dirt=box(6,1.6,4.4,col(0x8a5a36),.2);dirt.position.y=-1.2;g.add(dirt);const tip=box(3.4,1.4,2.6,col(0x6e4528),.2);tip.position.y=-2.5;g.add(tip);
+ [[-2.2,-1.2],[2.4,-1.4],[-2.6,1.4]].forEach(([x,z],i)=>{const tr=box(.5,1.6,.5,col(0x7a4e2e),.05);tr.position.set(x,1.3,z);g.add(tr);const lf=box(1.8,1.6,1.8,col([0x2fa84f,0x3cc46a,0x24944a][i]),.3);lf.position.set(x,2.7,z);g.add(lf)});
+ const clouds=[];for(let i=0;i<5;i++){const c=box(1.6+Q(),.7,1.1,0xffffff,.3,{emissive:0xffffff,emissiveIntensity:.15});c.position.set((Q()-.5)*10,2+Q()*4,(Q()-.5)*3-1);g.add(c);clouds.push(c)}
+ const L=new THREE.PointLight(0xfff0e0,40,22,1.2);L.position.set(0,7,5);g.add(L);g.userData.y=0;
+ g.tick=t=>{g.position.y=g.userData.y+Math.sin(t*1.1+seed)*.25;g.rotation.y=Math.sin(t*.4+seed)*.25;clouds.forEach((c,i)=>{c.position.x=((c.position.x+5+.006*(i+1))%10)-5})};return g}

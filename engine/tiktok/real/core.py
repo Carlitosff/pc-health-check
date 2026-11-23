@@ -769,3 +769,37 @@ def run(V, scene, outdir, preview=None, extra_audio=None):
     if os.path.exists(wav):  # v28: no falla si alguien ya limpió los .wav (17/11 se perdió un montaje 3D por esto)
         os.remove(wav)
     return P
+
+
+# v34 (23/11): CUENTAGOTAS REAL. probe() lee el píxel YA DIBUJADO en el lienzo (con la transformación actual: punch-in, sacudidas),
+# así la cifra que sale en pantalla es la medida de verdad del frame, no un texto escrito a mano. eyedropper() dibuja la lupa
+# con una muestra ampliada del color leído y su R·G·B. Llamar DESPUÉS de dibujar la imagen que se mide y ANTES de subtítulos.
+_PROBE_INFO = None
+
+
+def probe(c, x, y):
+    global _PROBE_INFO
+    if _PROBE_INFO is None:
+        _PROBE_INFO = skia.ImageInfo.Make(1, 1, skia.ColorType.kRGBA_8888_ColorType, skia.AlphaType.kUnpremul_AlphaType)
+    p = c.getTotalMatrix().mapXY(x, y)
+    a = np.zeros((1, 1, 4), np.uint8)
+    if not c.readPixels(_PROBE_INFO, a, 4, int(round(p.x())), int(round(p.y()))):
+        return None
+    return tuple(int(v) for v in a[0, 0, :3])
+
+
+def eyedropper(c, x, y, a=1.0, label_dy=-150, accent=0xFFFFC23A):
+    """Mide (x, y) y dibuja: aro en el punto, globo con la muestra ampliada y 'R G B'. Devuelve el RGB medido."""
+    rgb = probe(c, x, y)
+    if rgb is None or a <= 0:
+        return rgb
+    r_, g_, b_ = rgb
+    c.drawCircle(x, y, 26 * a, stroke(with_alpha(accent, a), 7))
+    c.drawCircle(x, y, 5 * a, fill(with_alpha(0xFFFF2D3F, a)))
+    bx, by = x, y + label_dy
+    c.drawLine(x, y - 26 * a, bx, by + 46, stroke(with_alpha(accent, a), 4))
+    c.drawRRect(skia.RRect.MakeRectXY(skia.Rect.MakeXYWH(bx - 150, by - 58, 300, 116), 26, 26), fill(with_alpha(0xFF000000, .88 * a)))
+    c.drawRRect(skia.RRect.MakeRectXY(skia.Rect.MakeXYWH(bx - 136, by - 44, 88, 88), 18, 18), fill(with_alpha(skia.Color(r_, g_, b_), a)))
+    c.drawRRect(skia.RRect.MakeRectXY(skia.Rect.MakeXYWH(bx - 136, by - 44, 88, 88), 18, 18), stroke(with_alpha(WHITE, a), 3))
+    draw_text(c, f"{r_}·{g_}·{b_}", bx + 46, by + 16, 40, with_alpha(WHITE, a), outline=0)
+    return rgb
