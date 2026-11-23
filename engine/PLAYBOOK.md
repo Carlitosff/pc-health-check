@@ -57,6 +57,8 @@ El trabajo pesado tiene que estar terminado hacia las 07:00.
 
 > **AVISO 22/11 (motor v33):** `v3d/bloques.js`: `gasGiant()` (planeta gaseoso con bandas que se mueven y Gran Mancha Roja), `mug()` y `steam()`. Escenas nuevas: `v3d/jupiterg.js` (gravedad de Júpiter; reutilizable para otros planetas cambiando G1) y `v3d/cafe.js` (cocina, depósito 'agua de tu cuerpo' con `tank()`, laboratorio con 50 voluntarios). Dentro de un grupo desplazado (GL en x=600) los hijos van en coordenadas LOCALES. Los rótulos 3D grandes (carteles de pared) caen en la franja de subtítulos en planos abiertos: ocúltalos fuera de su segmento. Seguidores planos 5 días (331): propuesto a Carlos publicar la ciudad con un reto corto con plazo aunque no crezca; hasta que conteste, la regla de no publicarla.
 
+> **AVISO 23/11 (motor v34):** `core.eyedropper(c,x,y,a)` mide el píxel REAL del frame (llamar dentro de la escena, después de dibujar la imagen): úsalo en todas las pruebas de color/gris en vez de escribir la cifra a mano, con `V['clean']=True`. `v3d/bloques.js`: `cheese()`, `kitten()`, `croc()` y `dreamIsle()` (ya no hace falta copiarla de suenos.js). Escenas nuevas: `v3d/queso.js` y `v3d/urano.js` (plaza de Madrid con el Sol en el cielo: fov 58 y cámara mirando hacia arriba). Los mp4 con grano y degradados grandes salen de 50–90 MB: recomprímelos con `ffmpeg -c:v libx264 -crf 21 -preset medium -c:a copy` antes de subir (GitHub avisa por encima de 50 MB y rechaza por encima de 100). Ojo: `cd X && nohup … &` deja el `cd` dentro del proceso de fondo.
+
 ## 0. Preparar el entorno (sesión nueva)
 
 ```bash
