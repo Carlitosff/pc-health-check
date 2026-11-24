@@ -437,6 +437,77 @@ def dare(c, t, V, P):
     c.restore()
 
 
+def vote(c, t, V, P):
+    """v35 (24/11): VOTO EN PANTALLA. V['vote']=(seg_revelación, ('SÍ','NO'), índice_correcto[, y]).
+    Dos botones grandes en el gancho (desde el frame 0, se leen SIN SONIDO y en la portada) que laten por turnos
+    como si alguien dudara; al empezar el segmento de revelación vuelven 2,8 s: el incorrecto se tacha y cae,
+    el correcto crece con un sello verde ✓. Motivo: el MITO lleva 3 semanas siendo el peor (642–963 vistas,
+    7–12 s de tiempo medio) y casi no tiene comentarios: la pregunta tiene que verse como una votación a la
+    que se responde en comentarios (SÍ/NO), y la respuesta tiene que tener un momento visual propio."""
+    v = V.get("vote")
+    if not v:
+        return
+    sid, opts, ok = v[0], v[1], v[2]
+    y = v[3] if len(v) > 3 else 1600
+    a = P["tl"].get(sid, (None,))[0]
+    f = font(64, TF_BLACK)
+    ws = [text_w(o, f) for o in opts]
+    bw = max(max(ws) + 110, 300)
+    xs = (W / 2 - bw / 2 - 30, W / 2 + bw / 2 + 30)
+    cols = (0xFF1B2030, 0xFF1B2030)  # neutros en la pregunta: el color lo pone la respuesta
+    hook_on = t < 3.4
+    rev_on = a is not None and a <= t < a + 2.8
+    if not (hook_on or rev_on):
+        return
+    if hook_on:
+        al = clamp((3.4 - t) / 0.3)
+        for i, (o, x) in enumerate(zip(opts, xs)):
+            beat = 0.5 + 0.5 * math.sin(t * 5.5 + i * math.pi)
+            sc = 1 + 0.06 * beat
+            _vote_btn(c, x, y, bw, o, cols[i], al, sc, glow=beat)
+        return
+    lt = t - a
+    out = clamp((a + 2.8 - t) / 0.3)
+    for i, (o, x) in enumerate(zip(opts, xs)):
+        if i == ok:
+            sc = 1 + 0.25 * ease_back(prog(lt, 0.25, 0.6), 2.2)
+            xx = x + (W / 2 - x) * ease_out(prog(lt, 0.25, 0.7))
+            _vote_btn(c, xx, y, bw, o, GREEN, out, sc, glow=1)
+            st = ease_back(prog(lt, 0.55, 0.85), 3.0)
+            if st > 0:
+                c.save(); c.translate(xx + bw * sc / 2 - 10, y - 70); c.rotate(-14); c.scale(st, st)
+                c.drawCircle(0, 0, 58, fill(with_alpha(0xFF0B0D14, out)))
+                c.drawCircle(0, 0, 50, fill(with_alpha(GREEN, out)))
+                p = skia.Path(); p.moveTo(-24, 2); p.lineTo(-6, 20); p.lineTo(26, -18)
+                c.drawPath(p, stroke(with_alpha(WHITE, out), 12))
+                c.restore()
+        else:
+            k = ease_out(prog(lt, 0.1, 0.45))
+            al = out * (1 - 0.65 * k)
+            c.save(); c.translate(0, 120 * ease_out(prog(lt, 0.5, 1.4)))
+            _vote_btn(c, x, y, bw, o, 0xFF5A5F6E, al, 1 - 0.15 * k)
+            if k > 0:
+                c.drawLine(x - bw / 2 * k, y + 40, x + bw / 2 * k, y - 40, stroke(with_alpha(WHITE, out), 12))
+            c.restore()
+
+
+def _vote_btn(c, x, y, bw, txt, col, al, sc, glow=0.0):
+    f = font(64, TF_BLACK)
+    c.save(); c.translate(x, y); c.scale(sc, sc)
+    rc = skia.Rect.MakeXYWH(-bw / 2, -62, bw, 124)
+    r = skia.RRect.MakeRectXY(rc, 40, 40)
+    if glow > 0:
+        g = 10 * glow
+        c.drawRRect(skia.RRect.MakeRectXY(skia.Rect.MakeLTRB(rc.left() - g, rc.top() - g, rc.right() + g, rc.bottom() + g), 40 + g, 40 + g),
+                    fill(with_alpha(col, 0.35 * glow * al)))
+    c.drawRRect(r.makeOffset(0, 10), fill(with_alpha(0xFF000000, 0.45 * al)))
+    c.drawRRect(r, fill(with_alpha(col, al)))
+    c.drawRRect(r, stroke(with_alpha(WHITE, al), 6))
+    w = text_w(txt, f)
+    c.drawString(txt, -w / 2, 23, f, fill(with_alpha(WHITE, al)))
+    c.restore()
+
+
 def rehook_t(V, P):
     rh = V.get("rehook")
     if not rh:
@@ -565,6 +636,7 @@ def make_frame(V, P, scene):
         rehook(c, t, V, P)
         reveal(c, t, V, P)
         dare(c, t, V, P)
+        vote(c, t, V, P)
         P["caps"].draw(c, t)
         if steady:
             return
