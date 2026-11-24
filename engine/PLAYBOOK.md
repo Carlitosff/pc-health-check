@@ -59,6 +59,8 @@ El trabajo pesado tiene que estar terminado hacia las 07:00.
 
 > **AVISO 23/11 (motor v34):** `core.eyedropper(c,x,y,a)` mide el píxel REAL del frame (llamar dentro de la escena, después de dibujar la imagen): úsalo en todas las pruebas de color/gris en vez de escribir la cifra a mano, con `V['clean']=True`. `v3d/bloques.js`: `cheese()`, `kitten()`, `croc()` y `dreamIsle()` (ya no hace falta copiarla de suenos.js). Escenas nuevas: `v3d/queso.js` y `v3d/urano.js` (plaza de Madrid con el Sol en el cielo: fov 58 y cámara mirando hacia arriba). Los mp4 con grano y degradados grandes salen de 50–90 MB: recomprímelos con `ffmpeg -c:v libx264 -crf 21 -preset medium -c:a copy` antes de subir (GitHub avisa por encima de 50 MB y rechaza por encima de 100). Ojo: `cd X && nohup … &` deja el `cd` dentro del proceso de fondo.
 
+> **AVISO 24/11 (motor v35):** `V['vote']=(seg_revelación, ('SÍ','NO'), índice_correcto[, y])` pone dos botones de voto desde el frame 0 y, en la revelación, tacha el incorrecto y sella en verde el correcto: úsalo en MITOS y pruebas SÍ/NO (y ≥1580 para no pisar la ilusión ni el CTA). Escenas nuevas: `v3d/calcetines.js` (dos camas, `feet()` con/sin calcetines, calor por los pies) y `v3d/reves.js` (`spinAngle` globo que frena y gira al revés, superordenador, amanecer por el oeste + nevada, `makeLand()` desierto ↔ verde). Los rótulos 3D de paisajes vistos desde arriba caen en la franja de subtítulos: usa pill 2D (y≈1560). En `skia` `RRect` no tiene `makeOutset`: amplía el `Rect`. Mitos: 4 de los últimos 5 <1.000; si el 3203 (calcetines, con voto) cae también, recomendar a Carlos cambiar el hueco del mito.
+
 ## 0. Preparar el entorno (sesión nueva)
 
 ```bash
