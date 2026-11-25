@@ -238,3 +238,10 @@ export function dreamIsle(isGray=false,seed=5){const gray=c=>{const C=new THREE.
  const clouds=[];for(let i=0;i<5;i++){const c=box(1.6+Q(),.7,1.1,0xffffff,.3,{emissive:0xffffff,emissiveIntensity:.15});c.position.set((Q()-.5)*10,2+Q()*4,(Q()-.5)*3-1);g.add(c);clouds.push(c)}
  const L=new THREE.PointLight(0xfff0e0,40,22,1.2);L.position.set(0,7,5);g.add(L);g.userData.y=0;
  g.tick=t=>{g.position.y=g.userData.y+Math.sin(t*1.1+seed)*.25;g.rotation.y=Math.sin(t*.4+seed)*.25;clouds.forEach((c,i)=>{c.position.x=((c.position.x+5+.006*(i+1))%10)-5})};return g}
+// v36 (25/11): LUNA DE CUBOS reutilizable (mares oscuros, cráteres y brillo propio). bump(dir, h) levanta un 'casquete' de cubos (montañas de la cara oculta).
+export function voxMoon(n=5000,rad=6,{cube=.5,seed=1,emissive=.32,lit=true}={}){const grp=new THREE.Group();const q=mk(seed);const cr=[...Array(14)].map(()=>{const y=1-2*q(),a=q()*6.283,r=Math.sqrt(1-y*y);return[new THREE.Vector3(Math.cos(a)*r,y,Math.sin(a)*r),.12+q()*.22]});
+ const mare=(v)=>Math.sin(v.x*2.3+seed)*Math.cos(v.y*2.1-1)+Math.sin(v.z*2.7+v.y*1.3)*.7>.55;
+ const im=new THREE.InstancedMesh(new THREE.BoxGeometry(cube,cube,cube),new THREE.MeshStandardMaterial({roughness:1,emissive:0x8890a0,emissiveIntensity:lit?emissive:0}),n);im.frustumCulled=false;grp.add(im);
+ const O=new THREE.Object3D(),C=new THREE.Color(),D=[];for(let i=0;i<n;i++){const y=1-2*(i+.5)/n,r=Math.sqrt(1-y*y),a=i*Math.PI*(3-Math.sqrt(5));const v=new THREE.Vector3(Math.cos(a)*r,y,Math.sin(a)*r);
+  let g=mare(v)?.42:.72;for(const[c,s]of cr){const d=v.distanceTo(c);if(d<s)g*=d<s*.7?.72:1.18}g*=.94+((i*7)%5)*.03;C.setRGB(g,g,g*1.03);im.setColorAt(i,C);D.push(v);O.position.copy(v).multiplyScalar(rad);O.lookAt(0,0,0);O.updateMatrix();im.setMatrixAt(i,O.matrix)}
+ return{group:grp,im,bump(dir,h,spread=.6){const O2=new THREE.Object3D();D.forEach((v,i)=>{const d=v.distanceTo(dir);const e=Math.max(0,1-d/spread);const hh=rad+h*e*e*(1+.25*Math.sin(i*1.7));O2.position.copy(v).multiplyScalar(hh);O2.lookAt(0,0,0);O2.updateMatrix();im.setMatrixAt(i,O2.matrix)});im.instanceMatrix.needsUpdate=true}}}

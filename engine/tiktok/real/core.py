@@ -811,6 +811,22 @@ def build_audio(V, P, path, extra=None):
     os.remove(raw)
 
 
+def _shrink(mp4, limit=45e6):
+    """v36 (25/11): los mp4 con grano y degradados salían de 50–90 MB (GitHub avisa >50 y rechaza >100): si pasa de 45 MB se
+    recomprime solo con crf 21 (audio copiado), y si aún pasa, crf 24. Antes se hacía a mano después del montaje."""
+    import subprocess
+    if not os.path.exists(mp4) or os.path.getsize(mp4) <= limit:
+        return
+    src = mp4[:-4] + ".orig.mp4"; os.replace(mp4, src)
+    for crf in (21, 23, 25):            # siempre desde el original (sin pérdidas encadenadas)
+        subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", src, "-c:v", "libx264", "-crf", str(crf), "-preset", "medium",
+                        "-pix_fmt", "yuv420p", "-movflags", "+faststart", "-c:a", "copy", mp4], check=True)
+        print(f"  recomprimido crf {crf}: {os.path.getsize(src)/1e6:.0f} → {os.path.getsize(mp4)/1e6:.0f} MB", flush=True)
+        if os.path.getsize(mp4) <= limit:
+            break
+    os.remove(src)
+
+
 def run(V, scene, outdir, preview=None, extra_audio=None):
     P = plan(V)
     draw_frame = make_frame(V, P, scene)
@@ -838,6 +854,7 @@ def run(V, scene, outdir, preview=None, extra_audio=None):
     wav = f"{outdir}/{V['slug']}.wav"
     build_audio(V, P, wav, extra_audio)
     render(draw_frame, P["total"], f"{outdir}/{V['slug']}.mp4", wav)
+    _shrink(f"{outdir}/{V['slug']}.mp4")
     if os.path.exists(wav):  # v28: no falla si alguien ya limpió los .wav (17/11 se perdió un montaje 3D por esto)
         os.remove(wav)
     return P
