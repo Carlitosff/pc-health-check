@@ -63,6 +63,8 @@ El trabajo pesado tiene que estar terminado hacia las 07:00.
 
 > **AVISO 25/11 (motor v36):** `real/sheet.py` pinta sobre los stills las zonas prohibidas (SUBT y<700, CTA 1120–1540, PILL ~1580, TAG ~1840): úsalo SIEMPRE para revisar los 3D antes del render. `core.run` recomprime solo los mp4 de más de 45 MB (ya no hace falta el ffmpeg a mano; si un 3D se monta con un proceso que importó `core` antes del cambio, llama a `core._shrink(mp4)`). `v3d/bloques.js`: `voxMoon()` con `bump()`. Escenas nuevas: `v3d/gato.js` (gato de bloques, edificio de 20 pisos, balcón con red, sala de veterinario con rebaño instanciado) y `v3d/doslunas.js` (plaza con dos lunas, miniluna, choque lento de lunas). El MITO con voto (`vote`) pasó de 1.000 (calcetines 1.429): mantener `vote` en todos los mitos. Dato del gato 'por encima de 7 pisos se hacen menos daño': NO verificado en fuente primaria, no usarlo sin leer el artículo.
 
+> **AVISO 26/11 (motor v37):** `v3d/bloques.js`: `turkey()`, `sofa()`, `balance()`, `zzz()`, `feast()`. Escenas nuevas: `v3d/pavo.js` (comedor de fiesta, báscula de platos, torre de raciones) y `v3d/sinluna.js` (puerto con marea y regla, globo con eje que se bambolea). 2D: `real/apertura.py` (poste de barbería con ventana animable y assert de dirección). En portrait, un `crowd()` detrás de una mesa de 3 u de alto necesita escala ≥1,7 para que asomen las cabezas. Los 3D de 17:30/19:30 llevan dos días a la cola (259 a 12 h, P21 713 a 36 h): hoy el mito 3D va a las 13:00 y el reto 2D a las 17:30 para separar franja y formato; leer el resultado mañana antes de mover más.
+
 ## 0. Preparar el entorno (sesión nueva)
 
 ```bash
