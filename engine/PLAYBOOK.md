@@ -65,6 +65,8 @@ El trabajo pesado tiene que estar terminado hacia las 07:00.
 
 > **AVISO 26/11 (motor v37):** `v3d/bloques.js`: `turkey()`, `sofa()`, `balance()`, `zzz()`, `feast()`. Escenas nuevas: `v3d/pavo.js` (comedor de fiesta, báscula de platos, torre de raciones) y `v3d/sinluna.js` (puerto con marea y regla, globo con eje que se bambolea). 2D: `real/apertura.py` (poste de barbería con ventana animable y assert de dirección). En portrait, un `crowd()` detrás de una mesa de 3 u de alto necesita escala ≥1,7 para que asomen las cabezas. Los 3D de 17:30/19:30 llevan dos días a la cola (259 a 12 h, P21 713 a 36 h): hoy el mito 3D va a las 13:00 y el reto 2D a las 17:30 para separar franja y formato; leer el resultado mañana antes de mover más.
 
+> **AVISO 27/11 (motor v38):** `v3d/bloques.js`: `dog()` (perro con `guilt`, `wag`, `sit`). Escenas nuevas: `v3d/perro.js` y `v3d/luna2x.js` (láser Tierra–Luna, Luna escalable). DATO CLAVE 26/11: el mito 3D a las 13:00 hizo 523 y el reto 2D a las 17:30 1.591 → lo que hunde es el 3D, no la franja (tres días seguidos por debajo de 530 los 3D). Recomendado a Carlos dejar el 3D solo en la serie o quitarlo; mientras no conteste, los 3D van a 17:30/19:30 y los 2D a 10:00/13:00. Ojo: un comando que hace `timeout` en primer plano mata también los `nohup … &` lanzados en él: lanza los renders con `setsid nohup … < /dev/null &`.
+
 ## 0. Preparar el entorno (sesión nueva)
 
 ```bash
