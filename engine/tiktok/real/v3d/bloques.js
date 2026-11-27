@@ -268,3 +268,26 @@ export function feast(L=14){const g=new THREE.Group();const top=box(L,.3,4.6,0x7
  [-2.5,-1,2.2,3.6].forEach((x,i)=>{const gl=new THREE.Group();const st=box(.12,.7,.12,0xe8f4ff,.03,{transparent:true,opacity:.6});st.position.y=.35;gl.add(st);const cup=new THREE.Mesh(new THREE.CylinderGeometry(.32,.18,.6,14),new THREE.MeshStandardMaterial({color:0xe8f4ff,transparent:true,opacity:.45,roughness:.05}));cup.position.y=.95;gl.add(cup);const wn=new THREE.Mesh(new THREE.CylinderGeometry(.26,.18,.32,14),new THREE.MeshStandardMaterial({color:0x7a1028,roughness:.2}));wn.position.y=.85;gl.add(wn);add(gl,x,i%2?1.5:-1.5)});
  [-4,-1.8,.6,3,5].forEach((x,i)=>{const pl=new THREE.Mesh(new THREE.CylinderGeometry(.75,.65,.08,20),new THREE.MeshStandardMaterial({color:0xffffff,roughness:.3}));add(pl,x,i%2?-1.5:1.5)});
  return{g,items}}
+// v38 (27/11): PERRO de bloques (personaje nº 4, propio). Mira a +x. pose(t,{guilt,wag,walk,sit}): guilt 0–1 = orejas gachas, cabeza baja,
+// cola metida, cuerpo agachado y mirada hacia arriba (la 'cara de culpable'); wag = velocidad de la cola; walk = fase de paso o null; sit 0–1.
+export function dog({col=0xc8894a,dark=0x6a4428,belly=0xf2dcb8,collar=0xe5343f}={}){const g=new THREE.Group();const B=new THREE.Group();g.add(B);
+ const body=box(2.3,1.1,1.1,col,.25);body.position.y=1.35;B.add(body);const bl=box(1.6,.3,.9,belly,.1);bl.position.set(.1,.86,0);B.add(bl);
+ const hd=new THREE.Group();hd.position.set(1.35,2.05,0);B.add(hd);hd.add(box(1.0,.95,.95,col,.22));
+ const sn=box(.62,.5,.6,belly,.14);sn.position.set(.66,-.2,0);hd.add(sn);const ns=box(.22,.18,.26,0x1a1214,.06);ns.position.set(.98,-.05,0);hd.add(ns);
+ const mo=box(.06,.06,.36,0x4a1a14,.02);mo.position.set(.96,-.36,0);hd.add(mo);
+ const eyes=[-.24,.24].map(z=>{const e=new THREE.Group();const w=box(.06,.26,.24,0xfdf8f0,.02);const p=box(.05,.17,.14,0x15101c,.02);p.position.x=.03;e.add(w,p);e.position.set(.5,.14,z);e.userData.p=p;hd.add(e);return e});
+ const brows=[-.24,.24].map(z=>{const b=box(.07,.07,.26,dark,.02);b.position.set(.52,.34,z);hd.add(b);return b});
+ const ears=[-1,1].map(s=>{const e=new THREE.Group();e.position.set(-.05,.4,s*.5);const f=box(.42,.75,.16,dark,.06);f.position.y=-.3;e.add(f);hd.add(e);e.userData.s=s;return e});
+ const cl=box(.2,.9,1.0,collar,.06);cl.position.set(1.0,1.75,0);B.add(cl);const tag=box(.05,.22,.2,0xffc23a,.03,{metalness:.7,roughness:.3});tag.position.set(1.12,1.38,0);B.add(tag);
+ const legs=[[-.8,-.35],[-.8,.35],[.8,-.35],[.8,.35]].map(([x,z])=>{const l=new THREE.Group();l.position.set(x,.95,z);const m=box(.34,.95,.34,col,.08);m.position.y=-.45;const p=box(.4,.18,.42,belly,.06);p.position.set(.05,-.9,0);l.add(m,p);B.add(l);return l});
+ const tail=new THREE.Group();tail.position.set(-1.15,1.7,0);const tm=box(.2,.9,.2,col,.08);tm.position.y=.42;const tt=box(.22,.22,.22,belly,.06);tt.position.y=.9;tail.add(tm,tt);B.add(tail);
+ const o={g,B,head:hd,ears,eyes,tail,legs};
+ o.pose=(t,{guilt=0,wag=0,walk=null,sit=0,look=0,m=0}={})=>{
+  const w=walk===null?0:Math.sin(walk);legs.forEach((l,i)=>l.rotation.z=(i===0||i===3?1:-1)*w*.45);
+  B.position.y=-guilt*.22-sit*.25+(walk===null?0:Math.abs(w)*.06);B.rotation.z=sit*.32;legs[0].rotation.z+=-sit*1.0;legs[1].rotation.z+=-sit*1.0;
+  hd.rotation.z=-guilt*.38+Math.sin(t*1.6)*.03*(1-guilt)-sit*.32;hd.rotation.y=look+Math.sin(t*.8)*.08;hd.position.y=2.05-guilt*.18;
+  ears.forEach(e=>{e.rotation.x=e.userData.s*(.12+Math.sin(t*3)*.05*(1-guilt));e.rotation.z=-guilt*.8});
+  eyes.forEach(e=>{e.userData.p.position.y=guilt*.06;e.scale.y=(t%3.4)>3.28?.15:1});brows.forEach((b,i)=>{b.position.y=.34+guilt*.05;b.rotation.x=(i?1:-1)*guilt*.45});
+  mo.scale.z=1-guilt*.4;mo.scale.y=1+m*3;
+  tail.rotation.z=.55-guilt*2.0+Math.sin(t*(4+wag*16))*(.15+wag*.45)*(1-guilt*.8)};
+ return o}
