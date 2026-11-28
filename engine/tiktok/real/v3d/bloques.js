@@ -291,3 +291,27 @@ export function dog({col=0xc8894a,dark=0x6a4428,belly=0xf2dcb8,collar=0xe5343f}=
   mo.scale.z=1-guilt*.4;mo.scale.y=1+m*3;
   tail.rotation.z=.55-guilt*2.0+Math.sin(t*(4+wag*16))*(.15+wag*.45)*(1-guilt*.8)};
  return o}
+// --- v39 (28/11): PEZ DE COLORES de bloques (personaje nº 7: pez naranja con aletas que ondulan, cola articulada, ojos grandes)
+// y PECERA redonda de cristal con agua, grava y planta. goldfish(col).pose(t,{swim,mouth,turn}); fishbowl(R) devuelve {g,water,R}.
+export function goldfish(col=0xff8a1e,belly=0xffc46a){const g=new THREE.Group();const B=new THREE.Group();g.add(B);
+ const body=box(1.5,.95,.62,col,.3);B.add(body);const bl=box(1.0,.4,.58,belly,.18);bl.position.set(.15,-.3,0);B.add(bl);
+ const head=box(.6,.78,.56,col,.26);head.position.set(.82,.02,0);B.add(head);
+ const eyes=[-1,1].map(s=>{const e=new THREE.Group();const w=box(.34,.34,.08,0xfdf8f0,.06);const p=box(.2,.22,.05,0x10121c,.04);p.position.set(.04,0,s*.05);const hl=box(.07,.07,.03,0xffffff,.01);hl.position.set(.08,.07,s*.08);e.add(w,p,hl);e.position.set(.9,.14,s*.3);B.add(e);e.userData.p=p;return e});
+ const mouth=box(.12,.12,.2,0xc8401a,.04);mouth.position.set(1.13,-.12,0);B.add(mouth);
+ const dors=new THREE.Group();dors.position.set(-.1,.46,0);const df=box(.8,.36,.06,0xff6a10,.05,{transparent:true,opacity:.92});df.position.set(-.1,.16,0);df.rotation.z=.25;dors.add(df);B.add(dors);
+ const fins=[-1,1].map(s=>{const f=new THREE.Group();f.position.set(.35,-.22,s*.3);const m=box(.42,.08,.3,0xffb060,.03,{transparent:true,opacity:.85});m.position.set(-.18,0,s*.12);f.add(m);B.add(f);f.userData.s=s;return f});
+ const tail=new THREE.Group();tail.position.set(-.78,0,0);B.add(tail);const t1=box(.36,.5,.12,col,.08);t1.position.x=-.16;tail.add(t1);
+ const tf=new THREE.Group();tf.position.x=-.32;tail.add(tf);[[.38,.3],[-.38,-.3]].forEach(([y,a])=>{const f=box(.7,.5,.05,0xff6a10,.06,{transparent:true,opacity:.9});f.position.set(-.3,y,0);f.rotation.z=a;tf.add(f)});
+ const o={g,B,eyes,tail};
+ o.pose=(t,{swim=1,mouth:mo=0,turn=0}={})=>{const w=Math.sin(t*(5+swim*5));tail.rotation.y=w*(.25+.35*swim);tf.rotation.y=Math.sin(t*(5+swim*5)-1)*.4*swim;
+  B.rotation.y=turn+Math.sin(t*(5+swim*5)+1)*.06*swim;B.position.y=Math.sin(t*1.7)*.06;dors.rotation.x=Math.sin(t*3)*.12;
+  fins.forEach(f=>{f.rotation.x=f.userData.s*(.3+.3*Math.sin(t*7+f.userData.s))});mouth.scale.set(1,1+.6*Math.max(0,Math.sin(t*4))+mo*1.5,1);
+  eyes.forEach(e=>{e.scale.y=(t%4.1)>4.0?.6:1})};
+ return o}
+export function fishbowl(R=2.4){const g=new THREE.Group();
+ const glass=new THREE.Mesh(new THREE.SphereGeometry(R,40,28,0,Math.PI*2,.35,Math.PI-.35),new THREE.MeshStandardMaterial({color:0xcfefff,transparent:true,opacity:.22,roughness:.04,metalness:.15,side:THREE.DoubleSide,depthWrite:false}));glass.position.y=R*.94;g.add(glass);
+ const rim=new THREE.Mesh(new THREE.TorusGeometry(R*Math.sin(.35),.07,8,40),new THREE.MeshStandardMaterial({color:0xe8f8ff,roughness:.1,transparent:true,opacity:.6}));rim.rotation.x=Math.PI/2;rim.position.y=R*.94+R*Math.cos(.35);g.add(rim);
+ const water=new THREE.Mesh(new THREE.SphereGeometry(R*.97,36,24,0,Math.PI*2,Math.PI*.24,Math.PI*.76),new THREE.MeshStandardMaterial({color:0x4fb8ff,transparent:true,opacity:.28,roughness:.1,depthWrite:false}));water.position.y=R*.94;g.add(water);
+ const R2=mk(77);for(let i=0;i<46;i++){const a=R2()*6.28,rr=R2()*R*.72;const s=box(.26,.18,.26,[0xd8c49a,0x8a7a64,0xf2e8d0,0x5a8ab8][i%4],.06);s.position.set(Math.cos(a)*rr,R*.94-R*.84+.05+R2()*.12,Math.sin(a)*rr);g.add(s)}
+ const pl=new THREE.Group();for(let i=0;i<6;i++){const l=box(.16,.55,.1,0x3fae52,.04);l.position.set(Math.sin(i)*.08,.3+i*.42,0);l.rotation.z=Math.sin(i*1.7)*.3;pl.add(l)}pl.position.set(-R*.45,R*.94-R*.84,-R*.3);g.add(pl);g.userData.plant=pl;
+ return{g,glass,water,R,cy:R*.94}}

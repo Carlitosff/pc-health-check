@@ -726,6 +726,49 @@ def music_bed(n, V, P):
     return out / (np.abs(out).max() + 1e-9)
 
 
+# v39 (28/11): SFX SINTETIZADOS Y PROGRAMADOS. V['sfx'] = [(seg, segundos_desde_inicio_del_segmento, tipo[, volumen]), ...]
+# tipos: 'bell' (campanada de bronce: parciales inarmónicos 0,56/0,92/1,19/1,71/2,0/2,74/3,0 con caída larga), 'tick' (reloj),
+# 'bubble' (burbuja con barrido de tono hacia arriba), 'click' (palanca). Así lo que se VE (campanada, burbuja) también SUENA en su frame.
+def _sfx_wave(kind, f0=None):
+    if kind == "bell":
+        f0 = f0 or 392.0; dur = 2.6; tt = np.arange(int(dur * SR)) / SR
+        parts = [(.56, 1.0, .9), (.92, .7, 1.3), (1.19, .55, 1.6), (1.71, .4, 2.2), (2.0, .65, 2.6), (2.74, .3, 3.4), (3.0, .25, 3.8)]
+        w = sum(a * np.sin(2 * np.pi * f0 * r * tt + r) * np.exp(-tt * k) for r, a, k in parts)
+        w *= np.minimum(1, tt / .004)
+        return w / np.abs(w).max()
+    if kind == "tick":
+        tt = np.arange(int(.05 * SR)) / SR; w = np.sin(2 * np.pi * 3100 * tt) * np.exp(-tt * 160)
+        return w / np.abs(w).max()
+    if kind == "bubble":
+        tt = np.arange(int(.12 * SR)) / SR; f = (f0 or 520) * (1 + 6 * tt)
+        w = np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-tt * 30) * np.minimum(1, tt / .003)
+        return w / np.abs(w).max()
+    if kind == "click":
+        tt = np.arange(int(.04 * SR)) / SR; w = (np.sin(2 * np.pi * 1700 * tt) + .5 * np.sin(2 * np.pi * 620 * tt)) * np.exp(-tt * 120)
+        return w / np.abs(w).max()
+    raise ValueError(kind)
+
+
+def sfx_times(V, P):
+    """[(t_absoluto, tipo, vol)] de V['sfx'] según el plan (para dibujar lo mismo que suena)."""
+    out = []
+    for e in V.get("sfx", []):
+        sid, off, kind = e[0], e[1], e[2]; vol = e[3] if len(e) > 3 else .25
+        sg = [x for x in P["segs"] if x["id"] == sid][0]
+        # offset numérico = desde el inicio del segmento; 'e1.5' = 1,5 s después de que acabe la voz de ese segmento (golpes en la pausa)
+        base = sg["a"] + off if not isinstance(off, str) else sg.get("speech", (sg["a"], sg["a"]))[1] + float(off[1:])
+        out.append((base, kind, vol))
+    return out
+
+
+def sfx_apply(m, V, P):
+    for t0, kind, vol in sfx_times(V, P):
+        w = _sfx_wave(kind) * vol; i = int(t0 * SR)
+        if i >= len(m.buf):
+            continue
+        n = min(len(w), len(m.buf) - i); m.buf[i:i + n] += w[:n]
+
+
 def build_audio(V, P, path, extra=None):
     total = P["total"]
     m = Mixer(total)
@@ -784,6 +827,7 @@ def build_audio(V, P, path, extra=None):
         bed = music_bed(len(m.buf), V, P)
         m.buf += bed * V.get("music", 0.05) * (1.0 - 0.72 * np.clip(env * 4, 0, 1))
     m.boom(0.0, 0.3)
+    sfx_apply(m, V, P)
     if extra:
         extra(m, P)
     # v22 (11/11): SILENCIO TOTAL CONTROLADO. V['hush']='id_segmento' (o lista) apaga TODO (música, dron, pops, extra) en la pausa de ese

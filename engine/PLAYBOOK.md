@@ -67,6 +67,8 @@ El trabajo pesado tiene que estar terminado hacia las 07:00.
 
 > **AVISO 27/11 (motor v38):** `v3d/bloques.js`: `dog()` (perro con `guilt`, `wag`, `sit`). Escenas nuevas: `v3d/perro.js` y `v3d/luna2x.js` (láser Tierra–Luna, Luna escalable). DATO CLAVE 26/11: el mito 3D a las 13:00 hizo 523 y el reto 2D a las 17:30 1.591 → lo que hunde es el 3D, no la franja (tres días seguidos por debajo de 530 los 3D). Recomendado a Carlos dejar el 3D solo en la serie o quitarlo; mientras no conteste, los 3D van a 17:30/19:30 y los 2D a 10:00/13:00. Ojo: un comando que hace `timeout` en primer plano mata también los `nohup … &` lanzados en él: lanza los renders con `setsid nohup … < /dev/null &`.
 
+> **AVISO 28/11 (motor v39):** `V['sfx']` = efectos sintetizados programados ('bell', 'tick', 'bubble', 'click'; offset 'eX' = X s tras la voz del segmento) y `core.sfx_times` para sincronizar el dibujo: en retos donde se cuenta o se oye algo, que SUENE. `v3d/bloques.js`: `goldfish()`, `fishbowl()`. Escenas nuevas: `v3d/pez.js`, `v3d/dia48.js`. Black Friday (27/11, gancho de texto con cifras y porcentajes) se hundió a 138 con 47 % de view rate: en retos, gancho CORTO (≤7 palabras) + imagen, nunca un enunciado largo que haya que leer. Pasa `check_voice` del 2D antes de lanzar el render (hoy se rehízo el 3602).
+
 ## 0. Preparar el entorno (sesión nueva)
 
 ```bash
